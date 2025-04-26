@@ -1,4 +1,4 @@
-import SelectFilter from '../../ui/SelectFilter'
+import SelectFilter from '@/app/src/shared/ui/SelectFilter'
 
 const YearsFilter = () => {
 	const options = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016]

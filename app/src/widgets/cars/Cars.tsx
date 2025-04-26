@@ -1,18 +1,14 @@
 'use client'
 
-import { useCarsStore } from '@/app/stores/useCarsStore'
-import Car from './Car'
-import { useCars } from '@/app/hooks/useCars'
 import { useEffect } from 'react'
-import { useAuthStore } from '@/app/stores/useAuthStore'
-import { UserRole } from '@/app/interfaces/userInterface'
-import Link from 'next/link'
 import Image from 'next/image'
-import addCarImg from '../../../assets/addCar.png'
+import Link from 'next/link'
+import { Car, useCarsStore, useAuthStore, useCars, addCarImg, UserRole } from './index'
 
 const Cars = () => {
 	const role = useAuthStore(state => state.role)
 	const { data, isLoading, error } = useCars()
+
 	const cars = useCarsStore(state => state.cars)
 	const setCars = useCarsStore(state => state.setCars)
 
@@ -34,6 +30,7 @@ const Cars = () => {
 					<span>Добавить новый автомобиль</span>
 				</Link>
 			)}
+
 			{cars.map(car => {
 				return <Car {...car} role={role!} key={car.car.id} />
 			})}

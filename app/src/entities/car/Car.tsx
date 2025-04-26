@@ -1,13 +1,7 @@
-import { createActionsForRoleCatalog } from '@/app/helpers/createActionsForRoleCatalog'
-import { ICar } from '@/app/interfaces/carsInterface'
-import { UserRole } from '@/app/interfaces/userInterface'
-import ButtonAction from '../../ui/ButtonAction'
-import LinkAction from '../../ui/LinkAction'
 import { useState } from 'react'
-import removeCarImg from '../../../assets/removeCar.png'
 import Image from 'next/image'
-import { useRemoveCar } from '@/app/hooks/useCars'
-import { useCarsStore } from '@/app/stores/useCarsStore'
+import Link from 'next/link'
+import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from './index'
 
 type Props = ICar & { role: UserRole }
 
@@ -15,8 +9,6 @@ const Car = ({ car, photos, role }: Props) => {
 	const [isEdit, setIsEdit] = useState(true)
 	const { mutateAsync } = useRemoveCar()
 	const removeCar = useCarsStore(state => state.removeCar)
-
-	const actions = createActionsForRoleCatalog(role)
 
 	const handleRemoveCar = async () => {
 		try {
@@ -54,12 +46,18 @@ const Car = ({ car, photos, role }: Props) => {
 
 			<span className='text-secondary'>{car.manufacturer_date}</span>
 
-			{actions.map((action, idx) => {
-				if (action.type === 'a') return <LinkAction carId={car.id} label={action.label} key={idx} />
-				if (action.type === 'button') {
-					return <ButtonAction label={action.label} action={action.action!} key={idx} />
-				}
-			})}
+			{role !== UserRole.USER && (
+				<button className='text-[#333333] bg-accentBg text-center w-full font-bold rounded-[5px] py-1 mt-4'>
+					Редактировать
+				</button>
+			)}
+
+			<Link
+				href={`/catalog/${car.id}`}
+				className='text-accent text-center w-full font-bold border-[2px] border-accent rounded-[5px] py-1 mt-4'
+			>
+				Подробнее
+			</Link>
 		</article>
 	)
 }
