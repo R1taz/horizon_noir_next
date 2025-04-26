@@ -1,6 +1,6 @@
-import BreadCrumbs from '@/app/components/ui/BreadCrumbs'
-import Cars from '@/app/components/Catalog/Cars/Cars'
-import Filters from '@/app/components/Catalog/Filters/Filters'
+import BreadCrumbs from '@/app/src/shared/ui/BreadCrumbs'
+import Cars from '@/app/src/widgets/cars/Cars'
+import Filters from '@/app/src/widgets/filters/Filters'
 
 const page = () => {
 	return (

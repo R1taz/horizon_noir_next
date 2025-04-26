@@ -1,8 +1,8 @@
-import SelectFilter from '../../ui/SelectFilter'
+import SelectFilter from '@/app/src/shared/ui/SelectFilter'
 
-const EngineTypesFilter = () => {
+const ColorsFilter = () => {
 	const options = ['Чёрный', 'Белый', 'Серый', 'Красный', 'Оранжевый']
 	return <SelectFilter title='Цвет' options={options} />
 }
 
-export default EngineTypesFilter
+export default ColorsFilter

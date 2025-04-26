@@ -1,6 +1,6 @@
-import PaymentMethod from '../../ui/PaymentMethod'
-import FormConsultation from '../../ui/FormConsultation'
+import FormConsultation from '../../../src/shared/ui/FormConsultation'
 import Calendar from './Calendar/Calendar'
+import PaymentMethodReservation from './PaymentMethodReservation/PaymentMethodReservation'
 
 const FormReservationCar = () => {
 	return (
@@ -10,7 +10,7 @@ const FormReservationCar = () => {
 			titleAction='Оставить заявку'
 			action={() => undefined}
 		>
-			<PaymentMethod />
+			<PaymentMethodReservation />
 			<Calendar />
 		</FormConsultation>
 	)

@@ -1,6 +1,6 @@
 import PlaceDelivery from './PlaceDelivery/PlaceDelivery'
-import FormConsultation from '../../ui/FormConsultation'
-import PaymentMethod from '../../ui/PaymentMethod'
+import FormConsultation from '../../../src/shared/ui/FormConsultation'
+import PaymentMethodOrder from './PaymentMethodOrder/PaymentMethodOrder'
 
 const FormOrderCar = () => {
 	return (
@@ -10,7 +10,7 @@ const FormOrderCar = () => {
 			titleAction='Оставить заявку'
 			action={() => undefined}
 		>
-			<PaymentMethod />
+			<PaymentMethodOrder />
 			<PlaceDelivery />
 		</FormConsultation>
 	)

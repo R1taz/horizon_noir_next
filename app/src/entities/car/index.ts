@@ -1,0 +1,5 @@
+export type { ICar } from '@/app/interfaces/carsInterface'
+export { UserRole } from '@/app/interfaces/userInterface'
+export { useRemoveCar } from '@/app/hooks/useCars'
+export { useCarsStore } from '@/app/src/shared/model/useCarsStore'
+export { default as removeCarImg } from '../../../assets/removeCar.png'

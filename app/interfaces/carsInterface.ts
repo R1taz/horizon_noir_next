@@ -3,11 +3,11 @@ export interface IBrand {
 	brand_name: string
 }
 
-enum CarStatus {
-	'in_stock',
-	'in_transit',
-	'sold',
-	'reserved',
+export enum CarStatus {
+	STOCK = 'in_stock',
+	TRANSIT = 'in_transit',
+	SOLD = 'sold',
+	RESERVED = 'reserved',
 }
 
 export interface ICar {
@@ -53,4 +53,17 @@ export interface ICarPhoto {
 	car_id: number
 	url: string
 	main_photo: boolean
+}
+
+export interface ICarData {
+	carData: {
+		model_id: number
+		status: CarStatus
+		available: boolean
+		vin: string
+		price: number
+		manufacturer_date: number
+	}
+	mainPhotoId: number
+	urlsPhotos: string[]
 }
