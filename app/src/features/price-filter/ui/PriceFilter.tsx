@@ -1,4 +1,4 @@
-import RangeFilter from '../../ui/RangeFilter'
+import RangeFilter from '@/app/src/shared/ui/RangeFilter'
 
 const PriceFilter = () => {
 	const options = ['от', 'до']

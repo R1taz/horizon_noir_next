@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { UserRole } from '../interfaces/userInterface'
+import { UserRole } from '@/app/interfaces/userInterface'
 
 interface AuthStore {
 	isAuth: boolean

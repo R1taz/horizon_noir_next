@@ -1,37 +1,50 @@
-import React from 'react'
+import { useState } from 'react'
 import CarDealership from './CarDealership'
+import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
+import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 
 const PlaceDelivery = () => {
-	const carDealerships = [
-		'г. Москва, Новорижское шоссе, 17-й километр, 1',
-		'г. Санкт-Петербург, Октябрьская наб., 44',
-		'г. Калининград, Осенняя улица, 21',
-		'г. Краснодар, улица Старокубанская, 80а',
-		'​г. Владивосток, Снеговая улица, 1 ст9',
+	const carDealerships = useCarDealerships(state => state.carDealerships)
+	const [deliveryType, setDeliveryType] = useState('salon')
+	const [deliveryDealershipId, setDeliveryDealershipId] = useState<number>(carDealerships[0].id)
+	const [deliveryAddress, setDeliveryAddress] = useState('')
+
+	const options = [
+		{ label: 'В автосалон', value: 'salon' },
+		{ label: 'Свой адрес', value: 'custom_address' },
 	]
 
 	return (
 		<>
-			<article className='w-[40%] mx-auto mt-12 mb-6'>
-				<h2 className='text-headlines text-xl text-center font-medium'>Выберите место доставки</h2>
-				<section className='flex justify-between my-3'>
-					<div className='flex'>
-						<div className='flex bg-accentBg rounded-[50%] w-7 h-7'></div>
-						<p className='ms-2 text-primary text-base'>В автосалон</p>
-					</div>
+			<RadioGroup
+				value={deliveryType}
+				title='Выберите место доставки'
+				options={options}
+				onChange={deliveryType => setDeliveryType(deliveryType)}
+			/>
 
-					<div className='flex'>
-						<div className='flex bg-secondaryBg rounded-[50%] w-7 h-7'></div>
-						<p className='ms-2 text-primary text-base'>Свой адрес</p>
-					</div>
+			{deliveryType === 'salon' && (
+				<section className='flex flex-col gap-3'>
+					{carDealerships.map((carDealership, idx) => (
+						<CarDealership
+							isActive={deliveryDealershipId === carDealership.id}
+							onChange={id => setDeliveryDealershipId(id)}
+							carDealershipId={carDealership.id}
+							title={carDealership.address}
+							key={idx}
+						/>
+					))}
 				</section>
-			</article>
+			)}
 
-			<section className='flex flex-col gap-3'>
-				{carDealerships.map((carDealerships, idx) => (
-					<CarDealership title={carDealerships} key={idx} />
-				))}
-			</section>
+			{deliveryType === 'custom_address' && (
+				<input
+					type='text'
+					onChange={e => setDeliveryAddress(e.target.value)}
+					placeholder='Введите адрес доставки'
+					className='outline-none bg-secondaryBg placeholder-[#535353] text-primary block py-2 px-2 rounded-[8px] w-[60%] mx-auto'
+				/>
+			)}
 		</>
 	)
 }

@@ -1,0 +1,8 @@
+export { default as BodyTypesFilter } from '../../features/bodyTypes-filter/ui/BodyTypesFilter'
+export { default as BrandsFilter } from '../../features/brands-filter/ui/BrandsFilter'
+export { default as ColorsFilter } from '../../features/colors-filter/ui/ColorsFilter'
+export { default as EngineTypesFilter } from '../../features/engineTypes-filter/ui/EngineTypesFilter'
+export { default as EngineVolumesFilter } from '../../features/engineVolumes-filter/ui/EngineVolumesFilter'
+export { default as ModelsFilter } from '../../features/models-filter/ui/ModelsFilter'
+export { default as PriceFilter } from '../../features/price-filter/ui/PriceFilter'
+export { default as YearsFilter } from '../../features/years-filter/ui/YearsFilters'
