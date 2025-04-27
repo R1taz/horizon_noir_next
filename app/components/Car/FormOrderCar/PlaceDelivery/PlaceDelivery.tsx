@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import CarDealership from './CarDealership'
 import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
+import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
 
 const PlaceDelivery = () => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
@@ -24,17 +24,11 @@ const PlaceDelivery = () => {
 			/>
 
 			{deliveryType === 'salon' && (
-				<section className='flex flex-col gap-3'>
-					{carDealerships.map((carDealership, idx) => (
-						<CarDealership
-							isActive={deliveryDealershipId === carDealership.id}
-							onChange={id => setDeliveryDealershipId(id)}
-							carDealershipId={carDealership.id}
-							title={carDealership.address}
-							key={idx}
-						/>
-					))}
-				</section>
+				<CarDealershipList
+					carDealerships={carDealerships}
+					dealershipId={deliveryDealershipId}
+					setDealershipId={setDeliveryDealershipId}
+				/>
 			)}
 
 			{deliveryType === 'custom_address' && (

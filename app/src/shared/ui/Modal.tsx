@@ -1,35 +1,35 @@
-import Image from 'next/image'
-import closeModalImg from '../../assets/removeCar.png'
+import { ReactNode } from 'react'
 
 interface Props {
 	title: string
-	children: React.ReactElement
-	onSave: (params: unknown) => void
-	onClose: () => void
+	options: { label: string; action: (params: unknown) => void }[]
+	children: ReactNode
 }
 
-const Modal = ({ title, children, onSave, onClose }: Props) => {
+const Modal = ({ title, options, children }: Props) => {
 	return (
-		<article className='absolute inset-0 m-auto bg-quaternaryBg border-2 border-quaternaryBg rounded-[8px] px-3'>
-			<Image
-				src={closeModalImg}
-				alt='Закрыть модальное окно'
-				onClick={onClose}
-				className='w-[10px] h-[10px]'
-			/>
-			<h1 className='text-accent'>{title}</h1>
+		<article className='absolute bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-10 w-[50%]'>
+			<h1 className='text-accent text-2xl font-bold mt-2 mb-5'>{title}</h1>
+
+			<div className='my-2 relative'>
+				<div className='relative top-0 left-1/2 -ml-[50vw] w-screen h-[2px] bg-accentBg'></div>
+			</div>
 
 			{children}
 
-			<button
-				className='w-[50%] mx-auto text-xl font-bold bg-accentBg text-[#292929] rounded-[8px]'
-				onClick={onSave}
-			>
-				Сохранить изменения
-			</button>
-			<button className='w-[50%]' onClick={onClose}>
-				Отменить изменения
-			</button>
+			<section className='flex flex-col gap-3 my-5'>
+				{options.map((option, idx) => (
+					<button
+						key={option.label}
+						className={`w-[50%] py-1 mx-auto text-xl font-bold ${idx === 0 ? 'bg-accentBg' : ''} ${
+							idx === 1 ? 'border-2 border-accentBg' : ''
+						} ${idx === 1 ? 'text-accent' : 'text-[#292929]'} rounded-[7px]`}
+						onClick={option.action}
+					>
+						{option.label}
+					</button>
+				))}
+			</section>
 		</article>
 	)
 }

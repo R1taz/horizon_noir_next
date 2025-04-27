@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import logo from '../../assets/H O R I Z O N N O I R.svg'
+import logo from '../../../assets/H O R I Z O N N O I R.svg'
 import Image from 'next/image'
 
 const Footer = () => {
