@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { IUserData } from '../interfaces/userInterface'
+import { IUserData } from '../../../interfaces/userInterface'
 
 interface UserStore {
 	name: string

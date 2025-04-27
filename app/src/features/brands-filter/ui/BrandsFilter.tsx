@@ -1,11 +1,20 @@
 'use client'
-import { useBrands } from '@/app/hooks/useBrands'
+import { useEffect } from 'react'
+import { useBrands } from '@/app/src/shared/hooks/useBrands'
 import BrandFilter from './BrandFilter'
+import { useBrandsStore } from '@/app/src/shared/model/useBrandsStore'
 
 const BrandsFilter = () => {
-	const { data: brands, isLoading } = useBrands()
+	const { data: brands, isLoading, error } = useBrands()
+	const setBrands = useBrandsStore(state => state.setBrands)
 
-	if (isLoading || !brands) return <h1>Loading...</h1>
+	useEffect(() => {
+		if (brands) setBrands(brands)
+	}, [brands])
+
+	if (isLoading) return <h1>Loading...</h1>
+	if (error) return <h1>Ошибка загрузки брендов</h1>
+	if (!brands || brands.length === 0) return <h1>Бренды не найдены</h1>
 
 	return (
 		<article>

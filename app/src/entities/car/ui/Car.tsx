@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from './index'
+import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from '../index'
 
 type Props = ICar & { role: UserRole }
 
@@ -35,7 +35,7 @@ const Car = ({ car, photos, role }: Props) => {
 				/>
 			)}
 			<img
-				src={mainPhoto.url}
+				src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
 				alt='Фото автомобиля'
 				className='rounded-[8px] h-[250px] object-cover'
 			/>

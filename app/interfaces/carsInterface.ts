@@ -54,16 +54,3 @@ export interface ICarPhoto {
 	url: string
 	main_photo: boolean
 }
-
-export interface ICarData {
-	carData: {
-		model_id: number
-		status: CarStatus
-		available: boolean
-		vin: string
-		price: number
-		manufacturer_date: number
-	}
-	mainPhotoId: number
-	urlsPhotos: string[]
-}
