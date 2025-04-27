@@ -15,12 +15,12 @@ const CarInfo = ({ car }: Props) => {
 				{!mainPhoto && <h1 className='flex-1'>Отсутствует фотография</h1>}
 				{mainPhoto && (
 					<img
-						className='flex-1 rounded-[8px] w-[50%] h-full'
-						src={mainPhoto.url}
+						className=' rounded-[8px] object-cover w-[50%] h-full'
+						src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
 						alt='Главное фото автомобиля'
 					/>
 				)}
-				<div className='flex flex-1 flex-col gap-4'>
+				<div className='flex flex-col gap-4'>
 					<h1 className='text-headlines text-2xl'>
 						{car.car.brand} {car.car.model}
 					</h1>

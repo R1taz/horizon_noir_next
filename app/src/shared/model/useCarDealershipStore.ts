@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { ICarDealership } from '../interfaces/carDealershipsInterface'
+import { ICarDealership } from '../../../interfaces/carDealershipsInterface'
 
 interface CarsStore {
 	carDealerships: ICarDealership[]

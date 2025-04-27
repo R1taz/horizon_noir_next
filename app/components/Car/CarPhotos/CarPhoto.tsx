@@ -9,7 +9,7 @@ const CarPhoto = ({ photo }: Props) => {
 		<img
 			key={photo.id}
 			className='w-full h-full rounded-[8px] object-cover'
-			src={photo.url}
+			src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + photo.url.replace(/\\/g, '/')}
 			alt='Фотография автомобиля'
 		/>
 	)

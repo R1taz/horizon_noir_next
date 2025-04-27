@@ -1,6 +1,6 @@
+import { IBrand } from '@/app/interfaces/carsInterface'
 import { useQuery } from '@tanstack/react-query'
-import { getBrands } from '../api/brand'
-import { IBrand } from '../interfaces/carsInterface'
+import { getBrands } from '../api/brands/getBrands'
 
 export const useBrands = () => {
 	return useQuery<IBrand[]>({
