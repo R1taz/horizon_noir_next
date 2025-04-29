@@ -7,16 +7,16 @@ interface UserStore {
 	email: string
 	phoneNumber: string
 	numberOfWarn: number
-	setUserData: (userData: IUserData) => void
+	setUser: (userData: IUserData) => void
 }
 
-export const useAuthStore = create<UserStore>()(
+export const useUserStore = create<UserStore>()(
 	immer(set => ({
 		name: '',
 		email: '',
 		phoneNumber: '',
 		numberOfWarn: 0,
-		setUserData: userData =>
+		setUser: userData =>
 			set(() => ({
 				name: userData.name,
 				email: userData.email,

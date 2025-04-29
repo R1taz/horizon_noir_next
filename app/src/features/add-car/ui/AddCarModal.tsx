@@ -97,10 +97,10 @@ const AddCarModal = ({ onClose }: Props) => {
 					formData.append('price', `${+price}`)
 					formData.append('manufacturer_date', `${+year}`)
 					formData.append('mainPhotoId', `${0}`)
-					await mutateAsync(formData)
-					// addCar()
+					const res = await mutateAsync(formData)
+					addCar(res!)
 				} catch (error) {
-					console.log(error)
+					console.log(`Произошла ошибка: ${error}`)
 				}
 			},
 		},

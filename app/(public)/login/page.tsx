@@ -1,4 +1,33 @@
+'use client'
+import { useLogin } from '@/app/src/features/auth/model/useLogin'
+import { useUserStore } from '@/app/src/shared/model/useUserStore'
+import { useAuthStore } from '@/app/src/widgets/cars'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
 const page = () => {
+	const setRole = useAuthStore(state => state.setRole)
+	const setIsAuth = useAuthStore(state => state.setIsAuth)
+	const setUser = useUserStore(state => state.setUser)
+
+	const { mutateAsync } = useLogin()
+	const router = useRouter()
+
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+	const handleClick = async () => {
+		try {
+			const user = await mutateAsync({ email, password })
+			setRole(user.role)
+			setIsAuth(true)
+			setUser(user)
+			router.replace('/catalog')
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	return (
 		<main className='grid grid-cols-[230px,auto] grid-rows-[150px,auto] mt-24 px-[90px]'>
 			<h1
@@ -19,13 +48,17 @@ const page = () => {
 				<div className='flex flex-col gap-9 mt-16'>
 					<input
 						type='text'
-						placeholder='Логин'
-						className='block w-[60%] text-secondary  bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						placeholder='Email'
+						value={email}
+						onChange={e => setEmail(e.target.value)}
+						className='block w-[60%] text-secondary  bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3 outline-none'
 					/>
 					<input
-						type='text'
+						type='password'
 						placeholder='Пароль'
-						className='block w-[60%] text-secondary bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						value={password}
+						onChange={e => setPassword(e.target.value)}
+						className='block w-[60%] text-secondary bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3 outline-none'
 					/>
 				</div>
 
@@ -36,7 +69,10 @@ const page = () => {
 					</span>
 				</p>
 
-				<button className='my-8 rounded-[8px] bg-accentBg font-bold text-xl text-[#333333] py-2 w-[320px]'>
+				<button
+					onClick={handleClick}
+					className='my-8 rounded-[8px] bg-accentBg font-bold text-xl text-[#333333] py-2 w-[320px]'
+				>
 					Войти
 				</button>
 
