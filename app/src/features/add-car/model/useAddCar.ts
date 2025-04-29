@@ -1,5 +1,4 @@
-import { addCar } from './addCar'
-import { ICarData } from './types'
+import { addCar } from '../api/addCar'
 import { useMutation } from '@tanstack/react-query'
 
 export const useAddCar = () => {
