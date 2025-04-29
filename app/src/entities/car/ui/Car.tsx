@@ -5,7 +5,7 @@ import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from '../ind
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/app/src/widgets/cars'
 
-type Props = ICar & { role: UserRole }
+type Props = Omit<ICar, 'model'> & { role: UserRole }
 
 const Car = ({ car, photos, role }: Props) => {
 	const [isEdit, setIsEdit] = useState(true)
