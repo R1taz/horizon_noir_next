@@ -3,7 +3,7 @@ import { axiosInstance } from '@/app/src/shared/api/axiosInstance'
 
 export const addCar = async (carData: FormData) => {
 	try {
-		const res = await axiosInstance.post<ICar>('/api/cars', carData)
+		const res = await axiosInstance.post<{ message: string; car: ICar }>('/api/cars', carData)
 
 		if (res.status !== 200) throw new Error(`HTTP status: ${res.status}`)
 		return res.data

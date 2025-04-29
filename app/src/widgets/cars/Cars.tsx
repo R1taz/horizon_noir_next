@@ -23,7 +23,7 @@ const Cars = () => {
 			{role !== UserRole.USER && <AddCarTrigger />}
 
 			{cars.map(car => {
-				return <Car {...car} role={role!} key={car.car.id} />
+				return <Car car={car.car} photos={car.photos} role={role!} key={car.car.id} />
 			})}
 		</section>
 	)
