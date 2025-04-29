@@ -13,8 +13,13 @@ export const useCarsStore = create<CarsStore>()(
 	immer(set => ({
 		cars: [],
 		setCars: cars => set(state => ({ ...state, cars })),
-		addCar: (car: ICar) => set(state => ({ ...state, cars: state.cars.push(car) })),
+		addCar: (car: ICar) =>
+			set(state => {
+				state.cars.push(car)
+			}),
 		removeCar: carId =>
-			set(state => ({ ...state, cars: state.cars.filter(car => car.car.id !== carId) })),
+			set(state => {
+				state.cars = state.cars.filter(car => car.car.id !== carId)
+			}),
 	}))
 )
