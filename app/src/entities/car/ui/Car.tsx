@@ -2,20 +2,31 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from '../index'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/app/src/widgets/cars'
 
 type Props = ICar & { role: UserRole }
 
 const Car = ({ car, photos, role }: Props) => {
 	const [isEdit, setIsEdit] = useState(true)
-	const { mutateAsync } = useRemoveCar()
+
+	const setIsAuth = useAuthStore(state => state.setIsAuth)
+	const setRole = useAuthStore(state => state.setRole)
 	const removeCar = useCarsStore(state => state.removeCar)
+
+	const { mutateAsync } = useRemoveCar()
+	const router = useRouter()
 
 	const handleRemoveCar = async () => {
 		try {
 			await mutateAsync(car.id)
 			removeCar(car.id)
 		} catch (error) {
-			console.log('Произошла ошибка:' + error)
+			if (error.response?.status === 401) {
+				setIsAuth(false)
+				setRole(null)
+				router.push('/login')
+			}
 		}
 	}
 

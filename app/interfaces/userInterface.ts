@@ -3,7 +3,6 @@ export interface IUserData {
 	name: string
 	email: string
 	phone_number: string
-	role: UserRole
 	number_of_warn: number
 }
 
