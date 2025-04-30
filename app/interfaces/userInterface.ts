@@ -4,6 +4,7 @@ export interface IUserData {
 	email: string
 	phone_number: string
 	number_of_warn: number
+	created_at: string
 }
 
 export enum UserRole {
