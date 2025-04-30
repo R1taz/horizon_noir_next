@@ -1,6 +1,5 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { persist } from 'zustand/middleware'
 import { UserRole } from '@/app/interfaces/userInterface'
 
 interface AuthStore {
@@ -13,24 +12,15 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>()(
-	persist(
-		immer(set => ({
-			isAuth: false,
-			isInitialized: false,
-			role: null,
-			setInitialized: initialized =>
-				set(state => {
-					state.isInitialized = initialized
-				}),
-			setIsAuth: isAuth => set(state => ({ ...state, isAuth })),
-			setRole: role => set(state => ({ ...state, role })),
-		})),
-		{
-			name: 'AuthStore',
-			version: 1,
-			onRehydrateStorage: () => state => {
-				state?.setInitialized(true)
-			},
-		}
-	)
+	immer(set => ({
+		isAuth: false,
+		isInitialized: false,
+		role: null,
+		setInitialized: initialized =>
+			set(state => {
+				state.isInitialized = initialized
+			}),
+		setIsAuth: isAuth => set(state => ({ ...state, isAuth })),
+		setRole: role => set(state => ({ ...state, role })),
+	}))
 )
