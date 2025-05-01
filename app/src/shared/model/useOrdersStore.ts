@@ -1,12 +1,14 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { IOrder } from '../types/orders'
 
 interface OrdersStore {
 	statusOrders: 'active' | 'completed' | 'cancelled'
-	orders: any[]
+	orders: IOrder[]
 	setStatusOrders: (status: 'active' | 'completed' | 'cancelled') => void
-	setOrders: (orders: any[]) => void
-	addOrder: (order: any) => void
+	setOrders: (orders: IOrder[]) => void
+	addOrder: (order: IOrder) => void
+	updateOrder: (updateOrder: IOrder) => void
 }
 
 export const useOrdersStore = create<OrdersStore>()(
@@ -24,6 +26,12 @@ export const useOrdersStore = create<OrdersStore>()(
 		addOrder: order =>
 			set(state => {
 				state.orders.push(order)
+			}),
+		updateOrder: updateOrder =>
+			set(state => {
+				state.orders = state.orders.map(order =>
+					order.id === updateOrder.id ? updateOrder : order
+				)
 			}),
 	}))
 )

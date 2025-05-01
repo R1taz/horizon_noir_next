@@ -30,7 +30,6 @@ const AuthProvider = ({ children }: Props) => {
 		}
 
 		if (data && !isInitialized) {
-			console.log('initialized has been worked')
 			setInitialized(true)
 			setAuthData(true, data.role)
 			setUserId(data.userId)
