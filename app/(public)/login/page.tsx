@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 const page = () => {
-	const setRole = useAuthStore(state => state.setRole)
-	const setIsAuth = useAuthStore(state => state.setIsAuth)
+	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setUser = useUserStore(state => state.setUser)
 
 	const { mutateAsync } = useLogin()
@@ -19,8 +18,7 @@ const page = () => {
 	const handleClick = async () => {
 		try {
 			const user = await mutateAsync({ email, password })
-			setRole(user.role)
-			setIsAuth(true)
+			setAuthData(true, user.role)
 			setUser(user)
 			router.replace('/catalog')
 		} catch (error) {
