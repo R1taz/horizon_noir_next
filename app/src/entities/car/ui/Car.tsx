@@ -10,8 +10,7 @@ type Props = Omit<ICar, 'model'> & { role: UserRole }
 const Car = ({ car, photos, role }: Props) => {
 	const [isEdit, setIsEdit] = useState(true)
 
-	const setIsAuth = useAuthStore(state => state.setIsAuth)
-	const setRole = useAuthStore(state => state.setRole)
+	const setAuthData = useAuthStore(state => state.setAuthData)
 	const removeCar = useCarsStore(state => state.removeCar)
 
 	const { mutateAsync } = useRemoveCar()
@@ -23,8 +22,7 @@ const Car = ({ car, photos, role }: Props) => {
 			removeCar(car.id)
 		} catch (error) {
 			if (error.response?.status === 401) {
-				setIsAuth(false)
-				setRole(null)
+				setAuthData(false, 'no role')
 				router.push('/login')
 			}
 		}

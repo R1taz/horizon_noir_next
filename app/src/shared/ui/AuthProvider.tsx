@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '../model/useAuthStore'
 import { ReactNode, useEffect } from 'react'
 import { useAuthMe } from '../hooks/useAuthMe'
+import { useUserStore } from '../model/useUserStore'
 
 interface Props {
 	children: ReactNode
@@ -14,20 +15,28 @@ const AuthProvider = ({ children }: Props) => {
 	const setInitialized = useAuthStore(state => state.setInitialized)
 
 	const isAuth = useAuthStore(state => state.isAuth)
-	const setIsAuth = useAuthStore(state => state.setIsAuth)
+	const setAuthData = useAuthStore(state => state.setAuthData)
+	const setUserId = useUserStore(state => state.setUserId)
 
 	const router = useRouter()
 
-	const { data } = useAuthMe(isInitialized)
+	const { data, isLoading, error } = useAuthMe(isInitialized)
 
 	useEffect(() => {
-		if (data === undefined) return
-		setInitialized(true)
-		if (data === false) router.replace('/login')
-		else setIsAuth(true)
-	}, [isAuth, data, router])
+		if (error && error.response?.status === 401) {
+			setAuthData(false, null)
+			router.replace('/login')
+			return
+		}
 
-	if (!isAuth && !isInitialized) return <h1 className='text-primary'>Loading...</h1>
+		if (data) {
+			setInitialized(true)
+			setAuthData(true, data.role)
+			setUserId(data.userId)
+		}
+	}, [data, error])
+
+	if ((!isAuth && !isInitialized) || isLoading) return <h1 className='text-primary'>Loading...</h1>
 
 	return <>{children}</>
 }
