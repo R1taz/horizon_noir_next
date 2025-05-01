@@ -1,13 +1,18 @@
-import { useState } from 'react'
 import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
 
-const PlaceDelivery = () => {
+interface Props {
+	deliveryType: string
+	deliveryAddress: string
+	deliveryDealershipId: number
+	setDeliveryType: (deliveryType: string) => void
+	setDeliveryAddress: (address: string) => void
+	setDeliveryDealershipId: (id: number) => void
+}
+
+const PlaceDelivery = (props: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
-	const [deliveryType, setDeliveryType] = useState('salon')
-	const [deliveryDealershipId, setDeliveryDealershipId] = useState<number>(carDealerships[0].id)
-	const [deliveryAddress, setDeliveryAddress] = useState('')
 
 	const options = [
 		{ label: 'В автосалон', value: 'salon' },
@@ -17,24 +22,25 @@ const PlaceDelivery = () => {
 	return (
 		<>
 			<RadioGroup
-				value={deliveryType}
+				value={props.deliveryType}
 				title='Выберите место доставки'
 				options={options}
-				onChange={deliveryType => setDeliveryType(deliveryType)}
+				onChange={deliveryType => props.setDeliveryType(deliveryType)}
 			/>
 
-			{deliveryType === 'salon' && (
+			{props.deliveryType === 'salon' && (
 				<CarDealershipList
 					carDealerships={carDealerships}
-					dealershipId={deliveryDealershipId}
-					setDealershipId={setDeliveryDealershipId}
+					dealershipId={props.deliveryDealershipId}
+					setDealershipId={props.setDeliveryDealershipId}
 				/>
 			)}
 
-			{deliveryType === 'custom_address' && (
+			{props.deliveryType === 'custom_address' && (
 				<input
 					type='text'
-					onChange={e => setDeliveryAddress(e.target.value)}
+					value={props.deliveryAddress}
+					onChange={e => props.setDeliveryAddress(e.target.value)}
 					placeholder='Введите адрес доставки'
 					className='outline-none bg-secondaryBg placeholder-[#535353] text-primary block py-2 px-2 rounded-[8px] w-[60%] mx-auto'
 				/>

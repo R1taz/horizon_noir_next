@@ -22,7 +22,7 @@ export const useUserStore = create<UserStore>()(
 		created_at: '',
 		setUser: userData =>
 			set(() => ({
-				id: userData ? userData.id : '',
+				id: userData ? userData.id : null,
 				name: userData ? userData.name : '',
 				email: userData ? userData.email : '',
 				phoneNumber: userData ? userData.phone_number : '',
