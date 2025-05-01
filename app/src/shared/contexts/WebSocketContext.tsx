@@ -23,7 +23,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 		socket.onmessage = event => {
 			try {
 				const data = JSON.parse(event.data)
-				console.log(data)
 				if (data.type === 'NEW_ORDER') {
 					console.log('Получен заказ:', data.payload)
 					addOrder(data.payload)

@@ -4,7 +4,7 @@ type Status = 'active' | 'completed' | 'cancelled'
 
 export const getOrders = async (status: Status, userId?: number) => {
 	try {
-		const queryPath = userId ? `/${userId}` : ``
+		const queryPath = userId ? `/${userId}` : ''
 		const res = await axiosInstance.get(`/api/orders${queryPath}`)
 		if (res.status >= 200 && res.status < 300) return res.data
 

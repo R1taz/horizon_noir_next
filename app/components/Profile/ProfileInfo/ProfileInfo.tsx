@@ -13,26 +13,26 @@ const ProfileInfo = () => {
 	const user = useUserStore()
 	const userRole = useAuthStore(state => state.role)
 	const setAuthData = useAuthStore(state => state.setAuthData)
-	const setUser = useUserStore(state => state.setUser)
 
 	const router = useRouter()
 
-	const { data: profile, isLoading, error } = useGetProfile(user.id)
+	const { data: profile, isLoading, error } = useGetProfile(user.created_at)
 	const { mutateAsync } = useLogout()
 
 	useEffect(() => {
-		if (!profile) return
-		setUser(profile)
-	}, [profile])
-
-	if (isLoading && !user.id) return <h1>Loading...</h1>
-
-	if (error) {
-		if (error.response?.status === 401) {
-			router.push('/login')
-			setAuthData(false, 'no role')
+		if (error) {
+			if (error.response?.status === 401) {
+				router.push('/login')
+				setAuthData(false, 'no role')
+			}
 		}
-	}
+
+		if (profile) {
+			user.setUser(profile)
+		}
+	}, [profile, error])
+
+	if (isLoading && !profile) return <h1>Loading...</h1>
 
 	const handleLogout = async () => {
 		try {
@@ -41,7 +41,6 @@ const ProfileInfo = () => {
 			user.setUser(null)
 			router.replace('/login')
 		} catch (error) {
-			console.log(error)
 			if (error.response?.status === 401) {
 				setAuthData(false, 'no role')
 				router.replace('/login')

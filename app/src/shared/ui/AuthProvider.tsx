@@ -24,12 +24,13 @@ const AuthProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		if (error && error.response?.status === 401) {
-			setAuthData(false, null)
+			setAuthData(false, 'no role')
 			router.replace('/login')
 			return
 		}
 
-		if (data) {
+		if (data && !isInitialized) {
+			console.log('initialized has been worked')
 			setInitialized(true)
 			setAuthData(true, data.role)
 			setUserId(data.userId)

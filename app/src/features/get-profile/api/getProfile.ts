@@ -3,7 +3,7 @@ import { axiosInstance } from '@/app/src/shared/api/axiosInstance'
 export async function getProfile() {
 	try {
 		const res = await axiosInstance.get('/api/users/myProfile')
-		if (res.status !== 200) throw new Error(`HTTP status: ${res.status}`)
+		if (res.status >= 200 && res.status < 300) throw new Error(`HTTP status: ${res.status}`)
 		return res.data
 	} catch (error: any) {
 		if (error.response) {
