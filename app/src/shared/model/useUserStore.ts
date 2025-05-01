@@ -8,7 +8,7 @@ interface UserStore {
 	email: string
 	phoneNumber: string
 	numberOfWarn: number
-	created_at: string
+	created_at: string | null
 	setUserId: (id: number) => void
 	setUser: (userData: IUserData | null) => void
 }
@@ -20,19 +20,19 @@ export const useUserStore = create<UserStore>()(
 		email: '',
 		phoneNumber: '',
 		numberOfWarn: 0,
-		created_at: '',
+		created_at: null,
 		setUserId: id =>
 			set(state => {
 				state.id = id
 			}),
 		setUser: userData =>
-			set(() => ({
-				id: userData ? userData.id : null,
-				name: userData ? userData.name : '',
-				email: userData ? userData.email : '',
-				phoneNumber: userData ? userData.phone_number : '',
-				numberOfWarn: userData ? userData.number_of_warn : 0,
-				created_at: userData ? userData.created_at : '',
-			})),
+			set(state => {
+				state.id = userData ? userData.id : null
+				state.name = userData ? userData.name : ''
+				state.email = userData ? userData.email : ''
+				state.phoneNumber = userData ? userData.phone_number : ''
+				state.numberOfWarn = userData ? userData.number_of_warn : 0
+				state.created_at = userData ? userData.created_at : null
+			}),
 	}))
 )
