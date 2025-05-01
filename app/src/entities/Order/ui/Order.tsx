@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import photoCar from '../../../assets/image.png'
+import photoCar from '../../../../assets/image.png'
 
 interface Props {
 	order: any
