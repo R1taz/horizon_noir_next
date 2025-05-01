@@ -1,11 +1,47 @@
 import Image from 'next/image'
 import photoCar from '../../../../assets/image.png'
+import { useState } from 'react'
+import { useAuthStore, UserRole } from '@/app/src/widgets/cars'
+import { IOrder, OrderStatus } from '@/app/src/shared/types/orders'
+import OrderButton from './OrderButton'
+import Field from './Field'
+import { learnOrderStatus } from '../model/learnOrderStatus'
+import { learnPaymentStatus } from '../model/learnPaymentStatus'
+import { learnPaymentMethod } from '../model/learnPaymentMethod'
+import EditField from './EditField'
+import { learnDeliveryType } from '../model/learnDeliveryType'
+import { approveOrder } from '../model/approveOrder'
+import { useWebSocket } from '@/app/src/shared/contexts/WebSocketContext'
+import { useUserStore } from '@/app/src/shared/model/useUserStore'
+import { rejectOrder } from '../model/rejectOrder'
 
 interface Props {
-	order: any
+	order: IOrder
 }
 
 const Order = ({ order }: Props) => {
+	const userId = useUserStore(state => state.id)
+	const role = useAuthStore(state => state.role)
+	const [isEdit, setIsEdit] = useState(false)
+	const [amount, setAmount] = useState('')
+	const [percentPrepaymentAmount, setPercentPrepaymentAmount] = useState('')
+
+	const socket = useWebSocket()
+
+	const handleApproveOrder = () => {
+		approveOrder({
+			socket: socket!,
+			order_id: order.id,
+			amount: +amount,
+			percent_prepayment_amount: +percentPrepaymentAmount,
+			manager_id: userId!,
+		})
+		setIsEdit(false)
+	}
+	const handleRejectOrder = () => {
+		rejectOrder({ socket: socket!, order_id: order.id, manager_id: userId! })
+	}
+
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
 			<Image src={photoCar} alt='Фотография автомобиля' />
@@ -13,61 +49,66 @@ const Order = ({ order }: Props) => {
 				Aston Martin Valiant
 			</h3>
 			<section className='px-3 flex flex-col gap-3'>
-				<div>
-					<span className='text-secondary'>Тип заявки:</span>
-					<span className='text-primary ml-1'>Заказ</span>
-				</div>
+				<Field title='Тип заявки' info='Заказ' />
 
-				<div>
-					<span className='text-secondary'>Статус сделки:</span>
-					<span className='text-primary ml-1'>{order.order_status}</span>
-				</div>
+				<Field title='Статус сделки' info={learnOrderStatus(order.order_status)!} />
 
-				<div>
-					<span className='text-secondary'>Статус платежа:</span>
-					<span className='text-primary ml-1'>{order.payment_status}</span>
-				</div>
-
-				{order.amount && (
-					<div>
-						<span className='text-secondary'>Общая сумма:</span>
-						<span className='text-primary ml-1'>252.000.000 ₽</span>
-					</div>
+				{order.payment_status && (
+					<Field title='Статус платежа' info={learnPaymentStatus(order.payment_status)!} />
 				)}
 
-				<div>
-					<span className='text-secondary'>Сумма предоплаты:</span>
-					<span className='text-primary ml-1'>126.000.000 ₽</span>
-				</div>
+				{!isEdit && order.amount && <Field title='Общая сумма' info={String(order.amount)} />}
+				{isEdit && (
+					<EditField
+						title='Общая сумма'
+						placeholder='Введите цену'
+						unit='P'
+						value={amount}
+						setValue={value => setAmount(value)}
+					/>
+				)}
 
-				<div>
-					<span className='text-secondary'>Метод оплаты:</span>
-					<span className='text-primary ml-1'>Банковской картой</span>
-				</div>
+				{!isEdit && order.prepayment_amount && (
+					<Field title='Сумма предоплаты' info={String(order.prepayment_amount)} />
+				)}
+				{isEdit && (
+					<EditField
+						title='Сумма предоплаты'
+						placeholder='0'
+						unit='%'
+						value={percentPrepaymentAmount}
+						setValue={value => setPercentPrepaymentAmount(value)}
+					/>
+				)}
 
-				<div>
-					<span className='text-secondary'>Местоположение:</span>
-					<span className='text-primary ml-1'>Неизвестно</span>
-				</div>
+				<Field title='Метод оплаты' info={learnPaymentMethod(order.payment_method)!} />
+				<Field title='Тип доставки' info={learnDeliveryType(order.delivery_type)!} />
 
-				<div>
-					<span className='text-secondary'>Адрес доставки:</span>
-					<span className='text-primary ml-1'>Пресненская наб., 10блокС, Москва</span>
-				</div>
+				{order.car_location && <Field title='Местоположение' info={order.car_location} />}
+				{(order.delivery_address || order.delivery_dealership_id) && (
+					<Field
+						title='Адрес доставки'
+						info={order.delivery_address || String(order.delivery_dealership_id)}
+					/>
+				)}
 
-				<div>
-					<span className='text-secondary'>Дата доставки:</span>
-					<span className='text-primary ml-1'>Отсутствует</span>
-				</div>
+				{order.delivery_date && <Field title='Дата доставки' info={order.delivery_date} />}
 			</section>
 
 			<div className='flex flex-col my-5 gap-3'>
-				<button className='w-[75%]  mx-auto p-[5px] font-bold text-center text-headlines bg-accentBg rounded-[8px]'>
-					Оплатить
-				</button>
-				<button className='w-[75%] mx-auto p-[5px] font-bold text-center text-accent border-2 border-accentBg rounded-[8px]'>
-					Отменить заказ
-				</button>
+				{isEdit && role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+					<OrderButton type='primary' action={handleApproveOrder} title='Одобрить' />
+				)}
+				{role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+					<OrderButton
+						type={!isEdit ? 'primary' : 'secondary'}
+						action={() => setIsEdit(prev => !prev)}
+						title={!isEdit ? 'Редактировать' : 'Отменить редактирование'}
+					/>
+				)}
+				{!isEdit && role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+					<OrderButton type='secondary' action={handleRejectOrder} title='Отклонить' />
+				)}
 			</div>
 		</article>
 	)
