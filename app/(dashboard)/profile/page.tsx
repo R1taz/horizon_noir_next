@@ -2,7 +2,7 @@ import React from 'react'
 import ProfileInfo from '../../components/Profile/ProfileInfo/ProfileInfo'
 import ProfileSettings from '../../components/Profile/ProfileSettings/ProfileSettings'
 import ProfileSecurity from '../../components/Profile/ProfileSecurity/ProfileSecurity'
-import Orders from '../../components/Profile/ProfileOrders/Orders'
+import Orders from '@/app/src/widgets/ProfileOrders/ui/Orders'
 import AuthProvider from '@/app/src/shared/ui/AuthProvider'
 
 const page = () => {
