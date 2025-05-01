@@ -11,6 +11,7 @@ import { ICar } from '@/app/interfaces/carsInterface'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import React from 'react'
+import AuthProvider from '@/app/src/shared/ui/AuthProvider'
 
 const page = () => {
 	const { carId } = useParams()
@@ -27,14 +28,14 @@ const page = () => {
 	if (error) return <h1>Error</h1>
 
 	return (
-		<>
+		<AuthProvider>
 			<BreadCrumbs />
 			<CarInfo car={car} />
 			<CarPhotos photos={car.photos} />
 			<FormReservationCar />
 			<FormOrderCar />
 			<Footer />
-		</>
+		</AuthProvider>
 	)
 }
 

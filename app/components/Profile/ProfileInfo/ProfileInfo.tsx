@@ -12,8 +12,7 @@ import { useEffect } from 'react'
 const ProfileInfo = () => {
 	const user = useUserStore()
 	const userRole = useAuthStore(state => state.role)
-	const setIsAuth = useAuthStore(state => state.setIsAuth)
-	const setRole = useAuthStore(state => state.setRole)
+	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setUser = useUserStore(state => state.setUser)
 
 	const router = useRouter()
@@ -31,23 +30,20 @@ const ProfileInfo = () => {
 	if (error) {
 		if (error.response?.status === 401) {
 			router.push('/login')
-			setIsAuth(false)
-			setRole(null)
+			setAuthData(false, 'no role')
 		}
 	}
 
 	const handleLogout = async () => {
 		try {
 			await mutateAsync()
-			setIsAuth(false)
-			setRole(null)
+			setAuthData(false, 'no role')
 			user.setUser(null)
 			router.replace('/login')
 		} catch (error) {
 			console.log(error)
 			if (error.response?.status === 401) {
-				setIsAuth(false)
-				setRole(null)
+				setAuthData(false, 'no role')
 				router.replace('/login')
 			}
 		}

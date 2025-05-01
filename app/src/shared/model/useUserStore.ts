@@ -9,6 +9,7 @@ interface UserStore {
 	phoneNumber: string
 	numberOfWarn: number
 	created_at: string
+	setUserId: (id: number) => void
 	setUser: (userData: IUserData | null) => void
 }
 
@@ -20,6 +21,10 @@ export const useUserStore = create<UserStore>()(
 		phoneNumber: '',
 		numberOfWarn: 0,
 		created_at: '',
+		setUserId: id =>
+			set(state => {
+				state.id = id
+			}),
 		setUser: userData =>
 			set(() => ({
 				id: userData ? userData.id : null,
