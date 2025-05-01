@@ -1,8 +1,11 @@
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
-import { useState } from 'react'
 
-const PaymentMethodOrder = () => {
-	const [methodPayment, setMethodPayment] = useState('card')
+interface Props {
+	paymentMethod: string
+	setPaymentMethod: (paymentMethod: string) => void
+}
+
+const PaymentMethodOrder = ({ paymentMethod, setPaymentMethod }: Props) => {
 	const options = [
 		{ label: 'Карта', value: 'card' },
 		{ label: 'Наличные', value: 'cash' },
@@ -12,8 +15,8 @@ const PaymentMethodOrder = () => {
 		<RadioGroup
 			title='Выберите способ оплаты'
 			options={options}
-			value={methodPayment}
-			onChange={methodPayment => setMethodPayment(methodPayment)}
+			value={paymentMethod}
+			onChange={paymentMethod => setPaymentMethod(paymentMethod)}
 		/>
 	)
 }

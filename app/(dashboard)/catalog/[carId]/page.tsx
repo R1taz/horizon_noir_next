@@ -3,7 +3,7 @@
 import { getCar } from '@/app/api/cars'
 import CarInfo from '@/app/components/Car/CarInfo'
 import CarPhotos from '@/app/components/Car/CarPhotos/CarPhotos'
-import FormOrderCar from '@/app/components/Car/FormOrderCar/FormOrderCar'
+import FormOrderCar from '@/app/src/widgets/FormOrderCar/ui/FormOrderCar'
 import FormReservationCar from '@/app/components/Car/FormReservationCar/FormReservationCar'
 import BreadCrumbs from '@/app/src/shared/ui/BreadCrumbs'
 import Footer from '@/app/src/shared/ui/Footer'

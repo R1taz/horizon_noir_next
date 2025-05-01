@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Header from './src/shared/ui/Header'
 import ReactQueryProvider from './providers/ReactQueryProvider'
+import { WebSocketProvider } from './src/shared/contexts/WebSocketContext'
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -30,10 +31,12 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primaryBg px-20`}
 			>
-				<ReactQueryProvider>
-					<Header />
-					{children}
-				</ReactQueryProvider>
+				<WebSocketProvider>
+					<ReactQueryProvider>
+						<Header />
+						{children}
+					</ReactQueryProvider>
+				</WebSocketProvider>
 			</body>
 		</html>
 	)

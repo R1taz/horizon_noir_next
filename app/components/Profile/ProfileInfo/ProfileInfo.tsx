@@ -12,7 +12,6 @@ import { useEffect } from 'react'
 const ProfileInfo = () => {
 	const user = useUserStore()
 	const userRole = useAuthStore(state => state.role)
-	const isAuth = useAuthStore(state => state.isAuth)
 	const setIsAuth = useAuthStore(state => state.setIsAuth)
 	const setRole = useAuthStore(state => state.setRole)
 	const setUser = useUserStore(state => state.setUser)

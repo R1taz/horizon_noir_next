@@ -1,7 +1,11 @@
 import Image from 'next/image'
 import photoCar from '../../../assets/image.png'
 
-const Order = () => {
+interface Props {
+	order: any
+}
+
+const Order = ({ order }: Props) => {
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
 			<Image src={photoCar} alt='Фотография автомобиля' />
@@ -16,18 +20,20 @@ const Order = () => {
 
 				<div>
 					<span className='text-secondary'>Статус сделки:</span>
-					<span className='text-primary ml-1'>В процессе</span>
+					<span className='text-primary ml-1'>{order.order_status}</span>
 				</div>
 
 				<div>
 					<span className='text-secondary'>Статус платежа:</span>
-					<span className='text-primary ml-1'>Ожидает предоплаты</span>
+					<span className='text-primary ml-1'>{order.payment_status}</span>
 				</div>
 
-				<div>
-					<span className='text-secondary'>Общая сумма:</span>
-					<span className='text-primary ml-1'>252.000.000 ₽</span>
-				</div>
+				{order.amount && (
+					<div>
+						<span className='text-secondary'>Общая сумма:</span>
+						<span className='text-primary ml-1'>252.000.000 ₽</span>
+					</div>
+				)}
 
 				<div>
 					<span className='text-secondary'>Сумма предоплаты:</span>
