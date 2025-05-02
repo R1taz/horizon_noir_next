@@ -2,7 +2,7 @@ import Image from 'next/image'
 import photoCar from '../../../../assets/image.png'
 import { useState } from 'react'
 import { useAuthStore, UserRole } from '@/app/src/widgets/cars'
-import { IOrder, OrderStatus, PaymentStatus } from '@/app/src/shared/types/orders'
+import { IOrder, OrderStatus, PaymentStatus, RefundStatus } from '@/app/src/shared/types/orders'
 import OrderButton from './OrderButton'
 import Field from './Field'
 import { learnOrderStatus } from '../model/learnOrderStatus'
@@ -16,6 +16,10 @@ import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { rejectOrder } from '../api/rejectOrder'
 import { failOrder } from '../api/failOrder'
 import { makingPayment } from '../api/makingPayment'
+import { cancelOrder } from '../api/cancelOrder'
+import { learnRefundStatus } from '../model/learnRefundStatus'
+import { approveCancelOrder } from '../api/approveCancelOrder'
+import { rejectCancelOrder } from '../api/rejectCancelOrder'
 
 interface Props {
 	order: IOrder
@@ -46,9 +50,12 @@ const Order = ({ order }: Props) => {
 	const handleFailOrder = () => {
 		failOrder({ socket: socket!, order_id: order.id })
 	}
-	const handlePayment = (paymentStatus: PaymentStatus) => {
+	const handlePaymentOrder = (paymentStatus: PaymentStatus) => {
 		makingPayment({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
 	}
+	const handleCancelOrder = () => cancelOrder({ socket: socket!, order_id: order.id })
+	const handleApproveCancelOrder = () => approveCancelOrder({ socket: socket!, order_id: order.id })
+	const handleRejectCancelOrder = () => rejectCancelOrder({ socket: socket!, order_id: order.id })
 
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
@@ -100,6 +107,10 @@ const Order = ({ order }: Props) => {
 					/>
 				)}
 
+				{order.refund_status && (
+					<Field title='Статус возврата платежа' info={learnRefundStatus(order.refund_status)!} />
+				)}
+
 				{order.delivery_date && <Field title='Дата доставки' info={order.delivery_date} />}
 			</section>
 
@@ -129,7 +140,7 @@ const Order = ({ order }: Props) => {
 									order.payment_status === PaymentStatus.AWAITING_PREPAYMENT
 										? PaymentStatus.PREPAYMENT_DONE
 										: PaymentStatus.PAID
-								handlePayment(paymentStatus)
+								handlePaymentOrder(paymentStatus)
 							}}
 						/>
 					)}
@@ -141,6 +152,28 @@ const Order = ({ order }: Props) => {
 						type={role === UserRole.USER ? 'secondary' : 'primary'}
 						action={handleFailOrder}
 					/>
+				)}
+
+				{((role === UserRole.USER && order.payment_status === PaymentStatus.PREPAYMENT_DONE) ||
+					(role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_FINAL) ||
+					(role === UserRole.USER && order.payment_status === PaymentStatus.DEBT)) &&
+					(order.refund_status === null || order.refund_status === RefundStatus.FAILED) && (
+						<OrderButton title='Отменить заказ' type='secondary' action={handleCancelOrder} />
+					)}
+
+				{role === UserRole.ADMIN && order.refund_status === RefundStatus.PENDING && (
+					<>
+						<OrderButton
+							title='Одобрить возврат'
+							type='primary'
+							action={handleApproveCancelOrder}
+						/>
+						<OrderButton
+							title='Отклонить возврат'
+							type='secondary'
+							action={handleRejectCancelOrder}
+						/>
+					</>
 				)}
 			</div>
 		</article>
