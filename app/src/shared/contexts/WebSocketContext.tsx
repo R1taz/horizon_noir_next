@@ -36,10 +36,14 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					data.type === OrderEvent.APPROVE ||
 					data.type === OrderEvent.REJECT ||
 					data.type === OrderEvent.FAIL ||
-					data.type === OrderEvent.PAYMENT
+					data.type === OrderEvent.PAYMENT ||
+					data.type === OrderEvent.CREATE_CANCEL ||
+					data.type === OrderEvent.APPROVE_CANCEL ||
+					data.type === OrderEvent.REJECT_CANCEL
 				) {
 					updateOrder(data.payload)
-					if (data.payload.payment_status === 'forfeit') increaseNumberOfWarn()
+					if (data.type === OrderEvent.FAIL && data.payload.isWarn) increaseNumberOfWarn()
+					if (data.type === OrderEvent.APPROVE_CANCEL && data.payload.isWarn) increaseNumberOfWarn()
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)
