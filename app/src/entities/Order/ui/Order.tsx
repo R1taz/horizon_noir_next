@@ -2,7 +2,7 @@ import Image from 'next/image'
 import photoCar from '../../../../assets/image.png'
 import { useState } from 'react'
 import { useAuthStore, UserRole } from '@/app/src/widgets/cars'
-import { IOrder, OrderStatus } from '@/app/src/shared/types/orders'
+import { IOrder, OrderStatus, PaymentStatus } from '@/app/src/shared/types/orders'
 import OrderButton from './OrderButton'
 import Field from './Field'
 import { learnOrderStatus } from '../model/learnOrderStatus'
@@ -10,10 +10,12 @@ import { learnPaymentStatus } from '../model/learnPaymentStatus'
 import { learnPaymentMethod } from '../model/learnPaymentMethod'
 import EditField from './EditField'
 import { learnDeliveryType } from '../model/learnDeliveryType'
-import { approveOrder } from '../model/approveOrder'
+import { approveOrder } from '../api/approveOrder'
 import { useWebSocket } from '@/app/src/shared/contexts/WebSocketContext'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
-import { rejectOrder } from '../model/rejectOrder'
+import { rejectOrder } from '../api/rejectOrder'
+import { failOrder } from '../api/failOrder'
+import { makingPayment } from '../api/makingPayment'
 
 interface Props {
 	order: IOrder
@@ -40,6 +42,12 @@ const Order = ({ order }: Props) => {
 	}
 	const handleRejectOrder = () => {
 		rejectOrder({ socket: socket!, order_id: order.id, manager_id: userId! })
+	}
+	const handleFailOrder = () => {
+		failOrder({ socket: socket!, order_id: order.id })
+	}
+	const handlePayment = (paymentStatus: PaymentStatus) => {
+		makingPayment({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
 	}
 
 	return (
@@ -108,6 +116,31 @@ const Order = ({ order }: Props) => {
 				)}
 				{!isEdit && role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
 					<OrderButton type='secondary' action={handleRejectOrder} title='Отклонить' />
+				)}
+
+				{role === UserRole.USER &&
+					(order.payment_status === PaymentStatus.AWAITING_PREPAYMENT ||
+						order.payment_status === PaymentStatus.AWAITING_FINAL) && (
+						<OrderButton
+							title='Оплатить'
+							type='primary'
+							action={() => {
+								const paymentStatus =
+									order.payment_status === PaymentStatus.AWAITING_PREPAYMENT
+										? PaymentStatus.PREPAYMENT_DONE
+										: PaymentStatus.PAID
+								handlePayment(paymentStatus)
+							}}
+						/>
+					)}
+
+				{((role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) ||
+					(role === UserRole.ADMIN && order.payment_status === PaymentStatus.DEBT)) && (
+					<OrderButton
+						title={role === UserRole.USER ? 'Отменить заказ' : 'Завершить сделку'}
+						type={role === UserRole.USER ? 'secondary' : 'primary'}
+						action={handleFailOrder}
+					/>
 				)}
 			</div>
 		</article>
