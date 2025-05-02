@@ -2,6 +2,8 @@ export enum OrderEvent {
 	CREATE = 'NEW_ORDER',
 	APPROVE = 'APPROVE_ORDER',
 	REJECT = 'REJECT_ORDER',
+	FAIL = 'FAIL_ORDER',
+	PAYMENT = 'MAKING_PAYMENT',
 }
 
 export interface IOrder {
