@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useOrdersStore } from '../model/useOrdersStore'
 import { OrderEvent } from '../types/orders'
+import { useUserStore } from '../model/useUserStore'
 
 const WebSocketContext = createContext<WebSocket | null>(null)
 
@@ -12,6 +13,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
 	const addOrder = useOrdersStore(state => state.addOrder)
 	const updateOrder = useOrdersStore(state => state.updateOrder)
+	const increaseNumberOfWarn = useUserStore(state => state.increaseNumberOfWarn)
 
 	useEffect(() => {
 		const socket = new WebSocket('ws://localhost:5000')
@@ -30,8 +32,14 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 				if (data.type === OrderEvent.CREATE) {
 					addOrder(data.payload)
 				}
-				if (data.type === OrderEvent.APPROVE || data.type === OrderEvent.REJECT) {
+				if (
+					data.type === OrderEvent.APPROVE ||
+					data.type === OrderEvent.REJECT ||
+					data.type === OrderEvent.FAIL ||
+					data.type === OrderEvent.PAYMENT
+				) {
 					updateOrder(data.payload)
+					if (data.payload.payment_status === 'forfeit') increaseNumberOfWarn()
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)
