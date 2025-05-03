@@ -14,13 +14,12 @@ const AuthProvider = ({ children }: Props) => {
 	const isInitialized = useAuthStore(state => state.isInitialized)
 	const setInitialized = useAuthStore(state => state.setInitialized)
 
-	const isAuth = useAuthStore(state => state.isAuth)
 	const setAuthData = useAuthStore(state => state.setAuthData)
-	const setUserId = useUserStore(state => state.setUserId)
+	const setUser = useUserStore(state => state.setUser)
 
 	const router = useRouter()
 
-	const { data, isLoading, error } = useAuthMe(isInitialized)
+	const { data: user, isLoading, error } = useAuthMe(isInitialized)
 
 	useEffect(() => {
 		if (error && error.response?.status === 401) {
@@ -29,14 +28,14 @@ const AuthProvider = ({ children }: Props) => {
 			return
 		}
 
-		if (data && !isInitialized) {
+		if (user && !isInitialized) {
 			setInitialized(true)
-			setAuthData(true, data.role)
-			setUserId(data.userId)
+			setAuthData(true, user.role)
+			setUser(user)
 		}
-	}, [data, error])
+	}, [user, error])
 
-	if ((!isAuth && !isInitialized) || isLoading) return <h1 className='text-primary'>Loading...</h1>
+	if (isLoading) return <h1 className='text-primary'>Loading...</h1>
 
 	return <>{children}</>
 }
