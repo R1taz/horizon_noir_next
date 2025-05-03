@@ -39,7 +39,10 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					data.type === OrderEvent.PAYMENT ||
 					data.type === OrderEvent.CREATE_CANCEL ||
 					data.type === OrderEvent.APPROVE_CANCEL ||
-					data.type === OrderEvent.REJECT_CANCEL
+					data.type === OrderEvent.REJECT_CANCEL ||
+					data.type === OrderEvent.CREATE_DEBT ||
+					data.type === OrderEvent.COMPLETE_PAYMENT ||
+					data.type === OrderEvent.COMPLETE_REFUND
 				) {
 					updateOrder(data.payload)
 					if (data.type === OrderEvent.FAIL && data.payload.isWarn) increaseNumberOfWarn()

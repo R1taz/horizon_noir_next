@@ -16,10 +16,13 @@ import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { rejectOrder } from '../api/rejectOrder'
 import { failOrder } from '../api/failOrder'
 import { makingPayment } from '../api/makingPayment'
-import { cancelOrder } from '../api/cancelOrder'
+import { createCancelOrder } from '../api/createCancelOrder'
 import { learnRefundStatus } from '../model/learnRefundStatus'
 import { approveCancelOrder } from '../api/approveCancelOrder'
 import { rejectCancelOrder } from '../api/rejectCancelOrder'
+import { createDebt } from '../api/createDebt'
+import { completePayment } from '../api/completePayment'
+import { completeRefund } from '../api/completeRefund'
 
 interface Props {
 	order: IOrder
@@ -29,8 +32,16 @@ const Order = ({ order }: Props) => {
 	const userId = useUserStore(state => state.id)
 	const role = useAuthStore(state => state.role)
 	const [isEdit, setIsEdit] = useState(false)
+
 	const [amount, setAmount] = useState('')
 	const [percentPrepaymentAmount, setPercentPrepaymentAmount] = useState('')
+
+	const [deliveryAddress, setDeliveryAddress] = useState('')
+	const [deliveryDate, setDeliveryDate] = useState('')
+	const [numberParkDay, setNumberParkDay] = useState('')
+	const [paymentParkingDay, setPaymentParkingDay] = useState('')
+	const [startParkingDate, setStartParkingDate] = useState('')
+	const [endParkingDate, setEndParkingDate] = useState('')
 
 	const socket = useWebSocket()
 
@@ -40,7 +51,9 @@ const Order = ({ order }: Props) => {
 			order_id: order.id,
 			amount: +amount,
 			percent_prepayment_amount: +percentPrepaymentAmount,
+			car_location: deliveryAddress,
 			manager_id: userId!,
+			delivery_date: new Date(deliveryDate).toISOString(),
 		})
 		setIsEdit(false)
 	}
@@ -53,9 +66,22 @@ const Order = ({ order }: Props) => {
 	const handlePaymentOrder = (paymentStatus: PaymentStatus) => {
 		makingPayment({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
 	}
-	const handleCancelOrder = () => cancelOrder({ socket: socket!, order_id: order.id })
+	const handleCompletePayment = () => completePayment({ socket: socket!, order_id: order.id })
+	const handleCancelOrder = () => createCancelOrder({ socket: socket!, order_id: order.id })
 	const handleApproveCancelOrder = () => approveCancelOrder({ socket: socket!, order_id: order.id })
 	const handleRejectCancelOrder = () => rejectCancelOrder({ socket: socket!, order_id: order.id })
+	const handleCreateDebt = () => {
+		createDebt({
+			socket: socket!,
+			order_id: order.id,
+			car_location: deliveryAddress,
+			number_parking_day: +numberParkDay,
+			payment_parking_day: +paymentParkingDay,
+			start_parking_date: new Date(startParkingDate).toISOString(),
+			end_parking_date: new Date(endParkingDate).toISOString(),
+		})
+	}
+	const handleCompleteRefund = () => completeRefund({ socket: socket!, order_id: order.id })
 
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
@@ -106,12 +132,85 @@ const Order = ({ order }: Props) => {
 						info={order.delivery_address || String(order.delivery_dealership_id)}
 					/>
 				)}
+				{role === UserRole.ADMIN && order.payment_status === PaymentStatus.AWAITING_FINAL && (
+					<EditField
+						title='Адрес доставки'
+						placeholder='Введите адрес паркинга'
+						unit=''
+						value={deliveryAddress}
+						setValue={setDeliveryAddress}
+					/>
+				)}
+
+				{!isEdit && order.delivery_date && (
+					<Field title='Дата доставки' info={order.delivery_date} />
+				)}
+				{role === UserRole.ADMIN && isEdit && (
+					<EditField
+						title='Дата доставки'
+						placeholder='01.01.2025 14:00'
+						unit=''
+						type='datetime-local'
+						value={deliveryDate}
+						setValue={value => setDeliveryDate(value)}
+					/>
+				)}
 
 				{order.refund_status && (
 					<Field title='Статус возврата платежа' info={learnRefundStatus(order.refund_status)!} />
 				)}
+				{order.refund_amount && (
+					<Field title='Сумма возврата платежа' info={String(order.refund_amount)} />
+				)}
+				{order.refund_message && <Field title='Причина возврата' info={order.refund_message} />}
 
-				{order.delivery_date && <Field title='Дата доставки' info={order.delivery_date} />}
+				{order.payment_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+					<Field title='Сумма за день паркинга' info={String(order.payment_parking_day)} />
+				)}
+				{order.number_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+					<Field title='Количество дней на паркинге' info={String(order.number_parking_day)} />
+				)}
+				{order.start_parking_date && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+					<Field title='Начало стоянки на паркинге' info={String(order.start_parking_date)} />
+				)}
+				{order.end_parking_date && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+					<Field title='Конец стоянки на паркинге' info={String(order.end_parking_date)} />
+				)}
+
+				{role === UserRole.ADMIN && order.payment_status === PaymentStatus.AWAITING_FINAL && (
+					<>
+						<EditField
+							title='Сумма за день паркинга'
+							placeholder='0'
+							unit='P'
+							value={paymentParkingDay}
+							setValue={setPaymentParkingDay}
+						/>
+						<EditField
+							title='Количество дней на паркинге'
+							placeholder='3'
+							unit='д.'
+							value={numberParkDay}
+							setValue={setNumberParkDay}
+						/>
+						<EditField
+							title='Начало стоянки на паркинге'
+							placeholder='01.01.2025 14:00'
+							unit=''
+							type='datetime-local'
+							value={startParkingDate}
+							setValue={setStartParkingDate}
+						/>
+						<EditField
+							title='Конец стоянки на паркинге'
+							placeholder='03.01.2025 14:00'
+							unit='P'
+							type='datetime-local'
+							value={endParkingDate}
+							setValue={setEndParkingDate}
+						/>
+					</>
+				)}
 			</section>
 
 			<div className='flex flex-col my-5 gap-3'>
@@ -131,19 +230,24 @@ const Order = ({ order }: Props) => {
 
 				{role === UserRole.USER &&
 					(order.payment_status === PaymentStatus.AWAITING_PREPAYMENT ||
-						order.payment_status === PaymentStatus.AWAITING_FINAL) && (
+						order.payment_status === PaymentStatus.AWAITING_FINAL ||
+						order.payment_status === PaymentStatus.DEBT) &&
+					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
 						<OrderButton
 							title='Оплатить'
 							type='primary'
 							action={() => {
-								const paymentStatus =
-									order.payment_status === PaymentStatus.AWAITING_PREPAYMENT
-										? PaymentStatus.PREPAYMENT_DONE
-										: PaymentStatus.PAID
-								handlePaymentOrder(paymentStatus)
+								if (order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) {
+									handlePaymentOrder(PaymentStatus.PREPAYMENT_DONE)
+								} else {
+									handleCompletePayment()
+								}
 							}}
 						/>
 					)}
+
+				{/* Мы либо на бэке делаем всю логику по отсчёту дней и срыву сделки и здесь кнопка не нужна
+					либо мы делаем так, что только если текущая дата равна дате окончания паркинга, то тогда кнопка завершения сделки видна */}
 
 				{((role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) ||
 					(role === UserRole.ADMIN && order.payment_status === PaymentStatus.DEBT)) && (
@@ -161,6 +265,12 @@ const Order = ({ order }: Props) => {
 						<OrderButton title='Отменить заказ' type='secondary' action={handleCancelOrder} />
 					)}
 
+				{role === UserRole.ADMIN &&
+					order.payment_status === PaymentStatus.AWAITING_FINAL &&
+					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
+						<OrderButton title='Создать задолженность' type='primary' action={handleCreateDebt} />
+					)}
+
 				{role === UserRole.ADMIN && order.refund_status === RefundStatus.PENDING && (
 					<>
 						<OrderButton
@@ -174,6 +284,10 @@ const Order = ({ order }: Props) => {
 							action={handleRejectCancelOrder}
 						/>
 					</>
+				)}
+
+				{role === UserRole.ADMIN && order.refund_status === RefundStatus.IN_PROGRESS && (
+					<OrderButton title='Совершить возврат' type='primary' action={handleCompleteRefund} />
 				)}
 			</div>
 		</article>

@@ -5,10 +5,11 @@ interface Props {
 	placeholder: string
 	unit: string
 	value: string
+	type?: string
 	setValue: (value: string) => void
 }
 
-function EditField({ title, placeholder, unit, value, setValue }: Props) {
+function EditField({ title, type = 'text', placeholder, unit, value, setValue }: Props) {
 	const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
 		setValue(e.currentTarget.value)
 	}
@@ -17,6 +18,7 @@ function EditField({ title, placeholder, unit, value, setValue }: Props) {
 		<div>
 			<span className='text-secondary'>{title}:</span>
 			<input
+				type={type}
 				placeholder={placeholder}
 				value={value}
 				onChange={handleChange}
