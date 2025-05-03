@@ -21,6 +21,8 @@ import { learnRefundStatus } from '../model/learnRefundStatus'
 import { approveCancelOrder } from '../api/approveCancelOrder'
 import { rejectCancelOrder } from '../api/rejectCancelOrder'
 import { createDebt } from '../api/createDebt'
+import { completePayment } from '../api/completePayment'
+import { completeRefund } from '../api/completeRefund'
 
 interface Props {
 	order: IOrder
@@ -64,6 +66,7 @@ const Order = ({ order }: Props) => {
 	const handlePaymentOrder = (paymentStatus: PaymentStatus) => {
 		makingPayment({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
 	}
+	const handleCompletePayment = () => completePayment({ socket: socket!, order_id: order.id })
 	const handleCancelOrder = () => createCancelOrder({ socket: socket!, order_id: order.id })
 	const handleApproveCancelOrder = () => approveCancelOrder({ socket: socket!, order_id: order.id })
 	const handleRejectCancelOrder = () => rejectCancelOrder({ socket: socket!, order_id: order.id })
@@ -78,6 +81,7 @@ const Order = ({ order }: Props) => {
 			end_parking_date: new Date(endParkingDate).toISOString(),
 		})
 	}
+	const handleCompleteRefund = () => completeRefund({ socket: socket!, order_id: order.id })
 
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
@@ -152,15 +156,13 @@ const Order = ({ order }: Props) => {
 					/>
 				)}
 
-				{order.refund_status && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+				{order.refund_status && (
 					<Field title='Статус возврата платежа' info={learnRefundStatus(order.refund_status)!} />
 				)}
-				{order.refund_amount && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+				{order.refund_amount && (
 					<Field title='Сумма возврата платежа' info={String(order.refund_amount)} />
 				)}
-				{order.refund_message && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
-					<Field title='Причина возврата' info={order.refund_message} />
-				)}
+				{order.refund_message && <Field title='Причина возврата' info={order.refund_message} />}
 
 				{order.payment_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
 					<Field title='Сумма за день паркинга' info={String(order.payment_parking_day)} />
@@ -226,22 +228,20 @@ const Order = ({ order }: Props) => {
 					<OrderButton type='secondary' action={handleRejectOrder} title='Отклонить' />
 				)}
 
-				{/* ЗДЕСЬ ПРИ ДЕБТ БУДЕТ ОПЛАТА УЖЕ ОКОНЧАТЕЛЬНАЯ, ТАКЖЕ КАК И ПРИ ОЖИДАНИИ ДОПЛАТЫ
-				ТАК ЧТО НАДО ФУНКЦИЮ ДОБАВИТЬ И КОД ИСПРАВИТЬ */}
-
 				{role === UserRole.USER &&
 					(order.payment_status === PaymentStatus.AWAITING_PREPAYMENT ||
 						order.payment_status === PaymentStatus.AWAITING_FINAL ||
-						order.payment_status === PaymentStatus.DEBT) && (
+						order.payment_status === PaymentStatus.DEBT) &&
+					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
 						<OrderButton
 							title='Оплатить'
 							type='primary'
 							action={() => {
-								const paymentStatus =
-									order.payment_status === PaymentStatus.AWAITING_PREPAYMENT
-										? PaymentStatus.PREPAYMENT_DONE
-										: PaymentStatus.PAID
-								handlePaymentOrder(paymentStatus)
+								if (order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) {
+									handlePaymentOrder(PaymentStatus.PREPAYMENT_DONE)
+								} else {
+									handleCompletePayment()
+								}
 							}}
 						/>
 					)}
@@ -265,9 +265,11 @@ const Order = ({ order }: Props) => {
 						<OrderButton title='Отменить заказ' type='secondary' action={handleCancelOrder} />
 					)}
 
-				{role === UserRole.ADMIN && order.payment_status === PaymentStatus.AWAITING_FINAL && (
-					<OrderButton title='Создать задолженность' type='primary' action={handleCreateDebt} />
-				)}
+				{role === UserRole.ADMIN &&
+					order.payment_status === PaymentStatus.AWAITING_FINAL &&
+					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
+						<OrderButton title='Создать задолженность' type='primary' action={handleCreateDebt} />
+					)}
 
 				{role === UserRole.ADMIN && order.refund_status === RefundStatus.PENDING && (
 					<>
@@ -282,6 +284,10 @@ const Order = ({ order }: Props) => {
 							action={handleRejectCancelOrder}
 						/>
 					</>
+				)}
+
+				{role === UserRole.ADMIN && order.refund_status === RefundStatus.IN_PROGRESS && (
+					<OrderButton title='Совершить возврат' type='primary' action={handleCompleteRefund} />
 				)}
 			</div>
 		</article>
