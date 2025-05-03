@@ -3,15 +3,18 @@ import { OrderEvent } from '@/app/src/shared/types/orders'
 interface Params {
 	socket: WebSocket
 	order_id: number
-	refund_message?: string
+	car_location: string
+	payment_parking_day: number
+	number_parking_day: number
+	start_parking_date: string
+	end_parking_date: string
 }
 
-export function cancelOrder({ socket, order_id, refund_message }: Params) {
+export function createDebt({ socket, ...debtData }: Params) {
 	const order = {
-		type: OrderEvent.CREATE_CANCEL,
+		type: OrderEvent.CREATE_DEBT,
 		payload: {
-			order_id,
-			...(refund_message ? { refund_message } : {}),
+			...debtData,
 		},
 	}
 
