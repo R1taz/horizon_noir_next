@@ -6,8 +6,6 @@ import { useAuthStore } from '@/app/src/widgets/cars'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useLogout } from '@/app/src/features/auth/model/useLogout'
 import { useRouter } from 'next/navigation'
-import { useGetProfile } from '@/app/src/features/get-profile/model/useGetProfile'
-import { useEffect } from 'react'
 
 const ProfileInfo = () => {
 	const user = useUserStore()
@@ -16,23 +14,7 @@ const ProfileInfo = () => {
 
 	const router = useRouter()
 
-	const { data: profile, isLoading, error } = useGetProfile(user.created_at)
 	const { mutateAsync } = useLogout()
-
-	useEffect(() => {
-		if (error) {
-			if (error.response?.status === 401) {
-				router.push('/login')
-				setAuthData(false, 'no role')
-			}
-		}
-
-		if (profile) {
-			user.setUser(profile)
-		}
-	}, [profile, error])
-
-	if (isLoading && !profile) return <h1>Loading...</h1>
 
 	const handleLogout = async () => {
 		try {
