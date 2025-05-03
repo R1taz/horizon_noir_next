@@ -6,7 +6,9 @@ interface Params {
 	amount: number
 	percent_prepayment_amount: number
 	manager_id: number
+	car_location: string
 	payment_method?: PaymentStatus
+	delivery_date?: string
 	delivery_type?: DeliveryType
 	delivery_address?: string
 	delivery_dealership_id?: number
@@ -25,6 +27,7 @@ export const approveOrder = (params: Params) => {
 			amount: params.amount,
 			percent_prepayment_amount: params.percent_prepayment_amount,
 			manager_id: params.manager_id,
+			delivery_date: params.delivery_date,
 			...(params.payment_method ? { payment_method: params.payment_method } : {}),
 			...(params.delivery_type ? { delivery_type: params.delivery_type } : {}),
 			...(params.delivery_address ? { delivery_address: params.delivery_address } : {}),
