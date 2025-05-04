@@ -49,11 +49,13 @@ const Order = ({ order }: Props) => {
 			order_id: order.id,
 			amount: +amount,
 			percent_prepayment_amount: +percentPrepaymentAmount,
-			car_location: deliveryAddress,
 			manager_id: userId!,
 			delivery_date: new Date(deliveryDate).toISOString(),
 		})
 		setIsEdit(false)
+		setAmount('')
+		setPercentPrepaymentAmount('')
+		setDeliveryDate('')
 	}
 	const handleRejectOrder = () => {
 		rejectOrder({ socket: socket!, order_id: order.id, manager_id: userId! })
@@ -78,6 +80,11 @@ const Order = ({ order }: Props) => {
 			start_parking_date: new Date(startParkingDate).toISOString(),
 			end_parking_date: new Date(endParkingDate).toISOString(),
 		})
+		setDeliveryAddress('')
+		setNumberParkDay('')
+		setPaymentParkingDay('')
+		setStartParkingDate('')
+		setEndParkingDate('')
 	}
 	const handleCompleteRefund = () => completeRefund({ socket: socket!, order_id: order.id })
 
