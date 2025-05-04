@@ -92,11 +92,7 @@ const Order = ({ order }: Props) => {
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
 			<img
 				src={
-					order.main_photo_url
-						? process.env.NEXT_PUBLIC_BASE_BACKEND_URL +
-						  '/' +
-						  order.main_photo_url.replace(/\\/g, '/')
-						: undefined
+					process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + order.main_photo_url.replace(/\\/g, '/')
 				}
 				alt='Фотография автомобиля'
 			/>

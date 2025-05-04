@@ -30,7 +30,9 @@ export const useOrdersStore = create<OrdersStore>()(
 		updateOrder: updateOrder =>
 			set(state => {
 				state.orders = state.orders.map(order =>
-					order.id === updateOrder.id ? updateOrder : order
+					order.id === updateOrder.id
+						? { ...updateOrder, main_photo_url: order.main_photo_url }
+						: order
 				)
 			}),
 	}))
