@@ -1,5 +1,3 @@
-import Image from 'next/image'
-import photoCar from '../../../../assets/image.png'
 import { useState } from 'react'
 import { useAuthStore, UserRole } from '@/app/src/widgets/cars'
 import { IOrder, OrderStatus, PaymentStatus, RefundStatus } from '@/app/src/shared/types/orders'
@@ -85,9 +83,19 @@ const Order = ({ order }: Props) => {
 
 	return (
 		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
-			<Image src={photoCar} alt='Фотография автомобиля' />
+			<img
+				src={
+					order.main_photo_url
+						? process.env.NEXT_PUBLIC_BASE_BACKEND_URL +
+						  '/' +
+						  order.main_photo_url.replace(/\\/g, '/')
+						: undefined
+				}
+				alt='Фотография автомобиля'
+			/>
+
 			<h3 className='text-center text-headlines font-medium text-xl mt-3 mb-2'>
-				Aston Martin Valiant
+				{order.brand_name} {order.model_name}
 			</h3>
 			<section className='px-3 flex flex-col gap-3'>
 				<Field title='Тип заявки' info='Заказ' />

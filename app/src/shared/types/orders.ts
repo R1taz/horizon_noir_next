@@ -15,6 +15,9 @@ export enum OrderEvent {
 
 export interface IOrder {
 	id: number
+	brand_name: string
+	model_name: string
+	main_photo_url: string
 	user_id: number
 	car_id?: number
 	model_id?: number
