@@ -21,6 +21,8 @@ import { rejectCancelOrder } from '../api/rejectCancelOrder'
 import { createDebt } from '../api/createDebt'
 import { completePayment } from '../api/completePayment'
 import { completeRefund } from '../api/completeRefund'
+import { formatDateTime } from '@/app/src/shared/lib/format/formatDateTime'
+import { formatPrice } from '@/app/src/shared/lib/format/formatPrice'
 
 interface Props {
 	order: IOrder
@@ -109,22 +111,24 @@ const Order = ({ order }: Props) => {
 					<Field title='Статус платежа' info={learnPaymentStatus(order.payment_status)!} />
 				)}
 
-				{!isEdit && order.amount && <Field title='Общая сумма' info={String(order.amount)} />}
+				{!isEdit && order.amount && <Field title='Общая сумма' info={formatPrice(+order.amount)} />}
 				{isEdit && (
 					<EditField
+						width={120}
 						title='Общая сумма'
 						placeholder='Введите цену'
-						unit='P'
+						unit='₽'
 						value={amount}
 						setValue={value => setAmount(value)}
 					/>
 				)}
 
 				{!isEdit && order.prepayment_amount && (
-					<Field title='Сумма предоплаты' info={String(order.prepayment_amount)} />
+					<Field title='Сумма предоплаты' info={formatPrice(+order.prepayment_amount)} />
 				)}
 				{isEdit && (
 					<EditField
+						width={30}
 						title='Сумма предоплаты'
 						placeholder='0'
 						unit='%'
@@ -137,14 +141,15 @@ const Order = ({ order }: Props) => {
 				<Field title='Тип доставки' info={learnDeliveryType(order.delivery_type)!} />
 
 				{order.car_location && <Field title='Местоположение' info={order.car_location} />}
-				{(order.delivery_address || order.delivery_dealership_id) && (
+				{(order.delivery_address || order.dealership_address) && (
 					<Field
 						title='Адрес доставки'
-						info={order.delivery_address || String(order.delivery_dealership_id)}
+						info={order.delivery_address || order.dealership_address!}
 					/>
 				)}
 				{role === UserRole.ADMIN && order.payment_status === PaymentStatus.AWAITING_FINAL && (
 					<EditField
+						width={240}
 						title='Адрес доставки'
 						placeholder='Введите адрес паркинга'
 						unit=''
@@ -154,7 +159,7 @@ const Order = ({ order }: Props) => {
 				)}
 
 				{!isEdit && order.delivery_date && (
-					<Field title='Дата доставки' info={order.delivery_date} />
+					<Field title='Дата доставки' info={formatDateTime(order.delivery_date)} />
 				)}
 				{role === UserRole.ADMIN && isEdit && (
 					<EditField
@@ -171,33 +176,39 @@ const Order = ({ order }: Props) => {
 					<Field title='Статус возврата платежа' info={learnRefundStatus(order.refund_status)!} />
 				)}
 				{order.refund_amount && (
-					<Field title='Сумма возврата платежа' info={String(order.refund_amount)} />
+					<Field title='Сумма возврата платежа' info={formatPrice(+order.refund_amount)} />
 				)}
 				{order.refund_message && <Field title='Причина возврата' info={order.refund_message} />}
 
 				{order.payment_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
 					<Field title='Сумма за день паркинга' info={String(order.payment_parking_day)} />
 				)}
-				{order.number_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
-					<Field title='Количество дней на паркинге' info={String(order.number_parking_day)} />
-				)}
+				{order.number_parking_day !== null &&
+					order.payment_status !== PaymentStatus.AWAITING_FINAL && (
+						<Field title='Количество дней на паркинге' info={String(order.number_parking_day)} />
+					)}
 				{order.start_parking_date && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
-					<Field title='Начало стоянки на паркинге' info={String(order.start_parking_date)} />
+					<Field
+						title='Начало стоянки на паркинге'
+						info={formatDateTime(order.start_parking_date)}
+					/>
 				)}
 				{order.end_parking_date && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
-					<Field title='Конец стоянки на паркинге' info={String(order.end_parking_date)} />
+					<Field title='Конец стоянки на паркинге' info={formatDateTime(order.end_parking_date)} />
 				)}
 
 				{role === UserRole.ADMIN && order.payment_status === PaymentStatus.AWAITING_FINAL && (
 					<>
 						<EditField
+							width={60}
 							title='Сумма за день паркинга'
 							placeholder='0'
-							unit='P'
+							unit='₽'
 							value={paymentParkingDay}
 							setValue={setPaymentParkingDay}
 						/>
 						<EditField
+							width={30}
 							title='Количество дней на паркинге'
 							placeholder='3'
 							unit='д.'
@@ -215,7 +226,7 @@ const Order = ({ order }: Props) => {
 						<EditField
 							title='Конец стоянки на паркинге'
 							placeholder='03.01.2025 14:00'
-							unit='P'
+							unit=''
 							type='datetime-local'
 							value={endParkingDate}
 							setValue={setEndParkingDate}

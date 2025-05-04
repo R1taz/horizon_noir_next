@@ -1,4 +1,7 @@
 import { ICar } from '@/app/interfaces/carsInterface'
+import { bodyTypeToRu } from '@/app/src/shared/lib/format/bodyTypeToRu'
+import { driveTypeToRu } from '@/app/src/shared/lib/format/driveTypeToRu'
+import { formatPrice } from '@/app/src/shared/lib/format/formatPrice'
 
 interface Props {
 	car: ICar
@@ -32,13 +35,15 @@ const CarInfo = ({ car }: Props) => {
 					<span className='text-secondary text-xl'>Разгон до сотни: </span>
 					<span className='text-secondary text-xl'>Трансмиссия: {car.model.transmission}</span>
 					<span className='text-secondary text-xl'>Вес: </span>
-					<span className='text-secondary text-xl'>Кузов: {car.model.body_type}</span>
-					<span className='text-secondary text-xl'>Привод: {car.model.drive_type}</span>
+					<span className='text-secondary text-xl'>Кузов: {bodyTypeToRu[car.model.body_type]}</span>
+					<span className='text-secondary text-xl'>
+						Привод: {driveTypeToRu[car.model.drive_type]}
+					</span>
 					<span className='text-secondary text-xl'>Цвет: </span>
 				</div>
 			</div>
 			<div className='w-full rounded-[8px] mt-5 text-2xl font-bold text-center text-accent bg-quaternaryBg py-3 px-1'>
-				{car.car.price} ₽
+				{formatPrice(+car.car.price)}
 			</div>
 		</article>
 	)
