@@ -32,6 +32,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 				if (data.type === OrderEvent.CREATE) {
 					addOrder(data.payload)
 				}
+
 				if (
 					data.type === OrderEvent.APPROVE ||
 					data.type === OrderEvent.REJECT ||
@@ -42,11 +43,18 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					data.type === OrderEvent.REJECT_CANCEL ||
 					data.type === OrderEvent.CREATE_DEBT ||
 					data.type === OrderEvent.COMPLETE_PAYMENT ||
-					data.type === OrderEvent.COMPLETE_REFUND
+					data.type === OrderEvent.COMPLETE_REFUND ||
+					data.type === OrderEvent.ADD_DAY_FEE
 				) {
-					updateOrder(data.payload)
-					if (data.type === OrderEvent.FAIL && data.payload.isWarn) increaseNumberOfWarn()
-					if (data.type === OrderEvent.APPROVE_CANCEL && data.payload.isWarn) increaseNumberOfWarn()
+					if (data.type === OrderEvent.FAIL) {
+						updateOrder(data.payload.order)
+						if (data.payload.isWarn) increaseNumberOfWarn()
+					} else if (data.type === OrderEvent.APPROVE_CANCEL) {
+						updateOrder(data.payload.order)
+						if (data.payload.isWarn) increaseNumberOfWarn()
+					} else {
+						updateOrder(data.payload)
+					}
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)
