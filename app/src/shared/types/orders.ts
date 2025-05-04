@@ -10,6 +10,7 @@ export enum OrderEvent {
 	APPROVE_CANCEL = 'APPROVE_CANCEL_ORDER',
 	REJECT_CANCEL = 'REJECT_CANCEL_ORDER',
 	CREATE_DEBT = 'CREATE_DEBT',
+	ADD_DAY_FEE = 'ADD_DAY_FEE',
 }
 
 export interface IOrder {
