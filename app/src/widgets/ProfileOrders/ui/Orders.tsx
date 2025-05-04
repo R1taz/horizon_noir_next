@@ -38,7 +38,7 @@ const Orders = () => {
 		if (dataOrders) setOrders(dataOrders)
 	}, [dataOrders, error])
 
-	if (isLoading && !dataOrders) return <h1 className='text-primary'>Loading...</h1>
+	if (isLoading) return <h1 className='text-primary'>Loading...</h1>
 
 	return (
 		<article className='bg-quaternaryBg rounded-[8px] px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>
