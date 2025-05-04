@@ -6,7 +6,6 @@ interface Params {
 	amount: number
 	percent_prepayment_amount: number
 	manager_id: number
-	car_location: string
 	payment_method?: PaymentStatus
 	delivery_date?: string
 	delivery_type?: DeliveryType
