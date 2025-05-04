@@ -11,7 +11,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 	const socketRef = useRef<WebSocket | null>(null)
 	const [socketReady, setSocketReady] = useState(false)
 
-	const addOrder = useOrdersStore(state => state.addOrder)
 	const updateOrder = useOrdersStore(state => state.updateOrder)
 	const increaseNumberOfWarn = useUserStore(state => state.increaseNumberOfWarn)
 
@@ -28,10 +27,6 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 			try {
 				const data = JSON.parse(event.data)
 				console.log('Получен заказ:', data.payload)
-
-				if (data.type === OrderEvent.CREATE) {
-					addOrder(data.payload)
-				}
 
 				if (
 					data.type === OrderEvent.APPROVE ||

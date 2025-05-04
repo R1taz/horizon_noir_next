@@ -15,7 +15,7 @@ const Cars = () => {
 		if (data) setCars(data)
 	}, [data])
 
-	if (isLoading && !data) return <h1>Loading cars...</h1>
+	if (isLoading) return <h1>Loading cars...</h1>
 	if (error) return <h1>Произошла ошибка</h1>
 
 	return (

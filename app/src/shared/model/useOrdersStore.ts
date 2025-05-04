@@ -7,7 +7,6 @@ interface OrdersStore {
 	orders: IOrder[]
 	setStatusOrders: (status: 'active' | 'completed' | 'cancelled') => void
 	setOrders: (orders: IOrder[]) => void
-	addOrder: (order: IOrder) => void
 	updateOrder: (updateOrder: IOrder) => void
 }
 
@@ -22,10 +21,6 @@ export const useOrdersStore = create<OrdersStore>()(
 		setOrders: orders =>
 			set(state => {
 				state.orders = orders
-			}),
-		addOrder: order =>
-			set(state => {
-				state.orders.push(order)
 			}),
 		updateOrder: updateOrder =>
 			set(state => {
