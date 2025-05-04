@@ -6,25 +6,37 @@ interface Props {
 	unit: string
 	value: string
 	type?: string
+	width?: number
 	setValue: (value: string) => void
 }
 
-function EditField({ title, type = 'text', placeholder, unit, value, setValue }: Props) {
+function EditField({
+	width = 150,
+	title,
+	type = 'text',
+	placeholder,
+	unit,
+	value,
+	setValue,
+}: Props) {
 	const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
 		setValue(e.currentTarget.value)
 	}
 
 	return (
-		<div>
+		<div className='flex items-center'>
 			<span className='text-secondary'>{title}:</span>
-			<input
-				type={type}
-				placeholder={placeholder}
-				value={value}
-				onChange={handleChange}
-				className='ml-1 py-[0.5px] px-2 rounded-[8px] bg-tertiaryBg text-center text-primary placeholder-secondary'
-			/>
-			<span>{unit}</span>
+			<div className='px-1 ml-2 py-[0.5px] bg-tertiaryBg rounded-[8px]'>
+				<input
+					type={type}
+					placeholder={placeholder}
+					value={value}
+					onChange={handleChange}
+					className='rounded-[8px] bg-tertiaryBg text-primary text-center placeholder-secondary'
+					style={{ width }}
+				/>
+				{unit !== '' && <span className='px-1 text-secondary'>{unit}</span>}
+			</div>
 		</div>
 	)
 }

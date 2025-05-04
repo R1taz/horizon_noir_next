@@ -33,6 +33,7 @@ export interface IOrder {
 	delivery_type: DeliveryType
 	delivery_address?: string
 	delivery_dealership_id?: number
+	dealership_address?: string
 	car_location?: string
 	payment_status?: PaymentStatus
 	order_status: OrderStatus

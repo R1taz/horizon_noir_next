@@ -6,6 +6,9 @@ import { useAuthStore } from '@/app/src/widgets/cars'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useLogout } from '@/app/src/features/auth/model/useLogout'
 import { useRouter } from 'next/navigation'
+import { formateDate } from '@/app/src/shared/lib/format/formatDate'
+import { formatPhoneNumber } from '@/app/src/shared/lib/format/formatPhoneNumber'
+import { roleTypeToRu } from '@/app/src/shared/lib/format/roleTypeToRu'
 
 const ProfileInfo = () => {
 	const user = useUserStore()
@@ -38,12 +41,12 @@ const ProfileInfo = () => {
 			<section className='px-5'>
 				<div className='py-5'>
 					<h2 className='text-2xl font-medium text-primary'>Мой профиль</h2>
-					<p className='py-2 text-secondary'>Зарегистрирован {user.created_at}</p>
+					<p className='py-2 text-secondary'>Зарегистрирован {formateDate(user.created_at!)}</p>
 				</div>
 
 				<div className='flex justify-between py-4 border-b-[2px] border-b-tertiaryBg'>
 					<span className='text-primary text-xl'>{user.name}</span>
-					<span className='text-primary text-xl'>{user.phoneNumber}</span>
+					<span className='text-primary text-xl'>{formatPhoneNumber(user.phoneNumber)}</span>
 				</div>
 
 				<div className='py-4 border-b border-b-[2px] border-b-tertiaryBg'>
@@ -51,7 +54,7 @@ const ProfileInfo = () => {
 				</div>
 
 				<div className='py-4 border-b border-b-[2px] border-b-tertiaryBg'>
-					<span className='text-primary text-xl'>{userRole}</span>
+					<span className='text-primary text-xl'>{roleTypeToRu[userRole!]}</span>
 				</div>
 			</section>
 
