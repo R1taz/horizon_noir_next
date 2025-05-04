@@ -246,16 +246,8 @@ const Order = ({ order }: Props) => {
 						/>
 					)}
 
-				{/* Мы либо на бэке делаем всю логику по отсчёту дней и срыву сделки и здесь кнопка не нужна
-					либо мы делаем так, что только если текущая дата равна дате окончания паркинга, то тогда кнопка завершения сделки видна */}
-
-				{((role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) ||
-					(role === UserRole.ADMIN && order.payment_status === PaymentStatus.DEBT)) && (
-					<OrderButton
-						title={role === UserRole.USER ? 'Отменить заказ' : 'Завершить сделку'}
-						type={role === UserRole.USER ? 'secondary' : 'primary'}
-						action={handleFailOrder}
-					/>
+				{role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_PREPAYMENT && (
+					<OrderButton title='Отменить заказ' type='secondary' action={handleFailOrder} />
 				)}
 
 				{((role === UserRole.USER && order.payment_status === PaymentStatus.PREPAYMENT_DONE) ||
