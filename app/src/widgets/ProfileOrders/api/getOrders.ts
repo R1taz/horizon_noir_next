@@ -1,11 +1,19 @@
 import { axiosInstance } from '@/app/src/shared/api/axiosInstance'
+import { OrdersStatus } from '@/app/src/shared/types/orders'
 
-type Status = 'active' | 'completed' | 'cancelled'
-
-export const getOrders = async (status: Status, userId?: number) => {
+export const getOrders = async (
+	status: OrdersStatus,
+	page: number,
+	pageSize: number,
+	userId?: number
+) => {
 	try {
-		const queryPath = userId ? `/${userId}` : ''
-		const res = await axiosInstance.get(`/api/orders${queryPath}`)
+		const dynamicPath = userId ? `/${userId}` : ''
+		const queryPath = status ? `status=${status}` : 'status=active'
+
+		const res = await axiosInstance.get(
+			`/api/orders${dynamicPath}?${queryPath}&page=${page}&limit${pageSize}`
+		)
 		if (res.status >= 200 && res.status < 300) return res.data
 
 		throw new Error(`HTTP status: ${res.status}`)
