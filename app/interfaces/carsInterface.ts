@@ -1,6 +1,19 @@
+export type CarBrand =
+	| 'Aston Martin'
+	| 'Bentley'
+	| 'Bugatti'
+	| 'Ferrari'
+	| 'Koenigsegg'
+	| 'Maserati'
+	| 'Maybach'
+	| 'McLaren'
+	| 'Pagani'
+	| 'Porsche'
+	| 'Rolls-Royce'
+
 export interface IBrand {
 	id: number
-	brand_name: string
+	brand_name: CarBrand
 }
 
 export enum CarStatus {

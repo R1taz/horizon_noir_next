@@ -1,12 +1,28 @@
+import { ICar } from '../interfaces/carsInterface'
 import { axiosInstance } from '../src/shared/api/axiosInstance'
+import { IFilters } from '../src/shared/types/filters'
 
-export const getCars = async () => {
+export const getCars = async (page: number, limit: number, filters: IFilters): Promise<ICar[]> => {
+	let queryPath = ''
+
+	for (let key in filters) {
+		if (filters[key].length !== 0) {
+			queryPath += '&'
+
+			filters[key].forEach((el, idx) => {
+				if (idx === 0) queryPath += `${key}=${el}`
+				else queryPath += `,${el}`
+			})
+		}
+	}
+
 	try {
-		const res = await axiosInstance.get('/api/cars')
+		const res = await axiosInstance.get(`/api/cars?page=${page}&limit=${limit}${queryPath}`)
 		if (res.status !== 200) throw new Error('Failed to fetch')
 		return res.data
 	} catch (error) {
 		console.log(`Произошла ошибка: ${error}`)
+		return []
 	}
 }
 

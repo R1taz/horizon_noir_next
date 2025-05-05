@@ -1,13 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getCars, getCar, removeCar } from '../api/cars'
+import { getCar, removeCar } from '../api/cars'
 import { ICar } from '../interfaces/carsInterface'
-
-export const useCars = () => {
-	return useQuery<ICar[]>({
-		queryKey: ['cars'],
-		queryFn: getCars,
-	})
-}
 
 export const useCar = (carId: number) => {
 	return useQuery<ICar>({

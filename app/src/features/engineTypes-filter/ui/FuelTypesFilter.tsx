@@ -3,28 +3,28 @@
 import { useCarFiltersStore } from '@/app/src/shared/model/useCarFiltersStore'
 import SelectFilter from '@/app/src/shared/ui/SelectFilter'
 
-const ColorsFilter = () => {
+const FuelTypesFilter = () => {
 	const filters = useCarFiltersStore(state => state.filters)
 	const addItemFilters = useCarFiltersStore(state => state.addItemFilters)
 	const removeItemFilters = useCarFiltersStore(state => state.removeItemFilters)
 	const options = []
 
-	const colors = ['Чёрный', 'Белый', 'Серый', 'Красный', 'Оранжевый']
+	const fuelTypes = ['Бензин', 'Дизель', 'Электро', 'Бензин + Электро']
 
-	for (let color of colors) {
-		options.push({ label: color, value: color })
+	for (let fuelType of fuelTypes) {
+		options.push({ label: fuelType, value: fuelType })
 	}
 
 	return (
 		<SelectFilter
-			title='Цвет'
+			title='Тип топлива'
 			options={options}
-			typeFilter='colors'
-			filters={filters.colors}
+			typeFilter='fuelTypes'
+			filters={filters.fuelTypes}
 			addItemFilters={addItemFilters}
 			removeItemFilters={removeItemFilters}
 		/>
 	)
 }
 
-export default ColorsFilter
+export default FuelTypesFilter
