@@ -1,6 +1,4 @@
 const DaysWeek = () => {
-	const daysWeek = []
-
 	return (
 		<>
 			<span className='text-center text-primary font-bold'>Пон</span>

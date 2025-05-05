@@ -1,12 +1,12 @@
 import { CarBrand } from '@/app/interfaces/carsInterface'
-import { IFilters } from '@/app/src/shared/types/filters'
+import { SelectFnType } from '@/app/src/shared/types/filters'
 import React from 'react'
 
 interface Props {
 	brandName: CarBrand
 	isActive: string | undefined
-	setActiveBrands: <K extends keyof IFilters>(key: K, value: IFilters[K]) => void
-	removeActiveBrand: <K extends keyof IFilters>(key: K, value: IFilters[K]) => void
+	setActiveBrands: SelectFnType
+	removeActiveBrand: SelectFnType
 }
 
 const BrandFilter = ({ isActive, brandName, setActiveBrands, removeActiveBrand }: Props) => {

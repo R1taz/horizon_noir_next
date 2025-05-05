@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { useAuthStore, UserRole } from '@/app/src/widgets/cars'
-import { IOrder, OrderStatus, PaymentStatus, RefundStatus } from '@/app/src/shared/types/orders'
+import { IOrder } from '@/app/src/shared/types/orders'
+import { RequestStatus, PaymentStatus, RefundStatus } from '../../../shared/types/requests'
 import OrderButton from './OrderButton'
 import Field from './Field'
-import { learnOrderStatus } from '../model/learnOrderStatus'
-import { learnPaymentStatus } from '../model/learnPaymentStatus'
-import { learnPaymentMethod } from '../model/learnPaymentMethod'
+import { learnOrderStatus } from '../../Request/model/learnOrderStatus'
+import { learnPaymentStatus } from '../../Request/model/learnPaymentStatus'
+import { learnPaymentMethod } from '../../Request/model/learnPaymentMethod'
 import EditField from './EditField'
 import { learnDeliveryType } from '../model/learnDeliveryType'
 import { approveOrder } from '../api/approveOrder'
@@ -13,9 +14,9 @@ import { useWebSocket } from '@/app/src/shared/contexts/WebSocketContext'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { rejectOrder } from '../api/rejectOrder'
 import { failOrder } from '../api/failOrder'
-import { makingPayment } from '../api/makingPayment'
+import { paymentOrder } from '../api/paymentOrder'
 import { createCancelOrder } from '../api/createCancelOrder'
-import { learnRefundStatus } from '../model/learnRefundStatus'
+import { learnRefundStatus } from '../../Request/model/learnRefundStatus'
 import { approveCancelOrder } from '../api/approveCancelOrder'
 import { rejectCancelOrder } from '../api/rejectCancelOrder'
 import { createDebt } from '../api/createDebt'
@@ -66,7 +67,7 @@ const Order = ({ order }: Props) => {
 		failOrder({ socket: socket!, order_id: order.id })
 	}
 	const handlePaymentOrder = (paymentStatus: PaymentStatus) => {
-		makingPayment({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
+		paymentOrder({ socket: socket!, order_id: order.id, payment_status: paymentStatus })
 	}
 	const handleCompletePayment = () => completePayment({ socket: socket!, order_id: order.id })
 	const handleCancelOrder = () => createCancelOrder({ socket: socket!, order_id: order.id })
@@ -236,17 +237,17 @@ const Order = ({ order }: Props) => {
 			</section>
 
 			<div className='flex flex-col my-5 gap-3'>
-				{isEdit && role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+				{isEdit && role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
 					<OrderButton type='primary' action={handleApproveOrder} title='Одобрить' />
 				)}
-				{role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+				{role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
 					<OrderButton
 						type={!isEdit ? 'primary' : 'secondary'}
 						action={() => setIsEdit(prev => !prev)}
 						title={!isEdit ? 'Редактировать' : 'Отменить редактирование'}
 					/>
 				)}
-				{!isEdit && role === UserRole.ADMIN && order.order_status === OrderStatus.PENDING && (
+				{!isEdit && role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
 					<OrderButton type='secondary' action={handleRejectOrder} title='Отклонить' />
 				)}
 

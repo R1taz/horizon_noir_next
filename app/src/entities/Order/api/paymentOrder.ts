@@ -1,4 +1,5 @@
-import { OrderEvent, PaymentStatus } from '@/app/src/shared/types/orders'
+import { OrderEvent } from '@/app/src/shared/types/orders'
+import { PaymentStatus } from '@/app/src/shared/types/requests'
 
 interface Params {
 	socket: WebSocket
@@ -6,7 +7,7 @@ interface Params {
 	payment_status: PaymentStatus
 }
 
-export function makingPayment({ socket, order_id, payment_status }: Params) {
+export function paymentOrder({ socket, order_id, payment_status }: Params) {
 	const order = {
 		type: OrderEvent.PAYMENT,
 		payload: {

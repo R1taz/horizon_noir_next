@@ -1,4 +1,5 @@
-import { DeliveryType, OrderEvent, PaymentStatus } from '@/app/src/shared/types/orders'
+import { OrderEvent } from '@/app/src/shared/types/orders'
+import { DeliveryType, PaymentMethod } from '@/app/src/shared/types/requests'
 
 interface Params {
 	socket: WebSocket
@@ -6,7 +7,7 @@ interface Params {
 	amount: number
 	percent_prepayment_amount: number
 	manager_id: number
-	payment_method?: PaymentStatus
+	payment_method?: PaymentMethod
 	delivery_date?: string
 	delivery_type?: DeliveryType
 	delivery_address?: string
