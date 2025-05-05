@@ -2,7 +2,7 @@ import {
 	BodyTypesFilter,
 	BrandsFilter,
 	ColorsFilter,
-	EngineTypesFilter,
+	FuelTypesFilter,
 	EngineVolumesFilter,
 	ModelsFilter,
 	PriceFilter,
@@ -19,7 +19,7 @@ const Filters = () => {
 			<YearsFilter />
 			<ColorsFilter />
 			<BodyTypesFilter />
-			<EngineTypesFilter />
+			<FuelTypesFilter />
 			<EngineVolumesFilter />
 		</section>
 	)

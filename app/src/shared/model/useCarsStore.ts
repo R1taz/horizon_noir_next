@@ -3,6 +3,7 @@ import { immer } from 'zustand/middleware/immer'
 import { ICar } from '../../../interfaces/carsInterface'
 
 interface CarsStore {
+	pageSize: number
 	cars: ICar[]
 	setCars: (cars: ICar[]) => void
 	addCar: (car: ICar) => void
@@ -11,6 +12,7 @@ interface CarsStore {
 
 export const useCarsStore = create<CarsStore>()(
 	immer(set => ({
+		pageSize: 20,
 		cars: [],
 		setCars: cars => set(state => ({ ...state, cars })),
 		addCar: (car: ICar) =>
