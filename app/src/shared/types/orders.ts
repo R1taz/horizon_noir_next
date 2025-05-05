@@ -71,6 +71,8 @@ export enum PaymentStatus {
 	FORFEIT = 'forfeit',
 }
 
+export type OrdersStatus = 'active' | 'completed' | 'rejected'
+
 export enum OrderStatus {
 	PENDING = 'pending',
 	IN_PROGRESS = 'in_progress',
