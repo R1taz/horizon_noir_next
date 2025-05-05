@@ -1,11 +1,17 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { IOrder } from '../types/orders'
+import { IOrder, OrdersStatus } from '../types/orders'
 
 interface OrdersStore {
-	statusOrders: 'active' | 'completed' | 'cancelled'
+	statusOrders: OrdersStatus
 	orders: IOrder[]
-	setStatusOrders: (status: 'active' | 'completed' | 'cancelled') => void
+	page: number
+	pageSize: number
+	portionSize: number
+	totalCountOrders: number
+	setPage: (page: number) => void
+	setTotalCountOrders: (totalCount: number) => void
+	setStatusOrders: (status: OrdersStatus) => void
 	setOrders: (orders: IOrder[]) => void
 	updateOrder: (updateOrder: IOrder) => void
 }
@@ -14,6 +20,18 @@ export const useOrdersStore = create<OrdersStore>()(
 	immer(set => ({
 		statusOrders: 'active',
 		orders: [],
+		page: 1,
+		pageSize: 4,
+		portionSize: 5,
+		totalCountOrders: 0,
+		setPage: page =>
+			set(state => {
+				state.page = page
+			}),
+		setTotalCountOrders: totalCount =>
+			set(state => {
+				state.totalCountOrders = totalCount
+			}),
 		setStatusOrders: status =>
 			set(state => {
 				state.statusOrders = status
