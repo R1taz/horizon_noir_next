@@ -3,10 +3,14 @@ import { useEffect } from 'react'
 import { useBrands } from '@/app/src/shared/hooks/useBrands'
 import BrandFilter from './BrandFilter'
 import { useBrandsStore } from '@/app/src/shared/model/useBrandsStore'
+import { useCarFiltersStore } from '@/app/src/shared/model/useCarFiltersStore'
 
 const BrandsFilter = () => {
 	const { data: brands, isLoading, error } = useBrands()
 	const setBrands = useBrandsStore(state => state.setBrands)
+	const filters = useCarFiltersStore(state => state.filters)
+	const addItemFilters = useCarFiltersStore(state => state.addItemFilters)
+	const removeItemFilters = useCarFiltersStore(state => state.removeItemFilters)
 
 	useEffect(() => {
 		if (brands) setBrands(brands)
@@ -20,9 +24,18 @@ const BrandsFilter = () => {
 		<article>
 			<h2 className='text-2xl text-secondary'>Бренд</h2>
 			<section>
-				{brands.map(brand => (
-					<BrandFilter brandName={brand.brand_name} key={brand.id} />
-				))}
+				{brands.map(brand => {
+					const activeBrand = filters.brands.find(activeBrand => activeBrand === brand.brand_name)
+					return (
+						<BrandFilter
+							isActive={activeBrand}
+							setActiveBrands={addItemFilters}
+							removeActiveBrand={removeItemFilters}
+							brandName={brand.brand_name}
+							key={brand.id}
+						/>
+					)
+				})}
 			</section>
 		</article>
 	)
