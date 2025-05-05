@@ -38,15 +38,15 @@ const Orders = () => {
 
 	useEffect(() => {
 		if (error) {
-			if (error.response?.status === 401) {
+			if ((error as any).response?.status === 401) {
 				setAuthData(false, 'no role')
 				router.replace('/login')
 			}
 		}
 
 		if (dataOrders) {
-			setOrders(dataOrders[0])
-			setTotalCountOrders(dataOrders[1])
+			setOrders(dataOrders.orders.reverse())
+			setTotalCountOrders(dataOrders.total)
 		}
 	}, [dataOrders, error])
 

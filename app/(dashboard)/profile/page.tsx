@@ -4,6 +4,7 @@ import ProfileSettings from '../../components/Profile/ProfileSettings/ProfileSet
 import ProfileSecurity from '../../components/Profile/ProfileSecurity/ProfileSecurity'
 import Orders from '@/app/src/widgets/ProfileOrders/ui/Orders'
 import AuthProvider from '@/app/src/shared/ui/AuthProvider'
+import Reservations from '@/app/src/widgets/ProfileReservations/ui/Reservations'
 
 const page = () => {
 	return (
@@ -12,7 +13,8 @@ const page = () => {
 				<ProfileInfo />
 				<ProfileSettings />
 				<ProfileSecurity />
-				<Orders />
+				{/* <Orders /> */}
+				<Reservations />
 			</main>
 		</AuthProvider>
 	)

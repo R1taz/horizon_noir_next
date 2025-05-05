@@ -1,25 +1,25 @@
 'use client'
 
-import { IFilters } from '../types/filters'
+import { RangeFnType, IFilters } from '../types/filters'
 
-interface Props<K extends keyof IFilters, T> {
+interface Props<K extends keyof IFilters> {
 	title: string
 	options: string[]
 	unit: string
-	typeFilter: keyof IFilters
-	filters: IFilters[K]
-	changeItemsFilters: <K extends keyof IFilters>(key: K, item: any) => void
+	typeFilter: K
+	filters: [number, number]
+	changeItemsFilters: RangeFnType
 }
 
-function RangeFilter<K extends keyof IFilters, T>({
+function RangeFilter<K extends keyof IFilters>({
 	title,
 	options,
 	unit,
 	typeFilter,
 	filters,
 	changeItemsFilters,
-}: Props<K, T>) {
-	const handleChange = (item: string, idx: number) => {
+}: Props<K>) {
+	const handleChange = (item: any, idx: number) => {
 		if (idx === 0) {
 			changeItemsFilters(typeFilter, [+item, filters[1]])
 		} else {

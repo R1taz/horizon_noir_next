@@ -1,9 +1,10 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { IOrder, OrdersStatus } from '../types/orders'
+import { IOrder } from '../types/orders'
+import { RequestsTabFilter } from '../types/requests'
 
 interface OrdersStore {
-	statusOrders: OrdersStatus
+	statusOrders: RequestsTabFilter
 	orders: IOrder[]
 	page: number
 	pageSize: number
@@ -11,7 +12,7 @@ interface OrdersStore {
 	totalCountOrders: number
 	setPage: (page: number) => void
 	setTotalCountOrders: (totalCount: number) => void
-	setStatusOrders: (status: OrdersStatus) => void
+	setStatusOrders: (status: RequestsTabFilter) => void
 	setOrders: (orders: IOrder[]) => void
 	updateOrder: (updateOrder: IOrder) => void
 }

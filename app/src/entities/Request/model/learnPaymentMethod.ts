@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@/app/src/shared/types/orders'
+import { PaymentMethod } from '@/app/src/shared/types/requests'
 
 export function learnPaymentMethod(method: PaymentMethod) {
 	if (method === PaymentMethod.CARD) return 'Банковской картой'
