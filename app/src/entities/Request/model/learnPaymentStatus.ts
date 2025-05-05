@@ -1,4 +1,4 @@
-import { PaymentStatus } from '@/app/src/shared/types/orders'
+import { PaymentStatus } from '@/app/src/shared/types/requests'
 
 export function learnPaymentStatus(status: PaymentStatus) {
 	if (status === PaymentStatus.AWAITING_PREPAYMENT) return 'Ожидает предоплаты'

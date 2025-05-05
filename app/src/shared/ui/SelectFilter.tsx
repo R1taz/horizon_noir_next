@@ -1,16 +1,16 @@
 'use client'
-import { IFilters } from '../types/filters'
+import { SelectFnType, IFilters } from '../types/filters'
 
 interface Props<K extends keyof IFilters, T> {
 	title: string
 	options: { label: string; value: T }[]
 	filters: IFilters[K]
 	typeFilter: keyof IFilters
-	addItemFilters: <K extends keyof IFilters>(key: K, item: any) => void
-	removeItemFilters: <K extends keyof IFilters>(key: K, item: any) => void
+	addItemFilters: SelectFnType
+	removeItemFilters: SelectFnType
 }
 
-function SelectFilter<K extends keyof IFilters, T>({
+function SelectFilter<K extends keyof IFilters, T extends string | number>({
 	title,
 	options,
 	filters,

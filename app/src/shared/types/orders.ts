@@ -1,3 +1,5 @@
+import { DeliveryType, PaymentMethod, PaymentStatus, RefundStatus, RequestStatus } from './requests'
+
 export enum OrderEvent {
 	CREATE = 'NEW_ORDER',
 	APPROVE = 'APPROVE_ORDER',
@@ -36,7 +38,7 @@ export interface IOrder {
 	dealership_address?: string
 	car_location?: string
 	payment_status?: PaymentStatus
-	order_status: OrderStatus
+	order_status: RequestStatus
 	refund_status?: RefundStatus
 	refund_amount?: number
 	refund_date?: string
@@ -48,41 +50,4 @@ export interface IOrder {
 	end_parking_date?: string
 	refund_message?: string
 	refund_date_created_at?: string
-}
-
-export enum PaymentMethod {
-	CARD = 'card',
-	CASH = 'cash',
-}
-
-export enum DeliveryType {
-	SALON = 'salon',
-	CUSTOM = 'custom_address',
-}
-
-export enum PaymentStatus {
-	AWAITING_PREPAYMENT = 'awaiting_prepayment',
-	PREPAYMENT_DONE = 'prepayment_done',
-	AWAITING_FINAL = 'awaiting_final',
-	PAID = 'paid',
-	DEBT = 'debt',
-	REFUNDED = 'refunded',
-	CANCELED = 'canceled',
-	FORFEIT = 'forfeit',
-}
-
-export type OrdersStatus = 'active' | 'completed' | 'rejected'
-
-export enum OrderStatus {
-	PENDING = 'pending',
-	IN_PROGRESS = 'in_progress',
-	COMPLETED = 'completed',
-	REJECTED = 'rejected',
-}
-
-export enum RefundStatus {
-	PENDING = 'pending',
-	IN_PROGRESS = 'in_progress',
-	COMPLETED = 'completed',
-	FAILED = 'failed',
 }

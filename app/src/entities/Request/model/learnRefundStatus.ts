@@ -1,4 +1,4 @@
-import { RefundStatus } from '@/app/src/shared/types/orders'
+import { RefundStatus } from '@/app/src/shared/types/requests'
 
 export function learnRefundStatus(status: RefundStatus) {
 	if (status === RefundStatus.PENDING) return 'На рассмотрении'

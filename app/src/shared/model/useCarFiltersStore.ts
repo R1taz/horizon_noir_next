@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { IFilters } from '../types/filters'
+import { SelectFnType, RangeFnType, IFilters } from '../types/filters'
 
 interface CarFiltersStore {
 	filters: IFilters
-	addItemFilters: <K extends keyof IFilters>(key: K, item: any) => void
-	changeItemsFilters: <K extends keyof IFilters>(key: K, items: any) => void
-	removeItemFilters: <K extends keyof IFilters>(key: K, item: any) => void
+	addItemFilters: SelectFnType
+	changeItemsFilters: RangeFnType
+	removeItemFilters: SelectFnType
 }
 
 export const useCarFiltersStore = create<CarFiltersStore>()(
