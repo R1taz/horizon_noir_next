@@ -14,7 +14,10 @@ export const useCarsStore = create<CarsStore>()(
 	immer(set => ({
 		pageSize: 20,
 		cars: [],
-		setCars: cars => set(state => ({ ...state, cars })),
+		setCars: cars =>
+			set(state => {
+				state.cars = cars
+			}),
 		addCar: (car: ICar) =>
 			set(state => {
 				state.cars.push(car)

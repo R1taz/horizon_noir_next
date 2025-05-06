@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from '../index'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/app/src/widgets/cars'
+import { useQueryClient } from '@tanstack/react-query'
 
 type Props = Omit<ICar, 'model'> & { role: UserRole }
 
@@ -13,15 +14,17 @@ const Car = ({ car, photos, role }: Props) => {
 	const setAuthData = useAuthStore(state => state.setAuthData)
 	const removeCar = useCarsStore(state => state.removeCar)
 
+	const queryClient = useQueryClient()
 	const { mutateAsync } = useRemoveCar()
 	const router = useRouter()
 
 	const handleRemoveCar = async () => {
 		try {
 			await mutateAsync(car.id)
+			queryClient.invalidateQueries({ queryKey: ['cars'] })
 			removeCar(car.id)
 		} catch (error) {
-			if (error.response?.status === 401) {
+			if ((error as any)?.response?.status === 401) {
 				setAuthData(false, 'no role')
 				router.push('/login')
 			}
