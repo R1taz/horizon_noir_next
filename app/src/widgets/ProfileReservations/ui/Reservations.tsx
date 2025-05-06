@@ -51,7 +51,7 @@ const Reservations = () => {
 		}
 
 		if (dataReservations) {
-			setReservations(dataReservations.reservations.reverse())
+			setReservations([...dataReservations.reservations].reverse())
 			setTotalCountReservations(dataReservations.total)
 		}
 	}, [dataReservations, error])

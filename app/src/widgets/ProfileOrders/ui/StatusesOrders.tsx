@@ -1,12 +1,12 @@
-import { OrdersStatus } from '@/app/src/shared/types/orders'
+import { RequestsTabFilter } from '@/app/src/shared/types/requests'
 
 interface Props {
-	statusOrders: OrdersStatus
-	setStatusOrders: (status: OrdersStatus) => void
+	statusOrders: RequestsTabFilter
+	setStatusOrders: (status: RequestsTabFilter) => void
 }
 
 const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
-	const getStyles = (status: OrdersStatus) =>
+	const getStyles = (status: RequestsTabFilter) =>
 		`text-2xl cursor-pointer ${status === statusOrders ? 'text-accent' : 'text-primary'}`
 
 	return (
