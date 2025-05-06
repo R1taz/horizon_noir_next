@@ -22,7 +22,7 @@ const page = () => {
 			setInitialized(true)
 			setAuthData(true, user.role)
 			setUser(user)
-			router.replace('/catalog')
+			router.push('/catalog')
 		} catch (error) {
 			console.log(error)
 		}

@@ -11,6 +11,7 @@ import CarPhotos from './CarPhotos'
 import { useAddCar } from '../model/useAddCar'
 import CarInfo from './CarInfo'
 import { useCarsStore } from '@/app/src/entities/car'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
 	onClose: () => void
@@ -40,6 +41,7 @@ const AddCarModal = ({ onClose }: Props) => {
 	const [price, setPrice] = useState('')
 
 	const { mutateAsync } = useAddCar()
+	const queryClient = useQueryClient()
 	const { data: models, isLoading, error } = useModels(currentBrand.id)
 
 	if (isLoading) return <h1>Loading</h1>
@@ -99,6 +101,8 @@ const AddCarModal = ({ onClose }: Props) => {
 					formData.append('mainPhotoId', `${0}`)
 					const res = await mutateAsync(formData)
 					addCar(res.car!)
+					queryClient.invalidateQueries({ queryKey: ['cars'] })
+
 					setCurrentBrand({ label: '', id: null })
 					setCurrentModel({ label: '', id: null })
 					setYear('')
