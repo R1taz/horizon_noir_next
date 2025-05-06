@@ -7,6 +7,7 @@ interface CarFiltersStore {
 	addItemFilters: SelectFnType
 	changeItemsFilters: RangeFnType
 	removeItemFilters: SelectFnType
+	resetFilters: () => void
 }
 
 export const useCarFiltersStore = create<CarFiltersStore>()(
@@ -42,6 +43,19 @@ export const useCarFiltersStore = create<CarFiltersStore>()(
 				state.filters = {
 					...state.filters,
 					[key]: currentArray.filter(value => value !== item),
+				}
+			}),
+		resetFilters: () =>
+			set(state => {
+				state.filters = {
+					brands: [],
+					models: [],
+					price: [0, Infinity],
+					years: [],
+					colors: [],
+					bodyTypes: [],
+					fuelTypes: [],
+					engineVolume: [0, Infinity],
 				}
 			}),
 	}))
