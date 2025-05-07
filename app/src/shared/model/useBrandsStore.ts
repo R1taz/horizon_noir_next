@@ -10,6 +10,9 @@ interface BrandsStore {
 export const useBrandsStore = create<BrandsStore>()(
 	immer(set => ({
 		brands: [],
-		setBrands: brands => set(state => ({ ...state, brands })),
+		setBrands: brands =>
+			set(state => {
+				state.brands = brands
+			}),
 	}))
 )

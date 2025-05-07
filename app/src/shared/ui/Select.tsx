@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
 interface Props<T> {
 	edit: boolean
@@ -30,7 +30,10 @@ function Select<T>({ edit, title, value, bg = 'quaternaryBg', options }: Props<T
 								value === option.value ? 'bg-accentBg' : ''
 							}`}
 							key={option.label}
-							onClick={() => option.action(option.value)}
+							onClick={() => {
+								option.action(option.value)
+								setIsOpen(false)
+							}}
 						>
 							<span
 								className={`${value === option.value ? 'text-[#292929]' : 'text-secondary'} ${

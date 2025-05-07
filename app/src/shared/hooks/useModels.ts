@@ -2,13 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import { IModel } from '../types/models'
 import { getModels } from '../api/models/getModels'
 
-export const useModels = (carId: number | null) => {
+export const useModels = (brandId: number | null) => {
 	return useQuery<IModel[]>({
-		queryKey: ['models'],
+		queryKey: ['models', brandId],
 		queryFn: () => {
-			if (!carId) return []
-			return getModels(carId)
+			if (!brandId) return []
+			return getModels(brandId)
 		},
-		enabled: !!carId,
+		enabled: !!brandId,
+		staleTime: 0,
 	})
 }
