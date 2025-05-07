@@ -2,6 +2,7 @@
 import { useLogin } from '@/app/src/features/auth/model/useLogin'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useAuthStore } from '@/app/src/widgets/cars'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -78,9 +79,12 @@ const page = () => {
 
 				<p className='my-4 text-[#535353] text-lg'>
 					Нет аккаунта?
-					<span className='text-accent ml-4 py-[3px] font-bold border-b-[2px] border-b-accentBg'>
+					<Link
+						href='/registration'
+						className='cursor-pointer text-accent ml-4 py-[3px] font-bold border-b-[2px] border-b-accentBg'
+					>
 						Пройдите регистрацию
-					</span>
+					</Link>
 				</p>
 			</article>
 		</main>
