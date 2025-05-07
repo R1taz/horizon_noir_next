@@ -1,9 +1,8 @@
-import { LoginData } from '@/app/interfaces/authInterface'
 import { axiosInstance } from '@/app/src/shared/api/axiosInstance'
 
-export async function login({ email, password }: LoginData) {
+export async function deleteAccount(userId: number) {
 	try {
-		const res = await axiosInstance.post('/api/login', { email, password })
+		const res = await axiosInstance.delete(`/api/deleteAccount/${userId}`)
 		if (res.status < 200 && res.status >= 300) throw new Error(`HTTP status: ${res.status}`)
 		return res.data
 	} catch (error: any) {
