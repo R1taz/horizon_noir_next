@@ -1,13 +1,13 @@
 const DaysWeek = () => {
 	return (
 		<>
-			<span className='text-center text-primary font-bold'>Пон</span>
-			<span className='text-center text-primary font-bold'>Вто</span>
-			<span className='text-center text-primary font-bold'>Сре</span>
-			<span className='text-center text-primary font-bold'>Чет</span>
-			<span className='text-center text-primary font-bold'>Пят</span>
-			<span className='text-center text-primary font-bold'>Суб</span>
-			<span className='text-center text-primary font-bold'>Вос</span>
+			<span className='text-center text-primary font-bold mb-2'>Пон</span>
+			<span className='text-center text-primary font-bold mb-2'>Вто</span>
+			<span className='text-center text-primary font-bold mb-2'>Сре</span>
+			<span className='text-center text-primary font-bold mb-2'>Чет</span>
+			<span className='text-center text-primary font-bold mb-2'>Пят</span>
+			<span className='text-center text-primary font-bold mb-2'>Суб</span>
+			<span className='text-center text-primary font-bold mb-2'>Вос</span>
 		</>
 	)
 }

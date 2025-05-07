@@ -1,20 +1,42 @@
+import { useCalendarStore } from '@/app/src/shared/model/useCalendarStore'
 import CalendarWeek from './CalendarWeek'
 import DaysWeek from './DaysWeek'
 import MonthsYear from './MonthsYear'
 import ToggleYear from './ToggleYear'
+import { calculateCalendarDays } from '../model/calculateCalendarDays'
+import { useEffect } from 'react'
 
 const Calendar = () => {
-	const numbersDayWeek = [...new Array(31)].map((_, idx) => idx + 1)
+	const calendar = useCalendarStore()
 
-	const chunkedNumbers = numbersDayWeek.reduce<number[][]>((acc, _, idx) => {
-		if (idx % 7 === 0) acc.push(numbersDayWeek.slice(idx, idx + 7))
-		return acc
+	useEffect(() => {
+		if (!calendar.year || !calendar.month) {
+			calendar.setYear(new Date().getFullYear())
+			calendar.setMonth(new Date().getMonth())
+			calendar.setDay(new Date().getDate())
+		}
+		return () => {
+			calendar.setYear(null)
+			calendar.setMonth(null)
+			calendar.setDay(null)
+		}
 	}, [])
+
+	if (!calendar.year || !calendar.month) return <div className='primary'>Skeleton</div>
+
+	const chunkedNumbers = calculateCalendarDays(calendar.year!, calendar.month!)
 
 	const weeks: React.ReactElement[] = []
 
 	for (let i = 0; i < chunkedNumbers.length; i++) {
-		weeks.push(<CalendarWeek key={i} numberWeek={chunkedNumbers[i]} />)
+		weeks.push(
+			<CalendarWeek
+				key={i}
+				activeDay={calendar.day!}
+				setActiveDay={calendar.setDay!}
+				numberWeek={chunkedNumbers[i]}
+			/>
+		)
 	}
 
 	return (
@@ -23,7 +45,7 @@ const Calendar = () => {
 
 			<article className='mt-2 rounded-[8px] bg-quaternaryBg w-[85%] mx-auto px-7 py-3'>
 				<ToggleYear />
-				<MonthsYear />
+				<MonthsYear activeMonth={calendar.month!} setActiveMonth={calendar.setMonth!} />
 				<div className='bg-accentBg h-[2px] w-full my-3'></div>
 				<div className='grid grid-cols-7 w-full '>
 					<DaysWeek />
