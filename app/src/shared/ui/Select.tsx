@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
 
 interface Props<T> {
+	edit: boolean
 	title: string
 	bg?: string
 	value: T
 	options: { label: string; value: T; action: (value: T) => void }[]
 }
 
-function Select<T>({ title, value, bg = 'quaternaryBg', options }: Props<T>) {
+function Select<T>({ edit, title, value, bg = 'quaternaryBg', options }: Props<T>) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
 		<article className='my-3'>
 			<div
-				onClick={() => setIsOpen(prev => !prev)}
+				onClick={edit ? () => setIsOpen(prev => !prev) : undefined}
 				className={`bg-${bg} text-secondary text-lg text-center ${
 					isOpen ? 'rounded-t-[8px]' : 'rounded-[8px]'
 				} px-3 py-1`}

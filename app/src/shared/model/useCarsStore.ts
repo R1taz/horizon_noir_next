@@ -8,6 +8,7 @@ interface CarsStore {
 	setCars: (cars: ICar[]) => void
 	addCar: (car: ICar) => void
 	removeCar: (carId: number) => void
+	updateCar: (car: ICar) => void
 }
 
 export const useCarsStore = create<CarsStore>()(
@@ -25,6 +26,13 @@ export const useCarsStore = create<CarsStore>()(
 		removeCar: carId =>
 			set(state => {
 				state.cars = state.cars.filter(car => car.car.id !== carId)
+			}),
+		updateCar: (updatedCar: ICar) =>
+			set(state => {
+				state.cars = state.cars.map(car => {
+					if (car.car.id === updatedCar.car.id) return updatedCar
+					return car
+				})
 			}),
 	}))
 )
