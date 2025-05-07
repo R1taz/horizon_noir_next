@@ -125,8 +125,8 @@ const EditCarModal = ({ car, carPhotos, onClose }: Props) => {
 				value={currentStatusCar}
 				onChange={status => setCurrentStatusCar(status)}
 			/>
-			<CarInfo options={carInfoOptions} />
 			<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
+			<CarInfo options={carInfoOptions} />
 			<CarPhotos
 				photos={photos}
 				addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
