@@ -1,74 +1,55 @@
-import { CarStatus } from '@/app/interfaces/carsInterface'
-import { useModels } from '@/app/src/shared/hooks/useModels'
-import { useBrandsStore } from '@/app/src/shared/model/useBrandsStore'
+import { CarStatus, ICarInfo, ICarPhoto } from '@/app/interfaces/carsInterface'
 import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import Modal from '@/app/src/shared/ui/Modal'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 import Select from '@/app/src/shared/ui/Select'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
-import CarPhotos from './CarPhotos'
-import { useAddCar } from '../model/useAddCar'
-import CarInfo from './CarInfo'
-import { useCarsStore } from '@/app/src/entities/car'
 import { useQueryClient } from '@tanstack/react-query'
+import CarInfo from '../../add-car/ui/CarInfo'
+import CarPhotos from '../../add-car/ui/CarPhotos'
+import { convertPhotosToFiles } from '../model/convertPhotosToFiles'
+import { useUpdateCar } from '../model/useUpdateCar'
+import { useCarsStore } from '@/app/src/entities/car'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/app/src/widgets/cars'
 
 interface Props {
+	car: ICarInfo
+	carPhotos: ICarPhoto[]
 	onClose: () => void
 }
 
-type IOption = { label: string; id: number | null }
-
-const AddCarModal = ({ onClose }: Props) => {
+const EditCarModal = ({ car, carPhotos, onClose }: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
-	const brands = useBrandsStore(state => state.brands)
-	const addCar = useCarsStore(state => state.addCar)
+	const updateCar = useCarsStore(state => state.updateCar)
+	const setAuthData = useAuthStore(state => state.setAuthData)
 
-	const [currentBrand, setCurrentBrand] = useState<IOption>({
-		label: '',
-		id: null,
-	})
-	const [currentModel, setCurrentModel] = useState<IOption>({
-		label: '',
-		id: null,
-	})
+	const router = useRouter()
+
 	const [currentStatusCar, setCurrentStatusCar] = useState<CarStatus>(CarStatus.STOCK)
 	const [dealershipId, setDealershipId] = useState<number>(carDealerships[0].id)
 	const [photos, setPhotos] = useState<File[]>([])
 	const [mainPhotoId, setMainPhotoId] = useState()
-	const [year, setYear] = useState('')
-	const [vin, setVin] = useState('')
-	const [price, setPrice] = useState('')
 
-	const { mutateAsync } = useAddCar()
+	const [year, setYear] = useState(String(car.manufacturer_date))
+	const [vin, setVin] = useState(String(car.vin))
+	const [price, setPrice] = useState(String(car.price))
+
+	const { mutateAsync } = useUpdateCar()
 	const queryClient = useQueryClient()
-	const { data: models, isLoading, error } = useModels(currentBrand.id)
 
-	if (isLoading) return <h1>Loading</h1>
-	if (error) return <h1>Error</h1>
+	const [isLoading, setIsLoading] = useState(true)
 
-	const brandOptions = brands.map(brand => ({
-		label: brand.brand_name,
-		value: brand.id,
-		action: (value: typeof brand.id) => {
-			setCurrentBrand(prev => {
-				return prev.id === value
-					? { label: '', id: null }
-					: { label: brand.brand_name, id: brand.id }
-			})
-		},
-	}))
-	const modelsOptions = models?.map(model => ({
-		label: model.model_name,
-		value: model.id,
-		action: (value: typeof model.id) => {
-			setCurrentModel(prev => {
-				return prev.id === value
-					? { label: '', id: null }
-					: { label: model.model_name, id: model.id }
-			})
-		},
-	}))
+	useEffect(() => {
+		async function createFiles() {
+			const convertedFiles = await convertPhotosToFiles(carPhotos)
+			setPhotos(convertedFiles)
+			setIsLoading(false)
+		}
+		createFiles()
+	}, [])
+
 	const carInfoOptions = [
 		{ label: 'Введите год', value: year, action: (year: string) => setYear(year) },
 		{ label: 'Введите VIN-номер', value: vin, action: (vin: string) => setVin(vin) },
@@ -80,10 +61,10 @@ const AddCarModal = ({ onClose }: Props) => {
 	]
 	const modalOptions = [
 		{
-			label: 'Добавить автомобиль',
+			label: 'Сохранить изменения',
 			action: async () => {
 				try {
-					if (!currentModel.id || !vin || !price || !year) return
+					if (!vin || !price || !year) return
 					if (+year < 2016 || +year > 2025) return
 					if (+price < 0 || +price > 99999999999) return
 
@@ -91,7 +72,7 @@ const AddCarModal = ({ onClose }: Props) => {
 					photos.forEach(photo => {
 						formData.append('photos', photo)
 					})
-					formData.append('model_id', `${currentModel.id}`)
+					formData.append('car_id', `${car.id}`)
 					formData.append('status', `${currentStatusCar}`)
 					formData.append('available', `${currentStatusCar === CarStatus.STOCK ? true : false}`)
 					formData.append('dealershipId', `${dealershipId}`)
@@ -99,49 +80,51 @@ const AddCarModal = ({ onClose }: Props) => {
 					formData.append('price', `${+price}`)
 					formData.append('manufacturer_date', `${+year}`)
 					formData.append('mainPhotoId', `${0}`)
-					const newCar = await mutateAsync(formData)
-					addCar(newCar)
+
+					const updatedCar = await mutateAsync(formData)
+					updateCar(updatedCar)
 					queryClient.invalidateQueries({ queryKey: ['cars'] })
 
-					setCurrentBrand({ label: '', id: null })
-					setCurrentModel({ label: '', id: null })
 					setYear('')
 					setVin('')
 					setPrice('')
 					setPhotos([])
 				} catch (error) {
 					console.log(`Произошла ошибка: ${error}`)
+					if ((error as any)?.response?.status === 401) {
+						setAuthData(false, 'no role')
+						router.push('/login')
+					}
 				}
 			},
 		},
 		{ label: 'Отменить изменения', action: onClose },
 	]
 
+	if (isLoading) return <div>Loading</div>
+
 	return (
-		<Modal title='Новый автомобиль' options={modalOptions}>
+		<Modal title='Редактировать автомобиль' options={modalOptions}>
 			<Select
-				edit={true}
-				title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
+				edit={false}
+				title={car.brand}
 				bg='secondaryBg'
-				value={currentBrand.id!}
-				options={brandOptions}
+				value={car.brand}
+				options={[{ label: car.brand, value: car.brand, action: () => null }]}
 			/>
-			{currentBrand.id !== null && (
-				<Select
-					edit={true}
-					title={!currentModel.id ? 'Выберите модель' : currentModel.label}
-					bg='secondaryBg'
-					value={currentModel.id!}
-					options={modelsOptions!}
-				/>
-			)}
+			<Select
+				edit={false}
+				title={car.model}
+				bg='secondaryBg'
+				value={car.model}
+				options={[{ label: car.model, value: car.model, action: () => null }]}
+			/>
 			<RadioGroup
 				title='Выберите статус автомобиля'
 				options={radioOptions}
 				value={currentStatusCar}
 				onChange={status => setCurrentStatusCar(status)}
 			/>
-
 			<CarInfo options={carInfoOptions} />
 			<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
 			<CarPhotos
@@ -153,4 +136,4 @@ const AddCarModal = ({ onClose }: Props) => {
 	)
 }
 
-export default AddCarModal
+export default EditCarModal

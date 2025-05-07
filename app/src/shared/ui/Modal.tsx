@@ -8,7 +8,7 @@ interface Props {
 
 const Modal = ({ title, options, children }: Props) => {
 	return (
-		<article className='absolute bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-10 w-[50%]'>
+		<article className='absolute bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-10'>
 			<h1 className='text-accent text-2xl font-bold mt-2 mb-5'>{title}</h1>
 
 			<div className='my-2 relative'>
