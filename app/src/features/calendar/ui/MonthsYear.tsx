@@ -1,18 +1,22 @@
-const MonthsYear = () => {
+import { formatMonth } from '@/app/src/shared/lib/format/formatMonth'
+
+interface Props {
+	activeMonth: number
+	setActiveMonth: (month: number) => void
+}
+
+const MonthsYear = ({ activeMonth, setActiveMonth }: Props) => {
+	const styles = (idx: number) => {
+		return `cursor-pointer ${activeMonth === idx ? 'text-accent text-bold' : 'text-primary'}`
+	}
+
 	return (
 		<section className='flex justify-between gap-3 mt-2'>
-			<span className='text-primary'>Янв</span>
-			<span className='text-primary'>Фев</span>
-			<span className='text-primary'>Мар</span>
-			<span className='text-accent font-bold'>Апр</span>
-			<span className='text-primary'>Май</span>
-			<span className='text-primary'>Июн</span>
-			<span className='text-primary'>Июл</span>
-			<span className='text-primary'>Авг</span>
-			<span className='text-primary'>Сен</span>
-			<span className='text-primary'>Окт</span>
-			<span className='text-primary'>Ноя</span>
-			<span className='text-primary'>Дек</span>
+			{[...new Array(12)].map((_, idx) => (
+				<span key={idx} className={styles(idx)} onClick={() => setActiveMonth(idx)}>
+					{formatMonth(idx)}
+				</span>
+			))}
 		</section>
 	)
 }

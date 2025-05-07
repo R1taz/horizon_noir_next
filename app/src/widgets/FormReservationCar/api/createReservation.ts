@@ -6,7 +6,7 @@ interface Params {
 	user_id: number
 	car_id: number
 	payment_method: PaymentMethod
-	reservation_date: string
+	reservation_date: Date
 }
 
 export const createReservation = ({

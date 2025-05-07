@@ -9,10 +9,15 @@ import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import { PaymentMethod } from '@/app/src/shared/types/requests'
+import { useCalendarStore } from '@/app/src/shared/model/useCalendarStore'
 
 const FormReservationCar = () => {
 	const userId = useUserStore(state => state.id)
 	const { carId } = useParams()
+
+	const year = useCalendarStore(state => state.year)
+	const month = useCalendarStore(state => state.month)
+	const day = useCalendarStore(state => state.day)
 
 	const [methodPayment, setMethodPayment] = useState<PaymentMethod>(PaymentMethod.CARD)
 	const [reservationDate, setReservationDate] = useState('2025-05-15T17:27:00.000Z')
@@ -25,7 +30,7 @@ const FormReservationCar = () => {
 			user_id: userId!,
 			car_id: +carId,
 			payment_method: methodPayment,
-			reservation_date: reservationDate,
+			reservation_date: new Date(year!, month!, day!),
 		})
 	}
 
