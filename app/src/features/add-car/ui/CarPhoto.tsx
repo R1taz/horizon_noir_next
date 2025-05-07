@@ -11,7 +11,6 @@ interface Props {
 const CarPhoto = ({ photo, handleChange }: Props) => {
 	return (
 		<article className='relative'>
-			{/* <Image src={removeImg} /> */}
 			<Image
 				src={removeImg}
 				alt='Удалить фотографию'
@@ -24,8 +23,8 @@ const CarPhoto = ({ photo, handleChange }: Props) => {
 				src={URL.createObjectURL(photo)}
 				className='rounded-[8px] h-[250px] object-cover'
 				alt='Фотография автомобиля'
-				width={400}
-				height={400}
+				width={350}
+				height={350}
 			/>
 		</article>
 	)

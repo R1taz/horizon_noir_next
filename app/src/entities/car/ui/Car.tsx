@@ -1,16 +1,14 @@
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useCarsStore, useRemoveCar, removeCarImg, UserRole, ICar } from '../index'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/app/src/widgets/cars'
 import { useQueryClient } from '@tanstack/react-query'
+import EditCarTrigger from '@/app/src/features/edit-car/ui/EditCarTrigger'
 
 type Props = Omit<ICar, 'model'> & { role: UserRole }
 
 const Car = ({ car, photos, role }: Props) => {
-	const [isEdit, setIsEdit] = useState(true)
-
 	const setAuthData = useAuthStore(state => state.setAuthData)
 	const removeCar = useCarsStore(state => state.removeCar)
 
@@ -31,21 +29,17 @@ const Car = ({ car, photos, role }: Props) => {
 		}
 	}
 
-	// () => setIsEdit(prev => !prev)
-
 	const mainPhoto = photos.find(photo => photo.main_photo === true)
 	if (!mainPhoto) return <h3>Ошибка: Отсутствует фотография автомобиля</h3>
 
 	return (
 		<article className='relative flex flex-col'>
-			{isEdit && (
-				<Image
-					src={removeCarImg}
-					alt='Удалить автомобиль'
-					className=' absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
-					onClick={handleRemoveCar}
-				/>
-			)}
+			<Image
+				src={removeCarImg}
+				alt='Удалить автомобиль'
+				className=' absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
+				onClick={handleRemoveCar}
+			/>
 			<img
 				src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
 				alt='Фото автомобиля'
@@ -58,11 +52,7 @@ const Car = ({ car, photos, role }: Props) => {
 
 			<span className='text-secondary'>{car.manufacturer_date}</span>
 
-			{role !== UserRole.USER && (
-				<button className='text-[#333333] bg-accentBg text-center w-full font-bold rounded-[5px] py-1 mt-4'>
-					Редактировать
-				</button>
-			)}
+			{role !== UserRole.USER && <EditCarTrigger car={car} photos={photos} />}
 
 			<Link
 				href={`/catalog/${car.id}`}
