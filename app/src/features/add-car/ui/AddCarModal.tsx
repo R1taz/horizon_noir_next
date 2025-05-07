@@ -5,13 +5,15 @@ import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import Modal from '@/app/src/shared/ui/Modal'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 import Select from '@/app/src/shared/ui/Select'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
 import CarPhotos from './CarPhotos'
 import { useAddCar } from '../model/useAddCar'
 import CarInfo from './CarInfo'
 import { useCarsStore } from '@/app/src/entities/car'
 import { useQueryClient } from '@tanstack/react-query'
+import { useAuthStore } from '@/app/src/widgets/cars'
+import { useRouter } from 'next/navigation'
 
 interface Props {
 	onClose: () => void
@@ -23,6 +25,9 @@ const AddCarModal = ({ onClose }: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
 	const brands = useBrandsStore(state => state.brands)
 	const addCar = useCarsStore(state => state.addCar)
+	const setAuthData = useAuthStore(state => state.setAuthData)
+
+	const router = useRouter()
 
 	const [currentBrand, setCurrentBrand] = useState<IOption>({
 		label: '',
@@ -43,9 +48,6 @@ const AddCarModal = ({ onClose }: Props) => {
 	const { mutateAsync } = useAddCar()
 	const queryClient = useQueryClient()
 	const { data: models, isLoading, error } = useModels(currentBrand.id)
-
-	if (isLoading) return <h1>Loading</h1>
-	if (error) return <h1>Error</h1>
 
 	const brandOptions = brands.map(brand => ({
 		label: brand.brand_name,
@@ -111,11 +113,21 @@ const AddCarModal = ({ onClose }: Props) => {
 					setPhotos([])
 				} catch (error) {
 					console.log(`Произошла ошибка: ${error}`)
+					if ((error as any)?.response?.status === 401) {
+						setAuthData(false, 'no role')
+						router.push('/login')
+					}
 				}
 			},
 		},
 		{ label: 'Отменить изменения', action: onClose },
 	]
+
+	useEffect(() => {
+		if (currentBrand) {
+			setCurrentModel({ id: null, label: '' })
+		}
+	}, [currentBrand])
 
 	return (
 		<Modal title='Новый автомобиль' options={modalOptions}>
@@ -126,7 +138,17 @@ const AddCarModal = ({ onClose }: Props) => {
 				value={currentBrand.id!}
 				options={brandOptions}
 			/>
-			{currentBrand.id !== null && (
+			{isLoading && (
+				<Select
+					edit={false}
+					title={'Выберите модель'}
+					bg='secondaryBg'
+					value={currentModel.id!}
+					options={modelsOptions!}
+				/>
+			)}
+			{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
+			{currentBrand.id !== null && !isLoading && !error && (
 				<Select
 					edit={true}
 					title={!currentModel.id ? 'Выберите модель' : currentModel.label}
@@ -142,8 +164,8 @@ const AddCarModal = ({ onClose }: Props) => {
 				onChange={status => setCurrentStatusCar(status)}
 			/>
 
-			<CarInfo options={carInfoOptions} />
 			<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
+			<CarInfo options={carInfoOptions} />
 			<CarPhotos
 				photos={photos}
 				addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
