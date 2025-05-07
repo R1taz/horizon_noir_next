@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { formateDate } from '@/app/src/shared/lib/format/formatDate'
 import { formatPhoneNumber } from '@/app/src/shared/lib/format/formatPhoneNumber'
 import { roleTypeToRu } from '@/app/src/shared/lib/format/roleTypeToRu'
+import ButtonDeleteAccount from '@/app/src/features/auth/ui/ButtonDeleteAccount'
 
 const ProfileInfo = () => {
 	const user = useUserStore()
@@ -26,7 +27,7 @@ const ProfileInfo = () => {
 			user.setUser(null)
 			router.replace('/login')
 		} catch (error) {
-			if (error.response?.status === 401) {
+			if ((error as any)?.response?.status === 401) {
 				setAuthData(false, 'no role')
 				router.replace('/login')
 			}
@@ -65,9 +66,7 @@ const ProfileInfo = () => {
 				>
 					Выйти из аккаунта
 				</button>
-				<button className='bg-secondaryBg font-bold text-lg py-[5px] text-accent rounded-[8px] block'>
-					Удалить аккаунт
-				</button>
+				<ButtonDeleteAccount userId={user.id!} />
 			</div>
 		</article>
 	)
