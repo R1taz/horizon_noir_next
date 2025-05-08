@@ -17,7 +17,7 @@ function Select<T>({ edit, title, value, bg = 'quaternaryBg', options }: Props<T
 				onClick={edit ? () => setIsOpen(prev => !prev) : undefined}
 				className={`bg-${bg} text-secondary text-lg text-center ${
 					isOpen ? 'rounded-t-[8px]' : 'rounded-[8px]'
-				} px-3 py-1`}
+				} px-3 py-1 select-none`}
 			>
 				<h1 className='cursor-pointer'>{title}</h1>
 			</div>

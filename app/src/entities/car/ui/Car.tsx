@@ -37,7 +37,7 @@ const Car = ({ car, photos, role }: Props) => {
 			<Image
 				src={removeCarImg}
 				alt='Удалить автомобиль'
-				className=' absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
+				className='absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
 				onClick={handleRemoveCar}
 			/>
 			<img
@@ -56,7 +56,7 @@ const Car = ({ car, photos, role }: Props) => {
 
 			<Link
 				href={`/catalog/${car.id}`}
-				className='text-accent text-center w-full font-bold border-[2px] border-accent rounded-[5px] py-1 mt-4'
+				className='text-accent text-center w-full font-bold border-[2px] border-accent rounded-[5px] py-1 mt-2'
 			>
 				Подробнее
 			</Link>

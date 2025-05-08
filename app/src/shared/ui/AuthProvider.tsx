@@ -22,6 +22,7 @@ const AuthProvider = ({ children }: Props) => {
 	const { data: user, isLoading, error } = useAuthMe(isInitialized)
 
 	useEffect(() => {
+		console.log('authPro', error)
 		if (error && error.response?.status === 401) {
 			setAuthData(false, 'no role')
 			router.replace('/login')
@@ -29,6 +30,7 @@ const AuthProvider = ({ children }: Props) => {
 		}
 
 		if (user && !isInitialized) {
+			console.log('useEffectAuthProvider', 'user')
 			setInitialized(true)
 			setAuthData(true, user.role)
 			setUser(user)

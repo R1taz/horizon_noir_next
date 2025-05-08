@@ -24,7 +24,7 @@ const CarPhoto = ({ photo, handleChange }: Props) => {
 				className='rounded-[8px] h-[250px] object-cover'
 				alt='Фотография автомобиля'
 				width={350}
-				height={350}
+				height={500}
 			/>
 		</article>
 	)
