@@ -22,6 +22,7 @@ const page = () => {
 			const user = await mutateAsync({ email, password })
 			setInitialized(true)
 			setAuthData(true, user.role)
+			console.log('ALOOO', user)
 			setUser(user)
 			router.push('/catalog')
 		} catch (error) {

@@ -14,7 +14,7 @@ const BrandFilter = ({ isActive, brandName, setActiveBrands, removeActiveBrand }
 		<article
 			className={`${
 				isActive ? 'bg-accentBg text-[#333333] fond-bold' : 'bg-quaternaryBg text-secondary'
-			} cursor-pointer px-3 py-1 text-lg my-3 rounded-[8px]`}
+			} cursor-pointer px-3 py-1 text-lg my-3 rounded-[8px] select-none`}
 			onClick={() => {
 				if (isActive) removeActiveBrand('brands', brandName)
 				if (!isActive) setActiveBrands('brands', brandName)

@@ -49,7 +49,7 @@ const Cars = () => {
 	if (error) return <h1>Произошла ошибка</h1>
 
 	return (
-		<section className='grid grid-cols-3 gap-x-14 gap-y-8 items-start self-start'>
+		<section className='grid grid-cols-3 gap-x-14 gap-y-10 items-start self-start'>
 			{role !== UserRole.USER && <AddCarTrigger />}
 
 			{allCars.map(car => {

@@ -130,7 +130,7 @@ const AddCarModal = ({ onClose }: Props) => {
 	}, [currentBrand])
 
 	return (
-		<Modal title='Новый автомобиль' options={modalOptions}>
+		<Modal title='Добавление автомобиля' options={modalOptions}>
 			<Select
 				edit={true}
 				title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
