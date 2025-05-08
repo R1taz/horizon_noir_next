@@ -14,7 +14,7 @@ const EditCarTrigger = ({ car, photos }: Props) => {
 		<>
 			<button
 				onClick={() => setIsOpen(true)}
-				className='text-[#333333] bg-accentBg text-center w-full font-bold rounded-[5px] py-1 mt-4'
+				className='text-[#333333] bg-accentBg text-center w-full font-bold rounded-[5px] py-1 mt-3'
 			>
 				Редактировать
 			</button>

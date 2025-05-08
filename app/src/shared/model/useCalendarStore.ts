@@ -15,7 +15,7 @@ interface CalendarStore {
 export const useCalendarStore = create<CalendarStore>()(
 	immer(set => ({
 		startYear: 2025,
-		endYear: 2025,
+		endYear: 2027,
 		year: null,
 		month: null,
 		day: null,

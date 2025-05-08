@@ -104,7 +104,7 @@ const EditCarModal = ({ car, carPhotos, onClose }: Props) => {
 	if (isLoading) return <div>Loading</div>
 
 	return (
-		<Modal title='Редактировать автомобиль' options={modalOptions}>
+		<Modal title='Редактирование автомобиля' options={modalOptions}>
 			<Select
 				edit={false}
 				title={car.brand}

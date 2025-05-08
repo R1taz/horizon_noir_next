@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 interface Props {
 	title: string
@@ -7,29 +7,47 @@ interface Props {
 }
 
 const Modal = ({ title, options, children }: Props) => {
+	useEffect(() => {
+		const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
+		const originalPaddingRight = parseFloat(getComputedStyle(document.body).paddingRight)
+
+		console.log(scrollBarWidth)
+		document.body.style.overflow = 'hidden'
+		document.body.style.paddingRight = `${originalPaddingRight + scrollBarWidth}px`
+
+		return () => {
+			document.body.style.overflow = ''
+			document.body.style.paddingRight = ''
+		}
+	}, [])
+
 	return (
-		<article className='absolute bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-10'>
-			<h1 className='text-accent text-2xl font-bold mt-2 mb-5'>{title}</h1>
+		<article className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px]'>
+			<article className='bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-50 max-h-[95vh] w-[50%] overflow-y-scroll'>
+				<h1 className='text-accent text-2xl font-bold mt-1 mb-5'>{title}</h1>
 
-			<div className='my-2 relative'>
-				<div className='relative top-0 left-1/2 -ml-[50vw] w-screen h-[2px] bg-accentBg'></div>
-			</div>
+				<div className='my-2 mb-5 relative w-full'>
+					<div className='-mx-5 h-[2px] bg-accentBg'></div>
+				</div>
 
-			{children}
+				{children}
 
-			<section className='flex flex-col gap-3 my-5'>
-				{options.map((option, idx) => (
-					<button
-						key={option.label}
-						className={`w-[50%] py-1 mx-auto text-xl font-bold ${idx === 0 ? 'bg-accentBg' : ''} ${
-							idx === 1 ? 'border-2 border-accentBg' : ''
-						} ${idx === 1 ? 'text-accent' : 'text-[#292929]'} rounded-[7px]`}
-						onClick={option.action}
-					>
-						{option.label}
-					</button>
-				))}
-			</section>
+				<section className='flex flex-col gap-3 my-5'>
+					{options.map((option, idx) => (
+						<button
+							key={option.label}
+							className={`w-[50%] py-1 mx-auto text-xl font-bold ${
+								idx === 0 ? 'bg-accentBg' : ''
+							} ${idx === 1 ? 'border-2 border-accentBg' : ''} ${
+								idx === 1 ? 'text-accent' : 'text-[#292929]'
+							} rounded-[7px]`}
+							onClick={option.action}
+						>
+							{option.label}
+						</button>
+					))}
+				</section>
+			</article>
 		</article>
 	)
 }
