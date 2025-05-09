@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthStore>()(
 			}),
 		setAuthData: (isAuth, role) =>
 			set(state => {
-				state.isAuth = isAuth ? isAuth : state.isAuth
+				state.isAuth = isAuth !== null ? isAuth : state.isAuth
 				state.role = role !== 'no role' ? role : null
 			}),
 	}))

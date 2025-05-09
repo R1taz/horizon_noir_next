@@ -30,11 +30,13 @@ const Orders = () => {
 
 	const router = useRouter()
 
-	const {
-		data: dataOrders,
-		isLoading,
-		error,
-	} = useGetOrders(statusOrders, role!, page, pageSize, role === 'user' ? userId! : undefined)
+	const { data: dataOrders, error } = useGetOrders(
+		statusOrders,
+		role!,
+		page,
+		pageSize,
+		role === 'user' ? userId! : undefined
+	)
 
 	useEffect(() => {
 		if (error) {
@@ -45,12 +47,10 @@ const Orders = () => {
 		}
 
 		if (dataOrders) {
-			setOrders(dataOrders.orders.reverse())
+			setOrders([...dataOrders.orders].reverse())
 			setTotalCountOrders(dataOrders.total)
 		}
 	}, [dataOrders, error])
-
-	if (isLoading) return <h1 className='text-primary'>Loading...</h1>
 
 	return (
 		<article className='bg-quaternaryBg rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>

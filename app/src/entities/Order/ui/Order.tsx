@@ -182,7 +182,7 @@ const Order = ({ order }: Props) => {
 				{order.refund_message && <Field title='Причина возврата' info={order.refund_message} />}
 
 				{order.payment_parking_day && order.payment_status !== PaymentStatus.AWAITING_FINAL && (
-					<Field title='Сумма за день паркинга' info={String(order.payment_parking_day)} />
+					<Field title='Сумма за день паркинга' info={formatPrice(+order.payment_parking_day)} />
 				)}
 				{order.number_parking_day !== null &&
 					order.payment_status !== PaymentStatus.AWAITING_FINAL && (
