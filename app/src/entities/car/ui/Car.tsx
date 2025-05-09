@@ -34,17 +34,21 @@ const Car = ({ car, photos, role }: Props) => {
 
 	return (
 		<article className='relative flex flex-col'>
-			<Image
-				src={removeCarImg}
-				alt='Удалить автомобиль'
-				className='absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
-				onClick={handleRemoveCar}
-			/>
-			<img
-				src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
-				alt='Фото автомобиля'
-				className='rounded-[8px] h-[250px] object-cover'
-			/>
+			<article className='relative w-full h-[250px] bg-tertiaryBg rounded-[9px]'>
+				<Image
+					src={removeCarImg}
+					alt='Удалить автомобиль'
+					className='absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer'
+					onClick={handleRemoveCar}
+				/>
+				<Image
+					src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
+					alt='Фото автомобиля'
+					className='rounded-[8px] object-cover w-[350px] h-[250px]'
+					width={350}
+					height={250}
+				/>
+			</article>
 
 			<h1 className='pt-3 pb-[0.5px] text-lg text-primary'>
 				{car.brand} {car.model}

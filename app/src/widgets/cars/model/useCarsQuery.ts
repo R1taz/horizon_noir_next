@@ -17,5 +17,6 @@ export const useCarsQuery = ({ pageSize, filters }: Params) => {
 			const hasMore = lastPage.length === pageSize
 			return hasMore ? allPages.length + 1 : undefined
 		},
+		placeholderData: prev => prev,
 	})
 }

@@ -15,7 +15,7 @@ const Cars = () => {
 	const filters = useCarFiltersStore(state => state.filters)
 	const observerRef = useRef<HTMLDivElement | null>(null)
 
-	const { data, isFetchingNextPage, hasNextPage, fetchNextPage, isLoading, error } = useCarsQuery({
+	const { data, isFetchingNextPage, hasNextPage, fetchNextPage, error } = useCarsQuery({
 		pageSize,
 		filters,
 	})
@@ -45,7 +45,6 @@ const Cars = () => {
 		}
 	}, [data])
 
-	if (isLoading) return <h1>Loading cars...</h1>
 	if (error) return <h1>Произошла ошибка</h1>
 
 	return (

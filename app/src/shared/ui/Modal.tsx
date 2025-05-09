@@ -11,7 +11,6 @@ const Modal = ({ title, options, children }: Props) => {
 		const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
 		const originalPaddingRight = parseFloat(getComputedStyle(document.body).paddingRight)
 
-		console.log(scrollBarWidth)
 		document.body.style.overflow = 'hidden'
 		document.body.style.paddingRight = `${originalPaddingRight + scrollBarWidth}px`
 
