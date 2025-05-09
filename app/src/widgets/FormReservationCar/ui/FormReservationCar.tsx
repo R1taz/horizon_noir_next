@@ -20,7 +20,6 @@ const FormReservationCar = () => {
 	const day = useCalendarStore(state => state.day)
 
 	const [methodPayment, setMethodPayment] = useState<PaymentMethod>(PaymentMethod.CARD)
-	const [reservationDate, setReservationDate] = useState('2025-05-15T17:27:00.000Z')
 
 	const socket = useWebSocket()
 
@@ -30,7 +29,7 @@ const FormReservationCar = () => {
 			user_id: userId!,
 			car_id: +carId,
 			payment_method: methodPayment,
-			reservation_date: new Date(year!, month!, day!),
+			reservation_date: new Date(year!, month!, day!, 0, 59),
 		})
 	}
 

@@ -6,6 +6,7 @@ import { OrderEvent } from '../types/orders'
 import { useUserStore } from '../model/useUserStore'
 import { ReservationEvent } from '../types/reservations'
 import { useReservationStore } from '../model/useReservationStore'
+import { useQueryClient } from '@tanstack/react-query'
 
 const WebSocketContext = createContext<WebSocket | null>(null)
 
@@ -16,6 +17,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 	const updateOrder = useOrdersStore(state => state.updateOrder)
 	const updateReservation = useReservationStore(state => state.updateReservation)
 	const increaseNumberOfWarn = useUserStore(state => state.increaseNumberOfWarn)
+
+	const queryClient = useQueryClient()
 
 	useEffect(() => {
 		const socket = new WebSocket('ws://localhost:5000')
@@ -47,17 +50,18 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					if (data.type === OrderEvent.FAIL || data.type === OrderEvent.APPROVE_CANCEL) {
 						updateOrder(data.payload.order)
 						if (data.payload.isWarn) increaseNumberOfWarn()
-					} else if (data.type === OrderEvent.COMPLETE_PAYMENT) {
-						updateOrder(data.payload.reservation)
 					} else {
 						updateOrder(data.payload)
 					}
+					queryClient.invalidateQueries({ queryKey: ['orders'] })
 				}
 
 				if (
 					data.type === ReservationEvent.FAIL ||
 					data.type === ReservationEvent.PAYMENT ||
-					data.type === ReservationEvent.CREATE_CANCEL
+					data.type === ReservationEvent.CREATE_CANCEL ||
+					data.type === ReservationEvent.COMPLETE_PAYMENT ||
+					data.type === ReservationEvent.COMPLETE_REFUND
 				) {
 					if (data.type === ReservationEvent.FAIL || data.type === ReservationEvent.CREATE_CANCEL) {
 						updateReservation(data.payload.reservation)
@@ -65,6 +69,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					} else {
 						updateReservation(data.payload)
 					}
+					queryClient.invalidateQueries({ queryKey: ['reservations'] })
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)

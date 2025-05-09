@@ -14,5 +14,6 @@ export const useGetOrders = (
 	return useQuery<{ orders: IOrder[]; total: number }>({
 		queryKey: ['orders', role, status, page],
 		queryFn: () => getOrders(status, page, pageSize, userId),
+		placeholderData: prev => prev,
 	})
 }

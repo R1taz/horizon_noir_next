@@ -13,8 +13,8 @@ const page = () => {
 				<ProfileInfo />
 				<ProfileSettings />
 				<ProfileSecurity />
-				{/* <Orders /> */}
-				<Reservations />
+				<Orders />
+				{/* <Reservations /> */}
 			</main>
 		</AuthProvider>
 	)

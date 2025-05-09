@@ -18,7 +18,7 @@ const page = () => {
 		<AuthProvider>
 			<main>
 				<BreadCrumbs />
-				<section className='grid grid-cols-[280px_1fr] gap-6'>
+				<section className='grid grid-cols-[290px_1fr] gap-6'>
 					<Filters />
 					<Cars />
 				</section>

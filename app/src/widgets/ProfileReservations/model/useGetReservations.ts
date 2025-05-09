@@ -17,5 +17,6 @@ export const useGetReservations = ({ status, role, page, pageSize, userId }: Par
 	return useQuery<{ reservations: IReservation[]; total: number }>({
 		queryKey: ['reservations', role, status, page],
 		queryFn: () => getReservations(status, page, pageSize, userId),
+		placeholderData: prev => prev,
 	})
 }

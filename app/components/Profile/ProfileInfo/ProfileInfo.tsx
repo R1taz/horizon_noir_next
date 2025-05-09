@@ -23,13 +23,12 @@ const ProfileInfo = () => {
 	const handleLogout = async () => {
 		try {
 			await mutateAsync()
+			router.replace('/login')
 			setAuthData(false, 'no role')
 			user.setUser(null)
-			router.replace('/login')
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
 				setAuthData(false, 'no role')
-				router.replace('/login')
 			}
 		}
 	}

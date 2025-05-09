@@ -30,11 +30,7 @@ const Reservations = () => {
 
 	const router = useRouter()
 
-	const {
-		data: dataReservations,
-		isLoading,
-		error,
-	} = useGetReservations({
+	const { data: dataReservations, error } = useGetReservations({
 		status: statusReservations,
 		role: role!,
 		page,
@@ -55,8 +51,6 @@ const Reservations = () => {
 			setTotalCountReservations(dataReservations.total)
 		}
 	}, [dataReservations, error])
-
-	if (isLoading) return <h1 className='text-primary'>Loading...</h1>
 
 	return (
 		<article className='bg-quaternaryBg rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>

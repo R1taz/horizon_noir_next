@@ -31,12 +31,12 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-primaryBg px-20`}
 			>
-				<WebSocketProvider>
-					<ReactQueryProvider>
+				<ReactQueryProvider>
+					<WebSocketProvider>
 						<Header />
 						{children}
-					</ReactQueryProvider>
-				</WebSocketProvider>
+					</WebSocketProvider>
+				</ReactQueryProvider>
 			</body>
 		</html>
 	)
