@@ -56,6 +56,10 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 					queryClient.invalidateQueries({ queryKey: ['orders'] })
 				}
 
+				if (data.type === ReservationEvent.CREATE) {
+					queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+				}
+
 				if (
 					data.type === ReservationEvent.FAIL ||
 					data.type === ReservationEvent.PAYMENT ||

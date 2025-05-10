@@ -49,6 +49,7 @@ const CalendarWeek = ({
 						key={number.id}
 						className={styles(statusBusy, number.value, number.month)}
 						onClick={() => {
+							if (statusBusy === 'full') return
 							if (number.value !== activeDay.day) {
 								setActiveDay(number.value)
 								if (number.month !== activeDay.month) setActiveMonth(number.month)
