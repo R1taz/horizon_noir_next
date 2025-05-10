@@ -2,7 +2,7 @@
 
 import StatusesOrders from '../../ProfileOrders/ui/StatusesOrders'
 import TypeOrders from '../../ProfileOrders/ui/TypeOrders'
-import { useGetReservations } from '../model/useGetReservations'
+import { useReservations } from '../model/useReservations'
 import { useAuthStore } from '../../cars'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useRouter } from 'next/navigation'
@@ -30,7 +30,7 @@ const Reservations = () => {
 
 	const router = useRouter()
 
-	const { data: dataReservations, error } = useGetReservations({
+	const { data: dataReservations, error } = useReservations({
 		status: statusReservations,
 		role: role!,
 		page,

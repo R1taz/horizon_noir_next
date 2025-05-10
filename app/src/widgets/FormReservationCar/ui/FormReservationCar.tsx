@@ -1,47 +1,46 @@
 'use client'
 
 import FormConsultation from '../../../../src/shared/ui/FormConsultation'
-import { useWebSocket } from '../../../shared/contexts/WebSocketContext'
 import Calendar from '@/app/src/features/calendar/ui/Calendar'
 import PaymentMethodReservation from './PaymentMethodReservation'
-import { createReservation } from '../api/createReservation'
-import { useUserStore } from '@/app/src/shared/model/useUserStore'
-import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PaymentMethod } from '@/app/src/shared/types/requests'
-import { useCalendarStore } from '@/app/src/shared/model/useCalendarStore'
+import ChooseTimeReservation from '@/app/src/features/choose-time-reservation/ui/ChooseTimeReservation'
+import { useReservationsForMonth } from '../model/useReservationsForMonth'
+import { IReservation } from '@/app/src/shared/types/reservations'
 
 const FormReservationCar = () => {
-	const userId = useUserStore(state => state.id)
-	const { carId } = useParams()
-
-	const year = useCalendarStore(state => state.year)
-	const month = useCalendarStore(state => state.month)
-	const day = useCalendarStore(state => state.day)
+	const [reservationsForMonth, setReservationsForMonth] = useState<IReservation[]>([])
+	const [isOpen, setIsOpen] = useState(false)
 
 	const [methodPayment, setMethodPayment] = useState<PaymentMethod>(PaymentMethod.CARD)
 
-	const socket = useWebSocket()
+	const handleSubmit = () => setIsOpen(true)
 
-	const handleSubmit = () => {
-		createReservation({
-			socket: socket!,
-			user_id: userId!,
-			car_id: +carId,
-			payment_method: methodPayment,
-			reservation_date: new Date(year!, month!, day!, 0, 59),
-		})
-	}
+	const { data } = useReservationsForMonth()
+
+	useEffect(() => {
+		if (data) {
+			setReservationsForMonth(data)
+		}
+	}, [data])
 
 	return (
 		<FormConsultation
 			title='Понравился автомобиль?'
 			description='Оставьте свои контакты, чтобы забронировать автомобиль'
-			titleAction='Оставить заявку'
+			titleAction='Выбрать время бронирования'
 			action={handleSubmit}
 		>
 			<PaymentMethodReservation methodPayment={methodPayment} setMethodPayment={setMethodPayment} />
-			<Calendar />
+			<Calendar reservationsForMonth={reservationsForMonth} />
+			{isOpen && (
+				<ChooseTimeReservation
+					reservationsForMonth={reservationsForMonth}
+					methodPayment={methodPayment}
+					onClose={() => setIsOpen(false)}
+				/>
+			)}
 		</FormConsultation>
 	)
 }

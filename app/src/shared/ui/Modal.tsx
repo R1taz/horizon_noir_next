@@ -21,13 +21,9 @@ const Modal = ({ title, options, children }: Props) => {
 	}, [])
 
 	return (
-		<article className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px]'>
-			<article className='bg-quaternaryBg border-2 border-accentBg rounded-[8px] p-5 z-50 max-h-[95vh] w-[50%] overflow-y-scroll'>
+		<article className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px] rounded-[8px]'>
+			<article className='bg-quaternaryBg rounded-[8px] p-5 z-50 max-h-[95vh] w-[50%] overflow-y-auto'>
 				<h1 className='text-accent text-2xl font-bold mt-1 mb-5'>{title}</h1>
-
-				<div className='my-2 mb-5 relative w-full'>
-					<div className='-mx-5 h-[2px] bg-accentBg'></div>
-				</div>
 
 				{children}
 
