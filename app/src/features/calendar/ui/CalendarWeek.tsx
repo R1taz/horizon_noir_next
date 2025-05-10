@@ -1,31 +1,61 @@
+import { IReservation } from '@/app/src/shared/types/reservations'
+import { CalendarNumber, StatusBusy } from '../model/types'
+import { findBusyDay } from '../model/findBusyDay'
+
 interface Props {
-	numberWeek: number[]
-	activeDay: number
-	setActiveDay: (day: number) => void
+	numberWeek: CalendarNumber[]
+	activeDay: { day: number; month: number }
+	reservationsForMonth: IReservation[]
+	setActiveDay: (day: number | null) => void
+	setActiveMonth: (month: number | null) => void
 }
 
-const CalendarWeek = ({ numberWeek, activeDay, setActiveDay }: Props) => {
-	const styles = (idx: number) => {
-		return `relative select-none cursor-pointer text-center py-2 z-10 ${
-			activeDay === idx
-				? 'text-accent font-bold after:content-[""] after:w-[25px] after:h-[25px] after:absolute after:top-1/2 after:left-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:z-0 after:rounded-full'
-				: 'text-primary'
-		}`
+const CalendarWeek = ({
+	numberWeek,
+	activeDay,
+	reservationsForMonth,
+	setActiveDay,
+	setActiveMonth,
+}: Props) => {
+	const styles = (status: StatusBusy, day: number, month: number) => {
+		const isActive = activeDay.day === day && activeDay.month === month
+
+		let stylesDay = 'relative select-none cursor-pointer text-center py-2 z-10'
+
+		if (activeDay.month !== month) {
+			stylesDay += ' text-[#535353]'
+			return stylesDay
+		}
+		if (status === 'empty' && !isActive) stylesDay += ' text-primary'
+		if (status === 'half' && !isActive) stylesDay += ' text-secondary'
+		if (status === 'full') stylesDay += ' text-[#1a1a1a]'
+
+		if (status !== 'full' && isActive) {
+			stylesDay +=
+				' text-[#1a1a1a] bg-accentBg font-bold after:absolute after:z-0 after:rounded-[8px]'
+		}
+		return stylesDay
 	}
 
 	return (
 		<>
-			{numberWeek.map((number, idx) => {
+			{numberWeek.map(number => {
+				const statusBusy =
+					activeDay.month === number.month
+						? findBusyDay(reservationsForMonth, number.value)
+						: 'empty'
 				return (
 					<span
-						key={number + idx}
-						className={styles(number)}
+						key={number.id}
+						className={styles(statusBusy, number.value, number.month)}
 						onClick={() => {
-							if (number === activeDay) setActiveDay(0)
-							else setActiveDay(number)
+							if (number.value !== activeDay.day) {
+								setActiveDay(number.value)
+								if (number.month !== activeDay.month) setActiveMonth(number.month)
+							}
 						}}
 					>
-						{number < 10 ? '0' + number : number}
+						{number.value < 10 ? '0' + number.value : number.value}
 					</span>
 				)
 			})}
