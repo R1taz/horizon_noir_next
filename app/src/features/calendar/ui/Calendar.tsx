@@ -14,7 +14,6 @@ const Calendar = ({ reservationsForMonth }: { reservationsForMonth: IReservation
 		calendar.setYear(new Date().getFullYear())
 		calendar.setMonth(new Date().getMonth())
 		calendar.setDay(new Date().getDate())
-		calendar.setHours(new Date().getHours())
 		return () => {
 			calendar.setYear(null)
 			calendar.setMonth(null)
