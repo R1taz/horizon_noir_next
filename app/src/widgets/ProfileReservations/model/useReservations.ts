@@ -13,7 +13,7 @@ interface Params {
 	userId?: number
 }
 
-export const useGetReservations = ({ status, role, page, pageSize, userId }: Params) => {
+export const useReservations = ({ status, role, page, pageSize, userId }: Params) => {
 	return useQuery<{ reservations: IReservation[]; total: number }>({
 		queryKey: ['reservations', role, status, page],
 		queryFn: () => getReservations(status, page, pageSize, userId),

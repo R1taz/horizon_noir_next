@@ -5,24 +5,23 @@ import MonthsYear from './MonthsYear'
 import ToggleYear from './ToggleYear'
 import { calculateCalendarDays } from '../model/calculateCalendarDays'
 import { useEffect } from 'react'
+import { IReservation } from '@/app/src/shared/types/reservations'
 
-const Calendar = () => {
+const Calendar = ({ reservationsForMonth }: { reservationsForMonth: IReservation[] }) => {
 	const calendar = useCalendarStore()
 
 	useEffect(() => {
-		if (!calendar.year || !calendar.month) {
-			calendar.setYear(new Date().getFullYear())
-			calendar.setMonth(new Date().getMonth())
-			calendar.setDay(new Date().getDate())
-		}
+		calendar.setYear(new Date().getFullYear())
+		calendar.setMonth(new Date().getMonth())
+		calendar.setDay(new Date().getDate())
+		calendar.setHours(new Date().getHours())
 		return () => {
 			calendar.setYear(null)
 			calendar.setMonth(null)
 			calendar.setDay(null)
+			calendar.setHours(null)
 		}
 	}, [])
-
-	if (!calendar.year || !calendar.month) return <div className='primary'>Skeleton</div>
 
 	const chunkedNumbers = calculateCalendarDays(calendar.year!, calendar.month!)
 
@@ -32,9 +31,11 @@ const Calendar = () => {
 		weeks.push(
 			<CalendarWeek
 				key={i}
-				activeDay={calendar.day!}
-				setActiveDay={calendar.setDay!}
+				activeDay={{ day: calendar.day!, month: calendar.month! }}
+				setActiveDay={calendar.setDay}
+				setActiveMonth={calendar.setMonth}
 				numberWeek={chunkedNumbers[i]}
+				reservationsForMonth={reservationsForMonth}
 			/>
 		)
 	}

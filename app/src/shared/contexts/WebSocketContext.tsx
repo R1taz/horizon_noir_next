@@ -70,6 +70,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						updateReservation(data.payload)
 					}
 					queryClient.invalidateQueries({ queryKey: ['reservations'] })
+					queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)

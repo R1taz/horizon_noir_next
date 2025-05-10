@@ -14,7 +14,7 @@ const FormConsultation = ({ title, description, titleAction, action, children }:
 			{children}
 			<button
 				onClick={action}
-				className='rounded-[8px] w-[85%] block mx-auto mt-10 mb-5 text-primary font-bold text-xl text-center bg-accentBg py-2'
+				className='rounded-[8px] w-[85%] block mx-auto mt-10 mb-5 text-[#333333] font-bold text-xl text-center bg-accentBg py-2'
 			>
 				{titleAction}
 			</button>
