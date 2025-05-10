@@ -21,7 +21,7 @@ export const useCalendarStore = create<CalendarStore>()(
 		year: new Date().getFullYear(),
 		month: new Date().getMonth(),
 		day: new Date().getDate(),
-		hours: new Date().getHours(),
+		hours: null,
 		setYear: year =>
 			set(state => {
 				state.year = year
