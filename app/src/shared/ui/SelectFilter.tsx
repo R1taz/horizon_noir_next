@@ -25,18 +25,17 @@ function SelectFilter<K extends keyof IFilters, T extends string | number>({
 
 	return (
 		<article className='my-9'>
-			<h2 className='text-2xl text-secondary'>{title}</h2>
+			<h2 className='text-2xl text-500'>{title}</h2>
 			<section>
 				{options.map((option, idx) => {
-					const styles =
-						filters && filters.find(i => i === option.value) ? 'bg-accentBg' : 'bg-quaternaryBg'
+					const styles = filters && filters.find(i => i === option.value) ? 'bg-accent' : 'bg-800'
 					return (
 						<article key={idx} className='flex items-center my-3'>
 							<div
 								className={`${styles} rounded-[4px] w-6 h-6 mr-3  cursor-pointer`}
 								onClick={() => handleClick(option.value)}
 							></div>
-							<span className='text-primary text-lg'>{option.label}</span>
+							<span className='text-400 text-lg'>{option.label}</span>
 						</article>
 					)
 				})}

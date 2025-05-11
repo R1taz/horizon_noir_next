@@ -42,7 +42,7 @@ const PlaceDelivery = (props: Props) => {
 					value={props.deliveryAddress}
 					onChange={e => props.setDeliveryAddress(e.target.value)}
 					placeholder='Введите адрес доставки'
-					className='outline-none bg-secondaryBg placeholder-[#535353] text-primary block py-2 px-2 rounded-[8px] w-[60%] mx-auto'
+					className=' bg-700 placeholder-[600] text-400 block py-2 px-2 rounded-[8px] w-[60%] mx-auto'
 				/>
 			)}
 		</>

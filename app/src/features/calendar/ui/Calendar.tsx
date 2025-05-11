@@ -41,12 +41,12 @@ const Calendar = ({ reservationsForMonth }: { reservationsForMonth: IReservation
 
 	return (
 		<section>
-			<h2 className='text-headlines text-xl text-center font-medium'>Выберите даты бронирования</h2>
+			<h2 className='text-300 text-xl text-center font-medium'>Выберите даты бронирования</h2>
 
-			<article className='mt-2 rounded-[8px] bg-quaternaryBg w-[85%] mx-auto px-7 py-3'>
+			<article className='mt-2 rounded-[8px] bg-800 w-[85%] mx-auto px-7 py-3'>
 				<ToggleYear />
 				<MonthsYear activeMonth={calendar.month!} setActiveMonth={calendar.setMonth!} />
-				<div className='bg-accentBg h-[2px] w-full my-3'></div>
+				<div className='bg-accent h-[2px] w-full my-3'></div>
 				<div className='grid grid-cols-7 w-full '>
 					<DaysWeek />
 					{weeks}

@@ -9,7 +9,7 @@ const ToggleYear = () => {
 	const setYear = useCalendarStore(state => state.setYear)
 
 	const stylesButton = (yearDisabled: number): string => {
-		return year === yearDisabled ? 'text-[#535353] cursor-pointer' : 'text-accent cursor-pointer'
+		return year === yearDisabled ? 'text-600 cursor-pointer' : 'text-accent cursor-pointer'
 	}
 
 	return (
@@ -22,7 +22,7 @@ const ToggleYear = () => {
 				>
 					{'<'}
 				</button>
-				<span className='text-primary font-semibold text-xl mx-2'>{year}</span>
+				<span className='text-400 font-semibold text-xl mx-2'>{year}</span>
 				<button
 					className={stylesButton(endYear)}
 					onClick={() => setYear(year! + 1)}

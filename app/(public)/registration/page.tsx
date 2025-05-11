@@ -35,10 +35,10 @@ const page = () => {
 			</h1>
 
 			<article className='row-start-2 row-end-3 col-start-2 col-end-3'>
-				<p className='text-secondary text-xl'>
+				<p className='text-500 text-xl'>
 					Присоединяйтесь к нашему автосалону — это больше, чем просто покупка автомобиля.
 				</p>
-				<p className='text-secondary text-xl mt-5'>
+				<p className='text-500 text-xl mt-5'>
 					Регистрация откроет доступ к личному кабинету, где вы сможете сохранять понравившиеся
 					модели, записываться на тест-драйвы, управлять своими заявками и получать индивидуальные
 					предложения.
@@ -48,7 +48,7 @@ const page = () => {
 					<input
 						{...register('name', { required: 'Это поле не может быть пустым' })}
 						placeholder='Имя'
-						className='outline-none block w-[60%] text-secondary  bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						className=' block w-[60%] text-500  bg-transparent border-b-600 border-b-[2px] text-xl pb-3'
 					/>
 					{errors.name && <p>{errors.name.message}</p>}
 
@@ -59,7 +59,7 @@ const page = () => {
 						})}
 						type='password'
 						placeholder='Пароль'
-						className='outline-none block w-[60%] text-secondary bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						className=' block w-[60%] text-500 bg-transparent border-b-600 border-b-[2px] text-xl pb-3'
 					/>
 					{errors.password && <p>{errors.password.message}</p>}
 
@@ -69,7 +69,7 @@ const page = () => {
 							pattern: { value: /^\S+@\S+$/i, message: 'Некорректный email' },
 						})}
 						placeholder='Email'
-						className='outline-none block w-[60%] text-secondary bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						className=' block w-[60%] text-500 bg-transparent border-b-600 border-b-[2px] text-xl pb-3'
 					/>
 					{errors.email && <p>{errors.email.message}</p>}
 
@@ -79,7 +79,7 @@ const page = () => {
 							pattern: { value: /^\+?\d[\d\s\-()]{9,14}$/, message: 'Некорректный номер телефона' },
 						})}
 						placeholder='Номер телефона'
-						className='outline-none block w-[60%] text-secondary bg-transparent border-b-tertiaryBg border-b-[2px] text-xl pb-3'
+						className=' block w-[60%] text-500 bg-transparent border-b-600 border-b-[2px] text-xl pb-3'
 					/>
 					{errors.phone_number && <p>{errors.phone_number.message}</p>}
 
@@ -87,9 +87,9 @@ const page = () => {
 						<input
 							{...register('terms', { required: 'Вы должны согласиться с условиями' })}
 							type='checkbox'
-							className='outline-none rounded-[8px] w-[20px] h-[20px]'
+							className=' rounded-[8px] w-[20px] h-[20px]'
 						/>
-						<label className='text-[#535353] ml-2 text-lg'>
+						<label className='text-600 ml-2 text-lg'>
 							Согласен на обработку персональных данных
 						</label>
 						{errors.terms && <p>{errors.terms.message}</p>}
@@ -97,17 +97,17 @@ const page = () => {
 
 					<button
 						type='submit'
-						className='outline-none mt-5 rounded-[5px] bg-accentBg font-bold text-xl text-[#333333] py-3 w-[320px]'
+						className=' mt-5 rounded-[5px] bg-accent font-bold text-xl text-700 py-3 w-[320px]'
 					>
 						Зарегистрироваться
 					</button>
 				</form>
 
-				<p className='my-7 text-[#535353] font-medium text-lg'>
+				<p className='my-7 text-600 font-medium text-lg'>
 					Аккаунт создан?
 					<Link
 						href='/login'
-						className='cursor-pointer text-accent ml-4 py-[3px] border-b-[2px] border-b-accentBg font-bold'
+						className='cursor-pointer text-accent ml-4 py-[3px] border-b-[2px] border-b-accent font-bold'
 					>
 						Войти
 					</Link>

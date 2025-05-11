@@ -7,7 +7,7 @@ interface Props {
 
 const MonthsYear = ({ activeMonth, setActiveMonth }: Props) => {
 	const styles = (idx: number) => {
-		return `cursor-pointer ${activeMonth === idx ? 'text-accent text-bold' : 'text-primary'}`
+		return `cursor-pointer ${activeMonth === idx ? 'text-accent text-bold' : 'text-400'}`
 	}
 
 	return (

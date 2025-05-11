@@ -92,7 +92,7 @@ const Order = ({ order }: Props) => {
 	const handleCompleteRefund = () => completeRefund({ socket: socket!, order_id: order.id })
 
 	return (
-		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
+		<article className='flex flex-col bg-700 rounded-[8px] pb-3'>
 			<img
 				src={
 					process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + order.main_photo_url.replace(/\\/g, '/')
@@ -100,7 +100,7 @@ const Order = ({ order }: Props) => {
 				alt='Фотография автомобиля'
 			/>
 
-			<h3 className='text-center text-headlines font-medium text-xl mt-3 mb-2'>
+			<h3 className='text-center text-300 font-medium text-xl mt-3 mb-2'>
 				{order.brand_name} {order.model_name}
 			</h3>
 			<section className='px-3 flex flex-col gap-3'>
@@ -238,17 +238,17 @@ const Order = ({ order }: Props) => {
 
 			<div className='flex flex-col my-5 gap-3'>
 				{isEdit && role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
-					<OrderButton type='primary' action={handleApproveOrder} title='Одобрить' />
+					<OrderButton type='400' action={handleApproveOrder} title='Одобрить' />
 				)}
 				{role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
 					<OrderButton
-						type={!isEdit ? 'primary' : 'secondary'}
+						type={!isEdit ? '400' : '500'}
 						action={() => setIsEdit(prev => !prev)}
 						title={!isEdit ? 'Редактировать' : 'Отменить редактирование'}
 					/>
 				)}
 				{!isEdit && role === UserRole.ADMIN && order.order_status === RequestStatus.PENDING && (
-					<OrderButton type='secondary' action={handleRejectOrder} title='Отклонить' />
+					<OrderButton type='500' action={handleRejectOrder} title='Отклонить' />
 				)}
 
 				{role === UserRole.USER &&
@@ -258,7 +258,7 @@ const Order = ({ order }: Props) => {
 					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
 						<OrderButton
 							title='Оплатить'
-							type='primary'
+							type='400'
 							action={() => {
 								if (order.payment_status === PaymentStatus.AWAITING_PREPAYMENT) {
 									handlePaymentOrder(PaymentStatus.PREPAYMENT_DONE)
@@ -270,39 +270,31 @@ const Order = ({ order }: Props) => {
 					)}
 
 				{role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_PREPAYMENT && (
-					<OrderButton title='Отменить заказ' type='secondary' action={handleFailOrder} />
+					<OrderButton title='Отменить заказ' type='500' action={handleFailOrder} />
 				)}
 
 				{((role === UserRole.USER && order.payment_status === PaymentStatus.PREPAYMENT_DONE) ||
 					(role === UserRole.USER && order.payment_status === PaymentStatus.AWAITING_FINAL) ||
 					(role === UserRole.USER && order.payment_status === PaymentStatus.DEBT)) &&
 					(order.refund_status === null || order.refund_status === RefundStatus.FAILED) && (
-						<OrderButton title='Отменить заказ' type='secondary' action={handleCancelOrder} />
+						<OrderButton title='Отменить заказ' type='500' action={handleCancelOrder} />
 					)}
 
 				{role === UserRole.ADMIN &&
 					order.payment_status === PaymentStatus.AWAITING_FINAL &&
 					(!order.refund_status || order.refund_status === RefundStatus.FAILED) && (
-						<OrderButton title='Создать задолженность' type='primary' action={handleCreateDebt} />
+						<OrderButton title='Создать задолженность' type='400' action={handleCreateDebt} />
 					)}
 
 				{role === UserRole.ADMIN && order.refund_status === RefundStatus.PENDING && (
 					<>
-						<OrderButton
-							title='Одобрить возврат'
-							type='primary'
-							action={handleApproveCancelOrder}
-						/>
-						<OrderButton
-							title='Отклонить возврат'
-							type='secondary'
-							action={handleRejectCancelOrder}
-						/>
+						<OrderButton title='Одобрить возврат' type='400' action={handleApproveCancelOrder} />
+						<OrderButton title='Отклонить возврат' type='500' action={handleRejectCancelOrder} />
 					</>
 				)}
 
 				{role === UserRole.ADMIN && order.refund_status === RefundStatus.IN_PROGRESS && (
-					<OrderButton title='Совершить возврат' type='primary' action={handleCompleteRefund} />
+					<OrderButton title='Совершить возврат' type='400' action={handleCompleteRefund} />
 				)}
 			</div>
 		</article>

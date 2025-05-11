@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import EditCarModal from './EditCarModal'
 import { ICarInfo, ICarPhoto } from '@/app/interfaces/carsInterface'
+import { AnimatePresence } from 'framer-motion'
 
 interface Props {
 	car: ICarInfo
@@ -14,12 +15,21 @@ const EditCarTrigger = ({ car, photos }: Props) => {
 		<>
 			<button
 				onClick={() => setIsOpen(true)}
-				className='text-[#333333] bg-accentBg text-center w-full font-bold rounded-[5px] py-1 mt-3'
+				className='bottom-0 left-0 right-0 text-700 bg-accent text-center w-full font-bold rounded-[5px] py-1 mt-3'
 			>
 				Редактировать
 			</button>
 
-			{isOpen && <EditCarModal car={car} carPhotos={photos} onClose={() => setIsOpen(false)} />}
+			<AnimatePresence mode='wait'>
+				{isOpen && (
+					<EditCarModal
+						key='edit-car-modal'
+						car={car}
+						carPhotos={photos}
+						onClose={() => setIsOpen(false)}
+					/>
+				)}
+			</AnimatePresence>
 		</>
 	)
 }

@@ -17,11 +17,7 @@ interface Props {
 }
 
 const Reservation = ({ reservation }: Props) => {
-	const userId = useUserStore(state => state.id)
 	const role = useAuthStore(state => state.role)
-
-	const [amount, setAmount] = useState('')
-	const [percentPrepaymentAmount, setPercentPrepaymentAmount] = useState('')
 
 	const socket = useWebSocket()
 
@@ -64,14 +60,14 @@ const Reservation = ({ reservation }: Props) => {
 						<>
 							<RequestButton
 								title='Оплатить'
-								type='primary'
+								type='400'
 								action={() => {
 									handlePaymentReservation(PaymentStatus.PREPAYMENT_DONE)
 								}}
 							/>
 							<RequestButton
 								title='Отменить бронирование'
-								type='secondary'
+								type='500'
 								action={() => {
 									handleFailReservation()
 								}}
@@ -80,7 +76,7 @@ const Reservation = ({ reservation }: Props) => {
 					)}
 
 				{role === UserRole.USER && reservation.payment_status === PaymentStatus.AWAITING_FINAL && (
-					<RequestButton title='Оплатить' type='primary' action={handleCompletePayment} />
+					<RequestButton title='Оплатить' type='400' action={handleCompletePayment} />
 				)}
 
 				{role === UserRole.USER &&
@@ -88,13 +84,13 @@ const Reservation = ({ reservation }: Props) => {
 						reservation.payment_status === PaymentStatus.AWAITING_FINAL) && (
 						<RequestButton
 							title='Отменить бронирование'
-							type='secondary'
+							type='500'
 							action={handleCancelReservation}
 						/>
 					)}
 
 				{role === UserRole.ADMIN && reservation.refund_status === RefundStatus.IN_PROGRESS && (
-					<RequestButton title='Совершить возврат' type='primary' action={handleCompleteRefund} />
+					<RequestButton title='Совершить возврат' type='400' action={handleCompleteRefund} />
 				)}
 			</div>
 		</Request>

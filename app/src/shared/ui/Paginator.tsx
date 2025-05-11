@@ -20,13 +20,13 @@ export const Paginator = ({ page, portionSize, totalCountPages, changePage }: Pr
 					breakLabel='...'
 					nextLabel='›'
 					previousLabel='‹'
-					containerClassName='bg-secondaryBg w-[50%] mx-auto rounded-[8px] py-2 flex justify-center items-center gap-2 mt-6'
-					pageLinkClassName='text-primary'
-					activeClassName='!bg-accentBg !text-[#535353]'
-					previousClassName='font-bold px-3 py-1 text-primary rounded-[8px] hover:bg-accentBg hover:text-[#535353]'
-					nextClassName='font-bold px-3 py-1 text-accent rounded-[8px] hover:bg-accentBg hover:text-[#535353]'
-					disabledClassName='!text-[#535353] pointer-events-none'
-					breakClassName='pointer-events-none text-primary px-2'
+					containerClassName='bg-700 w-[50%] mx-auto rounded-[8px] py-2 flex justify-center items-center gap-2 mt-6'
+					pageLinkClassName='text-400'
+					activeClassName='!bg-accent !text-[600]'
+					previousClassName='font-bold px-3 py-1 text-400 rounded-[8px] hover:bg-accent hover:text-[600]'
+					nextClassName='font-bold px-3 py-1 text-accent rounded-[8px] hover:bg-accent hover:text-[600]'
+					disabledClassName='!text-[600] pointer-events-none'
+					breakClassName='pointer-events-none text-400 px-2'
 				/>
 			)}
 		</>

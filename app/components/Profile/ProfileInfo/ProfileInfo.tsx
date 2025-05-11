@@ -34,34 +34,34 @@ const ProfileInfo = () => {
 	}
 
 	return (
-		<article className='mr-5 p-4 pb-0 bg-quaternaryBg rounded-[8px] col-start-1 col-end-2 row-start-1 row-end-3'>
+		<article className='mr-5 p-4 pb-0 bg-800 rounded-[8px] col-start-1 col-end-2 row-start-1 row-end-3'>
 			<Image src={logo} alt='Фотография пользователя' className='rounded-t-[5px]' />
-			<div className='h-[2px] bg-tertiaryBg'></div>
+			<div className='h-[2px] bg-600'></div>
 
 			<section className='px-5'>
 				<div className='py-5'>
-					<h2 className='text-2xl font-medium text-primary'>Мой профиль</h2>
-					<p className='py-2 text-secondary'>Зарегистрирован {formateDate(user.created_at!)}</p>
+					<h2 className='text-2xl font-medium text-400'>Мой профиль</h2>
+					<p className='py-2 text-500'>Зарегистрирован {formateDate(user.created_at!)}</p>
 				</div>
 
-				<div className='flex justify-between py-4 border-b-[2px] border-b-tertiaryBg'>
-					<span className='text-primary text-xl'>{user.name}</span>
-					<span className='text-primary text-xl'>{formatPhoneNumber(user.phoneNumber)}</span>
+				<div className='flex justify-between py-4 border-b-[2px] border-b-600'>
+					<span className='text-400 text-xl'>{user.name}</span>
+					<span className='text-400 text-xl'>{formatPhoneNumber(user.phoneNumber)}</span>
 				</div>
 
-				<div className='py-4 border-b border-b-[2px] border-b-tertiaryBg'>
-					<span className='text-primary text-xl'>{user.email}</span>
+				<div className='py-4 border-b border-b-[2px] border-b-600'>
+					<span className='text-400 text-xl'>{user.email}</span>
 				</div>
 
-				<div className='py-4 border-b border-b-[2px] border-b-tertiaryBg'>
-					<span className='text-primary text-xl'>{roleTypeToRu[userRole!]}</span>
+				<div className='py-4 border-b border-b-[2px] border-b-600'>
+					<span className='text-400 text-xl'>{roleTypeToRu[userRole!]}</span>
 				</div>
 			</section>
 
 			<div className='flex flex-col gap-5 px-5 my-7'>
 				<button
 					onClick={handleLogout}
-					className='bg-accentBg font-bold text-lg py-[5px] text-[#333333] rounded-[8px] block'
+					className='bg-accent font-bold text-lg py-[5px] text-700 rounded-[8px] block'
 				>
 					Выйти из аккаунта
 				</button>

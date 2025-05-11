@@ -5,7 +5,7 @@ import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import Modal from '@/app/src/shared/ui/Modal'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 import Select from '@/app/src/shared/ui/Select'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
 import CarPhotos from './CarPhotos'
 import { useAddCar } from '../model/useAddCar'
@@ -17,11 +17,13 @@ import { useRouter } from 'next/navigation'
 
 interface Props {
 	onClose: () => void
+	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
+	setMessageNotification: Dispatch<SetStateAction<string>>
 }
 
 type IOption = { label: string; id: number | null }
 
-const AddCarModal = ({ onClose }: Props) => {
+const AddCarModal = ({ onClose, setIsOpenNotification, setMessageNotification }: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
 	const brands = useBrandsStore(state => state.brands)
 	const addCar = useCarsStore(state => state.addCar)
@@ -40,6 +42,7 @@ const AddCarModal = ({ onClose }: Props) => {
 	const [currentStatusCar, setCurrentStatusCar] = useState<CarStatus>(CarStatus.STOCK)
 	const [dealershipId, setDealershipId] = useState<number>(carDealerships[0].id)
 	const [photos, setPhotos] = useState<File[]>([])
+
 	const [mainPhotoId, setMainPhotoId] = useState()
 	const [year, setYear] = useState('')
 	const [vin, setVin] = useState('')
@@ -85,9 +88,22 @@ const AddCarModal = ({ onClose }: Props) => {
 			label: 'Добавить автомобиль',
 			action: async () => {
 				try {
-					if (!currentModel.id || !vin || !price || !year) return
-					if (+year < 2016 || +year > 2025) return
-					if (+price < 0 || +price > 99999999999) return
+					if (!currentModel.id || !vin || !price || !year) {
+						setIsOpenNotification(true)
+						if (!currentModel.id) setMessageNotification('Вы не выбрали модель автомобиля')
+						else
+							setMessageNotification(
+								`Вы не ввели ${!vin ? 'VIN-номер' : !price ? 'цену' : 'год'} автомобиля`
+							)
+					}
+					if (+year < 2016 || +year > 2025) {
+						setIsOpenNotification(true)
+						setMessageNotification('Вы ввели некорректный год автомобиля')
+					}
+					if (+price < 0 || +price > 99999999999) {
+						setIsOpenNotification(true)
+						setMessageNotification('Вы ввели некорректную цену автомобиля')
+					}
 
 					const formData = new FormData()
 					photos.forEach(photo => {
@@ -104,6 +120,9 @@ const AddCarModal = ({ onClose }: Props) => {
 					const newCar = await mutateAsync(formData)
 					addCar(newCar)
 					queryClient.invalidateQueries({ queryKey: ['cars'] })
+
+					setIsOpenNotification(true)
+					setMessageNotification('Автомобиль успешно добавлен')
 
 					setCurrentBrand({ label: '', id: null })
 					setCurrentModel({ label: '', id: null })
@@ -130,48 +149,50 @@ const AddCarModal = ({ onClose }: Props) => {
 	}, [currentBrand])
 
 	return (
-		<Modal title='Добавление автомобиля' options={modalOptions}>
-			<Select
-				edit={true}
-				title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
-				bg='secondaryBg'
-				value={currentBrand.id!}
-				options={brandOptions}
-			/>
-			{isLoading && (
-				<Select
-					edit={false}
-					title={'Выберите модель'}
-					bg='secondaryBg'
-					value={currentModel.id!}
-					options={modelsOptions!}
-				/>
-			)}
-			{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
-			{currentBrand.id !== null && !isLoading && !error && (
+		<>
+			<Modal title='Добавление автомобиля' options={modalOptions}>
 				<Select
 					edit={true}
-					title={!currentModel.id ? 'Выберите модель' : currentModel.label}
-					bg='secondaryBg'
-					value={currentModel.id!}
-					options={modelsOptions!}
+					title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
+					bg='700'
+					value={currentBrand.id!}
+					options={brandOptions}
 				/>
-			)}
-			<RadioGroup
-				title='Выберите статус автомобиля'
-				options={radioOptions}
-				value={currentStatusCar}
-				onChange={status => setCurrentStatusCar(status)}
-			/>
+				{isLoading && (
+					<Select
+						edit={false}
+						title='Выберите модель'
+						bg='700'
+						value={currentModel.id!}
+						options={modelsOptions!}
+					/>
+				)}
+				{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
+				{currentBrand.id !== null && !isLoading && !error && (
+					<Select
+						edit={true}
+						title={!currentModel.id ? 'Выберите модель' : currentModel.label}
+						bg='700'
+						value={currentModel.id!}
+						options={modelsOptions!}
+					/>
+				)}
+				<RadioGroup
+					title='Выберите статус автомобиля'
+					options={radioOptions}
+					value={currentStatusCar}
+					onChange={status => setCurrentStatusCar(status)}
+				/>
 
-			<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
-			<CarInfo options={carInfoOptions} />
-			<CarPhotos
-				photos={photos}
-				addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
-				removePhoto={photo => setPhotos(prev => prev.filter(item => item.name !== photo.name))}
-			/>
-		</Modal>
+				<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
+				<CarInfo options={carInfoOptions} />
+				<CarPhotos
+					photos={photos}
+					addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
+					removePhoto={photo => setPhotos(prev => prev.filter(item => item.name !== photo.name))}
+				/>
+			</Modal>
+		</>
 	)
 }
 

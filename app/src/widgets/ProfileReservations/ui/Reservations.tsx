@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
 import { useReservationStore } from '@/app/src/shared/model/useReservationStore'
 import Reservation from '@/app/src/entities/Reservation/ui/Reservation'
+import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
 
 const Reservations = () => {
 	const userId = useUserStore(state => state.id)
@@ -30,7 +31,11 @@ const Reservations = () => {
 
 	const router = useRouter()
 
-	const { data: dataReservations, error } = useReservations({
+	const {
+		data: dataReservations,
+		isLoading,
+		error,
+	} = useReservations({
 		status: statusReservations,
 		role: role!,
 		page,
@@ -53,13 +58,13 @@ const Reservations = () => {
 	}, [dataReservations, error])
 
 	return (
-		<article className='bg-quaternaryBg rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>
+		<article className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>
 			<header className='py-1 relative'>
-				<h2 className='text-2xl font-bold text-primary'>Мои заявки</h2>
+				<h2 className='text-2xl font-bold text-400'>Мои заявки</h2>
 			</header>
 
 			<div className='my-2 relative'>
-				<div className='w-full h-[2px] bg-tertiaryBg'></div>
+				<div className='w-full h-[2px] bg-600'></div>
 			</div>
 
 			<section className='flex justify-between mt-5'>
@@ -68,9 +73,16 @@ const Reservations = () => {
 			</section>
 
 			<section className='grid grid-cols-2 gap-8 mt-5'>
-				{reservations.map(reservation => (
-					<Reservation reservation={reservation} key={reservation.id} />
-				))}
+				{/* {isLoading && <Loader className='width-[250px] height-[250px]' />} */}
+				{isLoading && (
+					<section className='row-start-1 row-end-2 col-start-1 col-end-3'>
+						<Skeleton width={1000} height={500} count={2} flow='horizontal' />
+					</section>
+				)}
+				{!isLoading &&
+					reservations.map(reservation => (
+						<Reservation reservation={reservation} key={reservation.id} />
+					))}
 			</section>
 
 			<Paginator

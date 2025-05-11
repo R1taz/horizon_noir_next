@@ -2,13 +2,12 @@ import React from 'react'
 
 interface Props {
 	title: string
-	type: 'primary' | 'secondary'
+	type: '400' | '500'
 	action: () => void
 }
 
 const OrderButton = ({ title, type, action }: Props) => {
-	const styles =
-		type === 'primary' ? 'text-headlines bg-accentBg' : 'text-accent border-2 border-accentBg'
+	const styles = type === '400' ? 'text-300 bg-accent' : 'text-accent border-2 border-accent'
 
 	return (
 		<button
