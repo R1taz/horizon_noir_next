@@ -55,7 +55,7 @@ const Car = ({ car, photos, role, setMessageNotification, setIsOpenNotification 
 			variants={variantsCar}
 			initial='initial'
 			animate='animate'
-			transition={{ duration: 0.2, ease: easeOut }}
+			transition={{ duration: 0.3, ease: easeOut }}
 			className='flex flex-col h-[250px]'
 		>
 			<article
