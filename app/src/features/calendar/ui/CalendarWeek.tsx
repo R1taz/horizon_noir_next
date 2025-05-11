@@ -23,7 +23,7 @@ const CalendarWeek = ({
 		let stylesDay = 'relative select-none cursor-pointer text-center py-2 z-10'
 
 		if (activeDay.month !== month) {
-			stylesDay += ' text-[600]'
+			stylesDay += ' text-600'
 			return stylesDay
 		}
 		if (status === 'empty' && !isActive) stylesDay += ' text-400'

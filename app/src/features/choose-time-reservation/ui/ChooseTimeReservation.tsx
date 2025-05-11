@@ -15,9 +15,17 @@ interface Props {
 	reservationsForMonth: IReservation[]
 	methodPayment: PaymentMethod
 	onClose: () => void
+	setIsOpenNotification: React.Dispatch<React.SetStateAction<boolean>>
+	setMessageNotification: React.Dispatch<React.SetStateAction<string>>
 }
 
-const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }: Props) => {
+const ChooseTimeReservation = ({
+	reservationsForMonth,
+	methodPayment,
+	onClose,
+	setIsOpenNotification,
+	setMessageNotification,
+}: Props) => {
 	const userId = useUserStore(state => state.id)
 	const { carId } = useParams()
 
@@ -31,7 +39,10 @@ const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }:
 
 	const handleSubmit = () => {
 		if (!year || !month || !day || !calendarHours) {
-			console.log('Не выбрана полная дата')
+			setIsOpenNotification(true)
+			setMessageNotification(
+				`Вы не выбрали ${!year ? 'год' : !month ? 'месяц' : !day ? 'день' : 'время'} бронирования`
+			)
 			return
 		}
 
@@ -44,6 +55,8 @@ const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }:
 		})
 		setHours(null)
 		onClose()
+		setIsOpenNotification(true)
+		setMessageNotification('Заявка на бронирование успешно создана')
 	}
 
 	const modalOptions = [
@@ -121,7 +134,7 @@ const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }:
 		let stylesHour = 'rounded-[4px] w-6 h-6 mr-3 cursor-pointer'
 		if (hour === calendarHours && !isBusy) stylesHour += ' bg-accent'
 		if (hour !== calendarHours && !isBusy) stylesHour += ' bg-600'
-		if (isBusy) stylesHour += ' bg-[500]'
+		if (isBusy) stylesHour += ' bg-500'
 		return stylesHour
 	}
 

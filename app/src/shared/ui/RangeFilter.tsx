@@ -38,11 +38,11 @@ function RangeFilter<K extends keyof IFilters>({
 						className='flex-1 flex justify-between bg-800 text-500 text-lg text-center rounded-[8px] px-3 py-1'
 					>
 						<input
-							className='bg-800 w-full outline-none'
+							className='bg-800 w-full  placeholder:select-none'
 							onChange={e => handleChange(e.currentTarget.value, idx)}
 							placeholder={`${option}`}
 						/>
-						<span>{unit}</span>
+						<span className='select-none'>{unit}</span>
 					</article>
 				))}
 			</section>

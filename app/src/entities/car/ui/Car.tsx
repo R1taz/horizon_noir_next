@@ -5,16 +5,23 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/app/src/widgets/cars'
 import { useQueryClient } from '@tanstack/react-query'
 import EditCarTrigger from '@/app/src/features/edit-car/ui/EditCarTrigger'
-import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
-import Notification from '@/app/src/shared/ui/Notification/Notification'
+import { Dispatch, SetStateAction, useState } from 'react'
+import { easeOut, motion } from 'framer-motion'
 
-type Props = Omit<ICar, 'model'> & { role: UserRole }
+const variantsCar = {
+	initial: { y: 20, opacity: 0 },
+	animate: { y: 0, opacity: 1 },
+	exit: { y: 20, opacity: 0 },
+}
 
-const Car = ({ car, photos, role }: Props) => {
+type Props = Omit<ICar, 'model'> & {
+	role: UserRole
+	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
+	setMessageNotification: Dispatch<SetStateAction<string>>
+}
+
+const Car = ({ car, photos, role, setMessageNotification, setIsOpenNotification }: Props) => {
 	const [isHovered, setIsHovered] = useState(false)
-	const [isOpenNotification, setIsOpenNotification] = useState(false)
-	const [messageNotification, setMessageNotification] = useState('')
 
 	const setAuthData = useAuthStore(state => state.setAuthData)
 	const removeCar = useCarsStore(state => state.removeCar)
@@ -31,11 +38,6 @@ const Car = ({ car, photos, role }: Props) => {
 			setIsOpenNotification(true)
 			setMessageNotification('Автомобиль успешно удалён')
 
-			setTimeout(() => {
-				setIsOpenNotification(false)
-				setMessageNotification('')
-			}, 1000)
-
 			removeCar(car.id)
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
@@ -49,12 +51,13 @@ const Car = ({ car, photos, role }: Props) => {
 	if (!mainPhoto) return <h3>Ошибка: Отсутствует фотография автомобиля</h3>
 
 	return (
-		<article className='flex flex-col h-[250px]'>
-			<AnimatePresence mode='wait'>
-				{isOpenNotification && (
-					<Notification key='notification-remove' text={messageNotification} />
-				)}
-			</AnimatePresence>
+		<motion.article
+			variants={variantsCar}
+			initial='initial'
+			animate='animate'
+			transition={{ duration: 0.2, ease: easeOut }}
+			className='flex flex-col h-[250px]'
+		>
 			<article
 				className='relative w-full h-[250px] bg-600 rounded-t-[9px]'
 				onMouseEnter={() => setIsHovered(true)}
@@ -94,7 +97,7 @@ const Car = ({ car, photos, role }: Props) => {
 			>
 				Подробнее
 			</Link>
-		</article>
+		</motion.article>
 	)
 }
 

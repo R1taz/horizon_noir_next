@@ -17,7 +17,7 @@ function CarInfo({ options }: Props) {
 			<section className='flex justify-center text-lg gap-7'>
 				{options.map(option => (
 					<section className='flex flex-col items-center'>
-						<label className='py-1 outline-none rounded-[7px] text-500' htmlFor={option.label}>
+						<label className='py-1  rounded-[7px] text-500' htmlFor={option.label}>
 							{option.label}
 						</label>
 						<input
@@ -25,7 +25,7 @@ function CarInfo({ options }: Props) {
 							key={option.label}
 							value={option.value}
 							onChange={e => option.action(e.target.value)}
-							className='bg-700 py-1 outline-none text-center rounded-[7px] text-400 placeholder-[text-500]'
+							className='bg-700 py-1  text-center rounded-[7px] text-400 placeholder-[text-500]'
 						/>
 					</section>
 				))}

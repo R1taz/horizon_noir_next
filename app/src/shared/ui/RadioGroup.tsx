@@ -13,7 +13,7 @@ function RadioGroup<T>({ title, options, value, onChange }: Props<T>) {
 				{options.map((option, idx) => (
 					<div className='flex' key={idx}>
 						<div
-							className={`flex bg-accent rounded-[50%] w-7 h-7 ${
+							className={`flex rounded-[50%] w-7 h-7 ${
 								value === option.value ? 'bg-accent' : 'bg-700'
 							}`}
 							onClick={() => onChange(option.value)}

@@ -7,8 +7,14 @@ import { useCarsQuery } from './model/useCarsQuery'
 import { useCarFiltersStore } from '../../shared/model/useCarFiltersStore'
 import Loader from '@/app/assets/loader.svg'
 import Skeleton from '../../shared/ui/Skeleton/Skeleton'
+import Notification from '../../shared/ui/Notification/Notification'
+import { useNotification } from '../../shared/hooks/useNotification'
+import { AnimatePresence } from 'framer-motion'
 
 const Cars = () => {
+	const { isOpenNotification, setIsOpenNotification, messageNotification, setMessageNotification } =
+		useNotification()
+
 	const role = useAuthStore(state => state.role)
 
 	const setCars = useCarsStore(state => state.setCars)
@@ -52,18 +58,38 @@ const Cars = () => {
 	return (
 		<section className='grid grid-cols-3 gap-x-14 gap-y-10 items-start self-start'>
 			{isLoading && <Skeleton width={1050} height={70} />}
-			{!isLoading && role !== UserRole.USER && <AddCarTrigger />}
+			{!isLoading && role !== UserRole.USER && (
+				<AddCarTrigger
+					setIsOpenNotification={setIsOpenNotification}
+					setMessageNotification={setMessageNotification}
+				/>
+			)}
 
 			{isLoading && (
 				<Loader className='row-start-3 row-end-4 col-start-2 col-end-3  w-[250px] h-[250px] left-[50px]' />
 			)}
 			{!isLoading &&
 				allCars.map(car => {
-					return <Car car={car.car} photos={car.photos} role={role!} key={car.car.id} />
+					return (
+						<Car
+							setIsOpenNotification={setIsOpenNotification}
+							setMessageNotification={setMessageNotification}
+							car={car.car}
+							photos={car.photos}
+							role={role!}
+							key={car.car.id}
+						/>
+					)
 				})}
 
-			{isFetchingNextPage && <p>Загружаем ещё...</p>}
-			<div ref={observerRef} />
+			{isFetchingNextPage && <Loader />}
+			<article ref={observerRef} />
+
+			<AnimatePresence mode='wait'>
+				{isOpenNotification && (
+					<Notification key='notification-remove' text={messageNotification} />
+				)}
+			</AnimatePresence>
 		</section>
 	)
 }

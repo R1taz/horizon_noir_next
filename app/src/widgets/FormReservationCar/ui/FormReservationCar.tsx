@@ -8,12 +8,17 @@ import { PaymentMethod } from '@/app/src/shared/types/requests'
 import ChooseTimeReservation from '@/app/src/features/choose-time-reservation/ui/ChooseTimeReservation'
 import { useReservationsForMonth } from '../model/useReservationsForMonth'
 import { IReservation } from '@/app/src/shared/types/reservations'
+import { AnimatePresence } from 'framer-motion'
+import { useNotification } from '@/app/src/shared/hooks/useNotification'
+import Notification from '@/app/src/shared/ui/Notification/Notification'
 
 const FormReservationCar = () => {
 	const [reservationsForMonth, setReservationsForMonth] = useState<IReservation[]>([])
 	const [isOpen, setIsOpen] = useState(false)
-
 	const [methodPayment, setMethodPayment] = useState<PaymentMethod>(PaymentMethod.CARD)
+
+	const { isOpenNotification, setIsOpenNotification, messageNotification, setMessageNotification } =
+		useNotification()
 
 	const handleSubmit = () => setIsOpen(true)
 
@@ -26,22 +31,34 @@ const FormReservationCar = () => {
 	}, [data])
 
 	return (
-		<FormConsultation
-			title='Понравился автомобиль?'
-			description='Оставьте свои контакты, чтобы забронировать автомобиль'
-			titleAction='Выбрать время бронирования'
-			action={handleSubmit}
-		>
-			<PaymentMethodReservation methodPayment={methodPayment} setMethodPayment={setMethodPayment} />
-			<Calendar reservationsForMonth={reservationsForMonth} />
-			{isOpen && (
-				<ChooseTimeReservation
-					reservationsForMonth={reservationsForMonth}
+		<>
+			<FormConsultation
+				title='Понравился автомобиль?'
+				description='Оставьте свои контакты, чтобы забронировать автомобиль'
+				titleAction='Выбрать время бронирования'
+				action={handleSubmit}
+			>
+				<PaymentMethodReservation
 					methodPayment={methodPayment}
-					onClose={() => setIsOpen(false)}
+					setMethodPayment={setMethodPayment}
 				/>
-			)}
-		</FormConsultation>
+				<Calendar reservationsForMonth={reservationsForMonth} />
+				{isOpen && (
+					<ChooseTimeReservation
+						setMessageNotification={setMessageNotification}
+						setIsOpenNotification={setIsOpenNotification}
+						reservationsForMonth={reservationsForMonth}
+						methodPayment={methodPayment}
+						onClose={() => setIsOpen(false)}
+					/>
+				)}
+			</FormConsultation>
+			<AnimatePresence mode='wait'>
+				{isOpenNotification && (
+					<Notification key='notification-reservation' text={messageNotification} />
+				)}
+			</AnimatePresence>
+		</>
 	)
 }
 
