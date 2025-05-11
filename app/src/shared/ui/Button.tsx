@@ -1,7 +1,7 @@
 import { ReactElement } from 'react'
 
 type Props = {
-	type: 'primary' | 'secondary'
+	type: '400' | '500'
 	children: ReactElement
 	width?: number
 	py?: number
@@ -19,8 +19,8 @@ const Button = ({
 	mx = 'auto',
 	my = 'auto',
 }: Props) => {
-	const buttonColor = type === 'primary' ? '#D1A954' : 'transparent'
-	const border = type === 'secondary' ? 'border-2 border-accentBg' : ''
+	const buttonColor = type === '400' ? 'accent' : 'transparent'
+	const border = type === '500' ? 'border-2 border-accent' : ''
 	return (
 		<button
 			className={`${buttonColor} ${border} py=${py} px=${px} my=${my} mx=${mx} rounded-[8px] text-lg font-bold`}

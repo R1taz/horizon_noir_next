@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: Props) => {
 
 	const router = useRouter()
 
-	const { data: user, isLoading, error } = useAuthMe(isInitialized)
+	const { data: user, error } = useAuthMe(isInitialized)
 
 	useEffect(() => {
 		if (error && (error as any)?.response?.status === 401) {
@@ -35,9 +35,7 @@ const AuthProvider = ({ children }: Props) => {
 		}
 	}, [user, error])
 
-	if (isLoading) return <h1 className='text-primary'>Loading...</h1>
-
-	return <>{children}</>
+	return children
 }
 
 export default AuthProvider

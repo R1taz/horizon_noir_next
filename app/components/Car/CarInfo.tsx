@@ -24,25 +24,23 @@ const CarInfo = ({ car }: Props) => {
 					/>
 				)}
 				<div className='flex flex-col gap-4'>
-					<h1 className='text-headlines text-2xl'>
+					<h1 className='text-300 text-2xl'>
 						{car.car.brand} {car.car.model}
 					</h1>
-					<span className='text-secondary text-xl'>Год выпуска: {car.car.manufacturer_date}</span>
-					<span className='text-secondary text-xl'>
+					<span className='text-500 text-xl'>Год выпуска: {car.car.manufacturer_date}</span>
+					<span className='text-500 text-xl'>
 						Двигатель: {car.model.engine_volume} л. / {car.model.power} л.с. / {car.model.fuel_type}
 					</span>
-					<span className='text-secondary text-xl'>Тип двигателя: {car.model.engine_type}</span>
-					<span className='text-secondary text-xl'>Разгон до сотни: </span>
-					<span className='text-secondary text-xl'>Трансмиссия: {car.model.transmission}</span>
-					<span className='text-secondary text-xl'>Вес: </span>
-					<span className='text-secondary text-xl'>Кузов: {bodyTypeToRu[car.model.body_type]}</span>
-					<span className='text-secondary text-xl'>
-						Привод: {driveTypeToRu[car.model.drive_type]}
-					</span>
-					<span className='text-secondary text-xl'>Цвет: </span>
+					<span className='text-500 text-xl'>Тип двигателя: {car.model.engine_type}</span>
+					<span className='text-500 text-xl'>Разгон до сотни: </span>
+					<span className='text-500 text-xl'>Трансмиссия: {car.model.transmission}</span>
+					<span className='text-500 text-xl'>Вес: </span>
+					<span className='text-500 text-xl'>Кузов: {bodyTypeToRu[car.model.body_type]}</span>
+					<span className='text-500 text-xl'>Привод: {driveTypeToRu[car.model.drive_type]}</span>
+					<span className='text-500 text-xl'>Цвет: </span>
 				</div>
 			</div>
-			<div className='w-full rounded-[8px] mt-5 text-2xl font-bold text-center text-accent bg-quaternaryBg py-3 px-1'>
+			<div className='w-full rounded-[8px] mt-5 text-2xl font-bold text-center text-accent bg-800 py-3 px-1'>
 				{formatPrice(+car.car.price)}
 			</div>
 		</article>

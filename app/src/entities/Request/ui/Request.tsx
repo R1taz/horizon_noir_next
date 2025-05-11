@@ -11,6 +11,7 @@ import { formatPrice } from '@/app/src/shared/lib/format/formatPrice'
 import { learnPaymentMethod } from '../model/learnPaymentMethod'
 import { formatDateTime } from '@/app/src/shared/lib/format/formatDateTime'
 import { learnRefundStatus } from '../model/learnRefundStatus'
+import Image from 'next/image'
 
 interface Props {
 	isEdit?: boolean
@@ -31,15 +32,19 @@ interface Props {
 
 const Request = (props: Props) => {
 	return (
-		<article className='flex flex-col bg-secondaryBg rounded-[8px] pb-3'>
-			<img
-				src={
-					process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + props.mainPhotoUrl.replace(/\\/g, '/')
-				}
-				alt='Фотография автомобиля'
-			/>
+		<article className='flex flex-col bg-700 rounded-[8px] pb-3'>
+			<article className='relative w-full h-[250px] bg-600 rounded-t-[9px]'>
+				<Image
+					src={
+						process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + props.mainPhotoUrl.replace(/\\/g, '/')
+					}
+					alt='Фотография автомобиля'
+					className='object-cover rounded-t-[8px]'
+					fill
+				/>
+			</article>
 
-			<h3 className='text-center text-headlines font-medium text-xl mt-3 mb-2'>
+			<h3 className='text-center text-300 font-medium text-xl mt-3 mb-2'>
 				{props.brandName} {props.modelName}
 			</h3>
 

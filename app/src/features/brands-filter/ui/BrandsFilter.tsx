@@ -4,6 +4,8 @@ import { useBrands } from '@/app/src/shared/hooks/useBrands'
 import BrandFilter from './BrandFilter'
 import { useBrandsStore } from '@/app/src/shared/model/useBrandsStore'
 import { useCarFiltersStore } from '@/app/src/shared/model/useCarFiltersStore'
+import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
+import { AnimatePresence } from 'framer-motion'
 
 const BrandsFilter = () => {
 	const { data: brands, isLoading, error } = useBrands()
@@ -16,26 +18,33 @@ const BrandsFilter = () => {
 		if (brands) setBrands(brands)
 	}, [brands])
 
-	if (isLoading) return <h1>Loading...</h1>
 	if (error) return <h1>Ошибка загрузки брендов</h1>
-	if (!brands || brands.length === 0) return <h1>Бренды не найдены</h1>
 
 	return (
 		<article>
-			<h2 className='text-2xl text-secondary'>Бренд</h2>
+			<h2 className='text-2xl text-500'>Бренд</h2>
 			<section>
-				{brands.map(brand => {
-					const activeBrand = filters.brands.find(activeBrand => activeBrand === brand.brand_name)
-					return (
-						<BrandFilter
-							isActive={activeBrand}
-							setActiveBrands={addItemFilters}
-							removeActiveBrand={removeItemFilters}
-							brandName={brand.brand_name}
-							key={brand.id}
-						/>
-					)
-				})}
+				<AnimatePresence mode='wait'>
+					{isLoading && (
+						<Skeleton key='skeleton-brands-filter' width={290} height={35} count={12} />
+					)}
+					{!isLoading &&
+						brands &&
+						brands.map(brand => {
+							const activeBrand = filters.brands.find(
+								activeBrand => activeBrand === brand.brand_name
+							)
+							return (
+								<BrandFilter
+									isActive={activeBrand}
+									setActiveBrands={addItemFilters}
+									removeActiveBrand={removeItemFilters}
+									brandName={brand.brand_name}
+									key={brand.id}
+								/>
+							)
+						})}
+				</AnimatePresence>
 			</section>
 		</article>
 	)

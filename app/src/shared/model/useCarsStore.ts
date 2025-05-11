@@ -13,7 +13,7 @@ interface CarsStore {
 
 export const useCarsStore = create<CarsStore>()(
 	immer(set => ({
-		pageSize: 20,
+		pageSize: 9,
 		cars: [],
 		setCars: cars =>
 			set(state => {
