@@ -88,13 +88,17 @@ const AddCarModal = ({ onClose, setIsOpenNotification, setMessageNotification }:
 			label: 'Добавить автомобиль',
 			action: async () => {
 				try {
-					if (!currentModel.id || !vin || !price || !year) {
+					if (!currentModel.id || !vin || !price || !year || photos.length < 3) {
 						setIsOpenNotification(true)
-						if (!currentModel.id) setMessageNotification('Вы не выбрали модель автомобиля')
-						else
+						if (!currentModel.id) {
+							setMessageNotification('Вы не выбрали модель автомобиля')
+						} else if (photos.length < 3) {
+							setMessageNotification('Количество фотографий не должно быть менее трёх')
+						} else {
 							setMessageNotification(
 								`Вы не ввели ${!vin ? 'VIN-номер' : !price ? 'цену' : 'год'} автомобиля`
 							)
+						}
 					}
 					if (+year < 2016 || +year > 2025) {
 						setIsOpenNotification(true)
