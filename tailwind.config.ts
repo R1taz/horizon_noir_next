@@ -18,6 +18,9 @@ const config: Config = {
 				300: '#EDEDED',
 				accent: '#D1A954',
 			},
+			fontFamily: {
+				wix: ['WixMadeforDisplay', 'Arial', 'sans-serif'],
+			},
 		},
 	},
 	plugins: [],
