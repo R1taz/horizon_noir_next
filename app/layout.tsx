@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-900 px-20`}>
+			<body className='font-wix bg-900 px-20'>
 				<ReactQueryProvider>
 					<WebSocketProvider>
 						<Header />

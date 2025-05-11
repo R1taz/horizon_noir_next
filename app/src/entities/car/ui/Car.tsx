@@ -56,10 +56,10 @@ const Car = ({ car, photos, role, setMessageNotification, setIsOpenNotification 
 			initial='initial'
 			animate='animate'
 			transition={{ duration: 0.3, ease: easeOut }}
-			className='flex flex-col h-[250px]'
+			className='flex flex-col'
 		>
 			<article
-				className='relative w-full h-[250px] bg-600 rounded-t-[9px]'
+				className='relative w-full h-[250px] bg-600 rounded-[9px]'
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			>

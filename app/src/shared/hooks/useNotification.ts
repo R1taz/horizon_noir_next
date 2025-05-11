@@ -16,7 +16,7 @@ export function useNotification(): Response {
 			setTimeout(() => {
 				setIsOpenNotification(false)
 				setMessageNotification('')
-			}, 1500)
+			}, 1700)
 		}
 	}, [isOpenNotification])
 
