@@ -130,48 +130,50 @@ const AddCarModal = ({ onClose }: Props) => {
 	}, [currentBrand])
 
 	return (
-		<Modal title='Добавление автомобиля' options={modalOptions}>
-			<Select
-				edit={true}
-				title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
-				bg='secondaryBg'
-				value={currentBrand.id!}
-				options={brandOptions}
-			/>
-			{isLoading && (
-				<Select
-					edit={false}
-					title={'Выберите модель'}
-					bg='secondaryBg'
-					value={currentModel.id!}
-					options={modelsOptions!}
-				/>
-			)}
-			{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
-			{currentBrand.id !== null && !isLoading && !error && (
+		<>
+			<Modal title='Добавление автомобиля' options={modalOptions}>
 				<Select
 					edit={true}
-					title={!currentModel.id ? 'Выберите модель' : currentModel.label}
-					bg='secondaryBg'
-					value={currentModel.id!}
-					options={modelsOptions!}
+					title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
+					bg='700'
+					value={currentBrand.id!}
+					options={brandOptions}
 				/>
-			)}
-			<RadioGroup
-				title='Выберите статус автомобиля'
-				options={radioOptions}
-				value={currentStatusCar}
-				onChange={status => setCurrentStatusCar(status)}
-			/>
+				{isLoading && (
+					<Select
+						edit={false}
+						title={'Выберите модель'}
+						bg='700'
+						value={currentModel.id!}
+						options={modelsOptions!}
+					/>
+				)}
+				{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
+				{currentBrand.id !== null && !isLoading && !error && (
+					<Select
+						edit={true}
+						title={!currentModel.id ? 'Выберите модель' : currentModel.label}
+						bg='700'
+						value={currentModel.id!}
+						options={modelsOptions!}
+					/>
+				)}
+				<RadioGroup
+					title='Выберите статус автомобиля'
+					options={radioOptions}
+					value={currentStatusCar}
+					onChange={status => setCurrentStatusCar(status)}
+				/>
 
-			<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
-			<CarInfo options={carInfoOptions} />
-			<CarPhotos
-				photos={photos}
-				addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
-				removePhoto={photo => setPhotos(prev => prev.filter(item => item.name !== photo.name))}
-			/>
-		</Modal>
+				<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
+				<CarInfo options={carInfoOptions} />
+				<CarPhotos
+					photos={photos}
+					addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
+					removePhoto={photo => setPhotos(prev => prev.filter(item => item.name !== photo.name))}
+				/>
+			</Modal>
+		</>
 	)
 }
 

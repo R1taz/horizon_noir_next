@@ -30,15 +30,15 @@ function RangeFilter<K extends keyof IFilters>({
 
 	return (
 		<article className='my-9'>
-			<h2 className='text-2xl text-secondary'>{title}</h2>
+			<h2 className='text-2xl text-500'>{title}</h2>
 			<section className='flex gap-3 my-3'>
 				{options.map((option, idx) => (
 					<article
 						key={idx}
-						className='flex-1 flex justify-between bg-quaternaryBg text-secondary text-lg text-center rounded-[8px] px-3 py-1'
+						className='flex-1 flex justify-between bg-800 text-500 text-lg text-center rounded-[8px] px-3 py-1'
 					>
 						<input
-							className='bg-quaternaryBg w-full outline-none'
+							className='bg-800 w-full outline-none'
 							onChange={e => handleChange(e.currentTarget.value, idx)}
 							placeholder={`${option}`}
 						/>

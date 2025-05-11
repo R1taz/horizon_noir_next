@@ -7,7 +7,7 @@ interface Props {
 
 const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
 	const getStyles = (status: RequestsTabFilter) =>
-		`text-2xl cursor-pointer ${status === statusOrders ? 'text-accent' : 'text-primary'}`
+		`text-2xl cursor-pointer ${status === statusOrders ? 'text-accent' : 'text-400'}`
 
 	return (
 		<section className='flex gap-10'>

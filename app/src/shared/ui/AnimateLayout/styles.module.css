@@ -1,0 +1,53 @@
+@keyframes fade {
+	0% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+	20% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+	25% {
+		transform: translateY(0%);
+		opacity: 1;
+	}
+	75% {
+		transform: translateY(0%);
+		opacity: 1;
+	}
+	80% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(50%);
+		opacity: 0;
+	}
+}
+
+.logoTitle {
+	position: relative;
+	color: #292929;
+	text-align: center;
+	font-size: 60px;
+	letter-spacing: 5px;
+	word-spacing: 10px;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.logoTitle::before {
+	position: absolute;
+	inset: 0;
+	content: 'HORIZON NOIR';
+	letter-spacing: 5px;
+	word-spacing: 10px;
+	top: 0px;
+	left: 0px;
+	transform: translateY(50%);
+	opacity: 0;
+	color: #d1a954;
+	animation: fade 5s ease-in-out infinite alternate;
+}

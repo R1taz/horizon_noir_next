@@ -29,7 +29,7 @@ const ButtonDeleteAccount = ({ userId }: { userId: number }) => {
 	return (
 		<button
 			onClick={handleDelete}
-			className='bg-secondaryBg font-bold text-lg py-[5px] text-accent rounded-[8px] block'
+			className='bg-700 font-bold text-lg py-[5px] text-accent rounded-[8px] block'
 		>
 			Удалить аккаунт
 		</button>

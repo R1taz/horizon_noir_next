@@ -119,9 +119,9 @@ const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }:
 
 	const styles = (hour: number, isBusy: boolean) => {
 		let stylesHour = 'rounded-[4px] w-6 h-6 mr-3 cursor-pointer'
-		if (hour === calendarHours && !isBusy) stylesHour += ' bg-accentBg'
-		if (hour !== calendarHours && !isBusy) stylesHour += ' bg-tertiaryBg'
-		if (isBusy) stylesHour += ' bg-[#A0A0A0]'
+		if (hour === calendarHours && !isBusy) stylesHour += ' bg-accent'
+		if (hour !== calendarHours && !isBusy) stylesHour += ' bg-600'
+		if (isBusy) stylesHour += ' bg-[500]'
 		return stylesHour
 	}
 
@@ -137,7 +137,7 @@ const ChooseTimeReservation = ({ reservationsForMonth, methodPayment, onClose }:
 								className={`${styles(option.value, busyReservation ? true : false)}`}
 								onClick={() => handleClick(busyReservation, option.value)}
 							></div>
-							<span className='text-primary text-lg'>{option.label}</span>
+							<span className='text-400 text-lg'>{option.label}</span>
 						</article>
 					)
 				})}

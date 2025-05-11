@@ -108,14 +108,14 @@ const EditCarModal = ({ car, carPhotos, onClose }: Props) => {
 			<Select
 				edit={false}
 				title={car.brand}
-				bg='secondaryBg'
+				bg='700'
 				value={car.brand}
 				options={[{ label: car.brand, value: car.brand, action: () => null }]}
 			/>
 			<Select
 				edit={false}
 				title={car.model}
-				bg='secondaryBg'
+				bg='700'
 				value={car.model}
 				options={[{ label: car.model, value: car.model, action: () => null }]}
 			/>

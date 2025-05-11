@@ -9,14 +9,13 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				primaryBg: '#1A1A1A',
-				secondaryBg: '#333333',
-				tertiaryBg: '#535353',
-				quaternaryBg: '#292929',
-				accentBg: '#D1A954',
-				headlines: '#EDEDED',
-				primary: '#E0E0E0',
-				secondary: '#A0A0A0',
+				900: '#1A1A1A',
+				800: '#292929',
+				700: '#333333',
+				600: '#535353',
+				500: '#A0A0A0',
+				400: '#E0E0E0',
+				300: '#EDEDED',
 				accent: '#D1A954',
 			},
 		},

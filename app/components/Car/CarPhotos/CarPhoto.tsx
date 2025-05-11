@@ -1,4 +1,5 @@
 import { ICarPhoto } from '@/app/interfaces/carsInterface'
+import Image from 'next/image'
 
 interface Props {
 	photo: ICarPhoto
@@ -6,11 +7,13 @@ interface Props {
 
 const CarPhoto = ({ photo }: Props) => {
 	return (
-		<img
+		<Image
 			key={photo.id}
-			className='w-full h-full rounded-[8px] object-cover'
+			className='rounded-[8px] object-cover w-[750px] h-[550px]'
 			src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + photo.url.replace(/\\/g, '/')}
 			alt='Фотография автомобиля'
+			width={650}
+			height={350}
 		/>
 	)
 }

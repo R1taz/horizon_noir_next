@@ -23,16 +23,15 @@ const CalendarWeek = ({
 		let stylesDay = 'relative select-none cursor-pointer text-center py-2 z-10'
 
 		if (activeDay.month !== month) {
-			stylesDay += ' text-[#535353]'
+			stylesDay += ' text-[600]'
 			return stylesDay
 		}
-		if (status === 'empty' && !isActive) stylesDay += ' text-primary'
-		if (status === 'half' && !isActive) stylesDay += ' text-secondary'
-		if (status === 'full') stylesDay += ' text-[#1a1a1a]'
+		if (status === 'empty' && !isActive) stylesDay += ' text-400'
+		if (status === 'half' && !isActive) stylesDay += ' text-500'
+		if (status === 'full') stylesDay += ' text-900'
 
 		if (status !== 'full' && isActive) {
-			stylesDay +=
-				' text-[#1a1a1a] bg-accentBg font-bold after:absolute after:z-0 after:rounded-[8px]'
+			stylesDay += ' text-900 bg-accent font-bold after:absolute after:z-0 after:rounded-[8px]'
 		}
 		return stylesDay
 	}

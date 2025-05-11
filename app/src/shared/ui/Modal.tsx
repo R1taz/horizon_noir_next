@@ -1,4 +1,11 @@
 import { ReactNode, useEffect } from 'react'
+import { motion } from 'framer-motion'
+
+const variantsModal = {
+	initial: { y: 20, opacity: 0 },
+	animate: { y: 0, opacity: 1 },
+	exit: { y: 20, opacity: 0 },
+}
 
 interface Props {
 	title: string
@@ -21,8 +28,18 @@ const Modal = ({ title, options, children }: Props) => {
 	}, [])
 
 	return (
-		<article className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px] rounded-[8px]'>
-			<article className='bg-quaternaryBg rounded-[8px] p-5 z-50 max-h-[95vh] w-[50%] overflow-y-auto'>
+		<motion.article
+			variants={variantsModal}
+			initial='initial'
+			animate='animate'
+			exit='exit'
+			transition={{
+				duration: 0.2,
+				ease: 'easeOut',
+			}}
+			className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px] rounded-[8px]'
+		>
+			<article className='bg-800 rounded-[8px] p-5 z-50 max-h-[95vh] w-[50%] overflow-y-auto overflow-x-hidden'>
 				<h1 className='text-accent text-2xl font-bold mt-1 mb-5'>{title}</h1>
 
 				{children}
@@ -31,11 +48,9 @@ const Modal = ({ title, options, children }: Props) => {
 					{options.map((option, idx) => (
 						<button
 							key={option.label}
-							className={`w-[50%] py-1 mx-auto text-xl font-bold ${
-								idx === 0 ? 'bg-accentBg' : ''
-							} ${idx === 1 ? 'border-2 border-accentBg' : ''} ${
-								idx === 1 ? 'text-accent' : 'text-[#292929]'
-							} rounded-[7px]`}
+							className={`w-[50%] py-1 mx-auto text-xl font-bold ${idx === 0 ? 'bg-accent' : ''} ${
+								idx === 1 ? 'border-2 border-accent' : ''
+							} ${idx === 1 ? 'text-accent' : 'text-[800]'} rounded-[7px]`}
 							onClick={option.action}
 						>
 							{option.label}
@@ -43,7 +58,7 @@ const Modal = ({ title, options, children }: Props) => {
 					))}
 				</section>
 			</article>
-		</article>
+		</motion.article>
 	)
 }
 

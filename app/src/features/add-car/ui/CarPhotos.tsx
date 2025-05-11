@@ -12,12 +12,12 @@ const CarPhotos = ({ photos, addPhotos, removePhoto }: Props) => {
 	return (
 		<>
 			<article className='my-7'>
-				<h1 className='text-primary text-center font-bold text-xl my-5'>
+				<h1 className='text-400 text-center font-bold text-xl my-5'>
 					Загрузите несколько фотографий автомобиля
 				</h1>
 			</article>
 
-			<button className='row-start-1 row-end-2 col-start-1 col-end-4 rounded-[8px] bg-accentBg text-[#292929] text-center text-xl font-bold py-3 w-full'>
+			<button className='row-start-1 row-end-2 col-start-1 col-end-4 rounded-[8px] bg-accent text-[800] text-center text-xl font-bold py-3 w-full'>
 				<Image src={addCarImg} alt='' width={20} height={20} className='inline-block mr-3' />
 				<label htmlFor='photo-upload' className='cursor-pointer'>
 					Добавить новую фотографию
