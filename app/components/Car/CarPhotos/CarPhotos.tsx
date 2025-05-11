@@ -1,5 +1,5 @@
 import { ICarPhoto } from '@/app/interfaces/carsInterface'
-import CarPhoto from './CarPhoto'
+import MotionCarPhoto from './CarPhoto'
 
 interface Props {
 	photos: ICarPhoto[]
@@ -11,7 +11,14 @@ const CarPhotos = ({ photos }: Props) => {
 			<h1 className='text-300 text-center text-4xl font-bold mb-9'>Фотографии автомобиля</h1>
 			<section className='grid grid-cols-2 gap-9'>
 				{photos.slice(1).map((photo, idx) => (
-					<CarPhoto key={idx} photo={photo} />
+					<MotionCarPhoto
+						initial={{ opacity: 0, y: 50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6 }}
+						viewport={{ once: false, amount: 0.2 }}
+						key={idx}
+						photo={photo}
+					/>
 				))}
 			</section>
 		</article>
