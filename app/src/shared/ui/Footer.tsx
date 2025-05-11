@@ -1,17 +1,15 @@
 import Link from 'next/link'
-import logo from '../../../assets/H O R I Z O N N O I R.svg'
-import Image from 'next/image'
+import Logo from '../../../assets/H O R I Z O N N O I R.svg'
 
 const Footer = () => {
 	return (
 		<footer className='mt-[200px]'>
 			<article className='grid grid-cols-[450px,500px,300px] grid-rows-[50px,280px,120px]'>
-				<Image
-					width={380}
-					src={logo}
-					alt='Логотип'
-					className='col-start-1 col-end-2 row-start-1 row-end-2'
+				<Logo
+					className='w-[380px] h-[40px] col-start-1 col-end-2 row-start-1 row-end-2'
+					alt='H O R I Z O N  N O I R'
 				/>
+
 				<section className='col-start-2 col-end-3 row-start-2 row-end-3'>
 					<span className='text-500'>Навигация</span>
 

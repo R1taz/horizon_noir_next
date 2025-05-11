@@ -7,7 +7,7 @@ import { useCarsQuery } from './model/useCarsQuery'
 import { useCarFiltersStore } from '../../shared/model/useCarFiltersStore'
 import Loader from '@/app/assets/loader.svg'
 import Skeleton from '../../shared/ui/Skeleton/Skeleton'
-import Notification from '../../shared/ui/Notification/Notification'
+import Notification from '../../shared/ui/Notification'
 import { useNotification } from '../../shared/hooks/useNotification'
 import { AnimatePresence } from 'framer-motion'
 

@@ -10,7 +10,7 @@ import { useReservationsForMonth } from '../model/useReservationsForMonth'
 import { IReservation } from '@/app/src/shared/types/reservations'
 import { AnimatePresence } from 'framer-motion'
 import { useNotification } from '@/app/src/shared/hooks/useNotification'
-import Notification from '@/app/src/shared/ui/Notification/Notification'
+import Notification from '@/app/src/shared/ui/Notification'
 
 const FormReservationCar = () => {
 	const [reservationsForMonth, setReservationsForMonth] = useState<IReservation[]>([])
@@ -43,15 +43,18 @@ const FormReservationCar = () => {
 					setMethodPayment={setMethodPayment}
 				/>
 				<Calendar reservationsForMonth={reservationsForMonth} />
-				{isOpen && (
-					<ChooseTimeReservation
-						setMessageNotification={setMessageNotification}
-						setIsOpenNotification={setIsOpenNotification}
-						reservationsForMonth={reservationsForMonth}
-						methodPayment={methodPayment}
-						onClose={() => setIsOpen(false)}
-					/>
-				)}
+				<AnimatePresence mode='wait'>
+					{isOpen && (
+						<ChooseTimeReservation
+							key='choose-time-reservation'
+							setMessageNotification={setMessageNotification}
+							setIsOpenNotification={setIsOpenNotification}
+							reservationsForMonth={reservationsForMonth}
+							methodPayment={methodPayment}
+							onClose={() => setIsOpen(false)}
+						/>
+					)}
+				</AnimatePresence>
 			</FormConsultation>
 			<AnimatePresence mode='wait'>
 				{isOpenNotification && (
