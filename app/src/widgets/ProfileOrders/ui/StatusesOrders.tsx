@@ -1,4 +1,16 @@
 import { RequestsTabFilter } from '@/app/src/shared/types/requests'
+import ActiveLine from '@/app/src/shared/ui/ActiveLine'
+import { motion } from 'framer-motion'
+
+const statusTextVariants = {
+	active: { scale: 1.05 },
+	inactive: { scale: 1 },
+}
+
+interface Statuses {
+	label: string
+	value: RequestsTabFilter
+}
 
 interface Props {
 	statusOrders: RequestsTabFilter
@@ -6,20 +18,31 @@ interface Props {
 }
 
 const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
-	const getStyles = (status: RequestsTabFilter) =>
-		`text-2xl cursor-pointer ${status === statusOrders ? 'text-accent' : 'text-400'}`
+	const statuses: Statuses[] = [
+		{ label: 'Активные', value: 'active' },
+		{ label: 'Отменённые', value: 'rejected' },
+		{ label: 'Завершённые', value: 'completed' },
+	]
 
 	return (
-		<section className='flex gap-10'>
-			<span className={getStyles('active')} onClick={() => setStatusOrders('active')}>
-				Активные
-			</span>
-			<span className={getStyles('completed')} onClick={() => setStatusOrders('completed')}>
-				Завершённые
-			</span>
-			<span className={getStyles('rejected')} onClick={() => setStatusOrders('rejected')}>
-				Отменённые
-			</span>
+		<section className='flex gap-7'>
+			{statuses.map(status => (
+				<>
+					<motion.article
+						initial='inactive'
+						animate={status.value === statusOrders ? 'active' : 'inactive'}
+						variants={statusTextVariants}
+						className={`relative text-2xl cursor-pointer select-none ${
+							status.value === statusOrders ? 'text-accent' : 'text-500'
+						}`}
+						transition={{ duration: 0.3 }}
+						onClick={() => setStatusOrders(status.value)}
+					>
+						<span>{status.label}</span>
+						{status.value === statusOrders && <ActiveLine />}
+					</motion.article>
+				</>
+			))}
 		</section>
 	)
 }

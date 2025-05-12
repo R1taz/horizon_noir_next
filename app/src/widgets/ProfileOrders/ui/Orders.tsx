@@ -10,8 +10,14 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
 import Loader from '@/app/assets/loader.svg'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, easeInOut, easeOut } from 'framer-motion'
 import MotionOrder from '@/app/src/entities/Order/ui/Order'
+import { motion } from 'framer-motion'
+
+const ordersVariants = {
+	initial: { opacity: 0, y: 40 },
+	animate: { opacity: 1, y: 0 },
+}
 
 const Orders = () => {
 	const userId = useUserStore(state => state.id)
@@ -53,7 +59,13 @@ const Orders = () => {
 	}, [dataOrders, error])
 
 	return (
-		<article className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>
+		<motion.article
+			variants={ordersVariants}
+			initial='initial'
+			animate='animate'
+			transition={{ duration: 0.5, ease: easeOut }}
+			className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'
+		>
 			<header className='py-1 relative'>
 				<h2 className='text-2xl font-bold text-400'>Мои заявки</h2>
 			</header>
@@ -67,14 +79,18 @@ const Orders = () => {
 				<StatusesOrders statusOrders={statusOrders} setStatusOrders={setStatusOrders} />
 			</section>
 
-			<section className='grid grid-cols-2 gap-8 mt-5'>
+			<motion.section
+				animate={{ height: orders.length === 0 ? 300 : 650 }}
+				transition={{ duration: 0.6, ease: easeInOut }}
+				className='grid grid-cols-2 gap-8 mt-5 min-h-[300px]'
+			>
 				{isLoading && <Loader />}
 				<AnimatePresence mode='wait'>
 					{orders.map(order => (
 						<MotionOrder key={order.id} order={order} />
 					))}
 				</AnimatePresence>
-			</section>
+			</motion.section>
 
 			<Paginator
 				page={page}
@@ -82,7 +98,7 @@ const Orders = () => {
 				portionSize={portionSize}
 				changePage={setPage}
 			/>
-		</article>
+		</motion.article>
 	)
 }
 
