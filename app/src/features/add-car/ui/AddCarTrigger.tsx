@@ -1,15 +1,10 @@
 import addCarImg from '@/app/assets/addCar.png'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import { useState } from 'react'
 import AddCarModal from './AddCarModal'
 import { AnimatePresence } from 'framer-motion'
 
-interface Props {
-	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
-	setMessageNotification: Dispatch<SetStateAction<string>>
-}
-
-const AddCarTrigger = ({ setIsOpenNotification, setMessageNotification }: Props) => {
+const AddCarTrigger = () => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
@@ -23,14 +18,7 @@ const AddCarTrigger = ({ setIsOpenNotification, setMessageNotification }: Props)
 			</button>
 
 			<AnimatePresence mode='wait'>
-				{isOpen && (
-					<AddCarModal
-						setIsOpenNotification={setIsOpenNotification}
-						setMessageNotification={setMessageNotification}
-						key='add-car-modal'
-						onClose={() => setIsOpen(false)}
-					/>
-				)}
+				{isOpen && <AddCarModal key='add-car-modal' onClose={() => setIsOpen(false)} />}
 			</AnimatePresence>
 		</>
 	)

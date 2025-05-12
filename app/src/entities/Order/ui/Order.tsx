@@ -45,6 +45,4 @@ const Order = ({ order }: Props) => {
 	)
 }
 
-const MotionOrder = motion(Order)
-
-export default MotionOrder
+export default Order
