@@ -62,7 +62,7 @@ const Request = (props: Props) => {
 				)}
 
 				{!props?.isEdit && props.amount && (
-					<Field title='Общая сумма' info={formatPrice(props.amount)} />
+					<Field title='Общая сумма' info={formatPrice(+props.amount)} />
 				)}
 
 				{!props?.isEdit && props.prepaymentAmount && (

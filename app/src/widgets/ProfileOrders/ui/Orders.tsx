@@ -11,8 +11,8 @@ import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
 import Loader from '@/app/assets/loader.svg'
 import { AnimatePresence, easeInOut, easeOut } from 'framer-motion'
-import MotionOrder from '@/app/src/entities/Order/ui/Order'
 import { motion } from 'framer-motion'
+import Order from '@/app/src/entities/Order/ui/Order'
 
 const ordersVariants = {
 	initial: { opacity: 0, y: 40 },
@@ -85,9 +85,16 @@ const Orders = () => {
 				className='grid grid-cols-2 gap-8 mt-5 min-h-[300px]'
 			>
 				{isLoading && <Loader />}
-				<AnimatePresence mode='wait'>
+				<AnimatePresence mode='popLayout'>
 					{orders.map(order => (
-						<MotionOrder key={order.id} order={order} />
+						<motion.article
+							layout
+							key={order.id}
+							exit={{ opacity: 0, y: 30 }}
+							transition={{ duration: 0.3 }}
+						>
+							<Order key={order.id} order={order} />
+						</motion.article>
 					))}
 				</AnimatePresence>
 			</motion.section>

@@ -27,7 +27,7 @@ const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
 	return (
 		<section className='flex gap-7'>
 			{statuses.map(status => (
-				<>
+				<article key={status.label}>
 					<motion.article
 						initial='inactive'
 						animate={status.value === statusOrders ? 'active' : 'inactive'}
@@ -41,7 +41,7 @@ const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
 						<span>{status.label}</span>
 						{status.value === statusOrders && <ActiveLine />}
 					</motion.article>
-				</>
+				</article>
 			))}
 		</section>
 	)

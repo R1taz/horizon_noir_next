@@ -5,7 +5,7 @@ import { useCarDealerships } from '@/app/src/shared/model/useCarDealershipStore'
 import Modal from '@/app/src/shared/ui/Modal'
 import RadioGroup from '@/app/src/shared/ui/RadioGroup'
 import Select from '@/app/src/shared/ui/Select'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import CarDealershipList from '@/app/src/entities/CarDealership/ui/CarDealershipList'
 import CarPhotos from './CarPhotos'
 import { useAddCar } from '../model/useAddCar'
@@ -14,20 +14,21 @@ import { useCarsStore } from '@/app/src/entities/car'
 import { useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/app/src/widgets/cars'
 import { useRouter } from 'next/navigation'
+import { useNotification } from '@/app/src/shared/hooks/useNotification'
 
 interface Props {
 	onClose: () => void
-	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
-	setMessageNotification: Dispatch<SetStateAction<string>>
 }
 
 type IOption = { label: string; id: number | null }
 
-const AddCarModal = ({ onClose, setIsOpenNotification, setMessageNotification }: Props) => {
+const AddCarModal = ({ onClose }: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
 	const brands = useBrandsStore(state => state.brands)
 	const addCar = useCarsStore(state => state.addCar)
 	const setAuthData = useAuthStore(state => state.setAuthData)
+
+	const { setIsOpenNotification, setMessageNotification } = useNotification()
 
 	const router = useRouter()
 

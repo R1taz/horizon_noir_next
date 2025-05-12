@@ -15,7 +15,6 @@ interface Props {
 }
 
 const Skeleton = ({ width, height, count = 1, flow = 'vertical' }: Props) => {
-	console.log(count === 1)
 	return (
 		<>
 			{count === 1 && <article className={styles.skeleton} style={{ width, height }}></article>}

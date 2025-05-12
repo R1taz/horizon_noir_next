@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useWebSocket } from '@/app/src/shared/contexts/WebSocketContext'
 import { createNewOrder } from '../model/createNewOrder'
+import { useNotification } from '@/app/src/shared/hooks/useNotification'
 
 const FormOrderCar = () => {
 	const [paymentMethod, setPaymentMethod] = useState('card')
@@ -17,6 +18,8 @@ const FormOrderCar = () => {
 
 	const userId = useUserStore(state => state.id)
 	const { carId } = useParams()
+
+	const { setIsOpenNotification, setMessageNotification } = useNotification()
 
 	const socket = useWebSocket()
 
@@ -30,25 +33,29 @@ const FormOrderCar = () => {
 			deliveryAddress: deliveryAddress,
 			socket: socket!,
 		})
+		setIsOpenNotification(true)
+		setMessageNotification('Заказ успешно создан и добавлен в ваш профиль')
 	}
 
 	return (
-		<FormConsultation
-			title='Готовы к покупке?'
-			description='Оставьте свои контакты, чтобы заказать автомобиль'
-			titleAction='Оставить заявку'
-			action={handleSubmit}
-		>
-			<PaymentMethodOrder paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
-			<PlaceDelivery
-				deliveryType={deliveryType}
-				deliveryAddress={deliveryAddress}
-				deliveryDealershipId={deliveryDealershipId}
-				setDeliveryType={setDeliveryType}
-				setDeliveryAddress={setDeliveryAddress}
-				setDeliveryDealershipId={setDeliveryDealershipId}
-			/>
-		</FormConsultation>
+		<>
+			<FormConsultation
+				title='Готовы к покупке?'
+				description='Оставьте свои контакты, чтобы заказать автомобиль'
+				titleAction='Оставить заявку'
+				action={handleSubmit}
+			>
+				<PaymentMethodOrder paymentMethod={paymentMethod} setPaymentMethod={setPaymentMethod} />
+				<PlaceDelivery
+					deliveryType={deliveryType}
+					deliveryAddress={deliveryAddress}
+					deliveryDealershipId={deliveryDealershipId}
+					setDeliveryType={setDeliveryType}
+					setDeliveryAddress={setDeliveryAddress}
+					setDeliveryDealershipId={setDeliveryDealershipId}
+				/>
+			</FormConsultation>
+		</>
 	)
 }
 

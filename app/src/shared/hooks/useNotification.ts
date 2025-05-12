@@ -1,24 +1,24 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useNotificationStore } from '../model/useNotificationStore'
 
 interface Response {
-	isOpenNotification: boolean
-	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
-	messageNotification: string
-	setMessageNotification: Dispatch<SetStateAction<string>>
+	setIsOpenNotification: (open: boolean) => void
+	setMessageNotification: (message: string) => void
 }
 
 export function useNotification(): Response {
-	const [isOpenNotification, setIsOpenNotification] = useState(false)
-	const [messageNotification, setMessageNotification] = useState('')
+	const isOpen = useNotificationStore(state => state.isOpenNotification)
+	const setIsOpenNotification = useNotificationStore(state => state.setIsOpenNotification)
+	const setMessageNotification = useNotificationStore(state => state.setMessageNotification)
 
 	useEffect(() => {
-		if (isOpenNotification) {
+		if (isOpen) {
 			setTimeout(() => {
 				setIsOpenNotification(false)
 				setMessageNotification('')
-			}, 1700)
+			}, 2000)
 		}
-	}, [isOpenNotification])
+	}, [isOpen])
 
-	return { isOpenNotification, setIsOpenNotification, messageNotification, setMessageNotification }
+	return { setIsOpenNotification, setMessageNotification }
 }
