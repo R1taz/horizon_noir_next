@@ -7,9 +7,9 @@ import OrderButtons from './OrderButtons'
 import { easeOut, motion } from 'framer-motion'
 
 const orderVariants = {
-	opacity: { opacity: 0, y: 30 },
-	animate: { opacity: 1, y: 0 },
-	exit: { opacity: 0, y: 30 },
+	initial: { opacity: 0, y: 30 },
+	animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: easeOut, delay: 0.6 } },
+	exit: { opacity: 0, y: 30, transition: { duration: 0.3, ease: easeOut } },
 }
 
 interface Props {
@@ -21,13 +21,7 @@ const Order = ({ order }: Props) => {
 	const [isEdit, setIsEdit] = useState(false)
 
 	return (
-		<motion.article
-			variants={orderVariants}
-			initial='initial'
-			animate='animate'
-			exit='exit'
-			transition={{ duration: 1, ease: easeOut }}
-		>
+		<motion.article variants={orderVariants} initial='initial' animate='animate' exit='exit'>
 			<Request
 				brandName={order.brand_name}
 				modelName={order.model_name}

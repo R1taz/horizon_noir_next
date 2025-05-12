@@ -1,11 +1,38 @@
+'use client'
+
 import ActiveSessions from './ActiveSessions'
 import ChangeSecurity from './ChangeSecurity'
+import { easeOut, motion } from 'framer-motion'
+
+const profileSecurityVariants = {
+	initial: { opacity: 0, x: 40 },
+	animate: { opacity: 1, x: 0 },
+}
+
+const leftVariants = {
+	initial: { opacity: 0, x: -20 },
+	animate: { opacity: 1, x: 0 },
+}
 
 const ProfileSecurity = () => {
 	return (
-		<article className='bg-800 rounded-[8px] px-5 py-3 col-start-3 col-end-4 row-start-1 row-end-2'>
+		<motion.article
+			variants={profileSecurityVariants}
+			initial='initial'
+			animate='animate'
+			transition={{ duration: 0.5, ease: easeOut }}
+			className='bg-800 rounded-[8px] px-5 py-3 col-start-3 col-end-4 row-start-1 row-end-2'
+		>
 			<header className='py-1 relative'>
-				<h2 className='text-2xl font-medium text-400'>Безопасность</h2>
+				<motion.h2
+					variants={leftVariants}
+					initial='initial'
+					animate='animate'
+					transition={{ duration: 0.5, ease: easeOut, delay: 0.3 }}
+					className='text-2xl font-medium text-400'
+				>
+					Безопасность
+				</motion.h2>
 			</header>
 
 			<div className='my-2 relative'>
@@ -14,7 +41,7 @@ const ProfileSecurity = () => {
 
 			<ChangeSecurity />
 			<ActiveSessions />
-		</article>
+		</motion.article>
 	)
 }
 
