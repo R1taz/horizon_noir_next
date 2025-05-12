@@ -1,12 +1,11 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { ICurrentEditOrder, IOrder } from '../types/orders'
+import { IOrder } from '../types/orders'
 import { RequestsTabFilter } from '../types/requests'
 
 interface OrdersStore {
 	statusOrders: RequestsTabFilter
 	orders: IOrder[]
-	currentEditOrder: ICurrentEditOrder
 	page: number
 	pageSize: number
 	portionSize: number
@@ -16,24 +15,12 @@ interface OrdersStore {
 	setStatusOrders: (status: RequestsTabFilter) => void
 	setOrders: (orders: IOrder[]) => void
 	updateOrder: (updateOrder: IOrder) => void
-	resetCurrentEditOrder: () => void
-	updateCurrentEditOrder: (key: keyof ICurrentEditOrder, value: string) => void
 }
 
 export const useOrdersStore = create<OrdersStore>()(
 	immer(set => ({
 		statusOrders: 'active',
 		orders: [],
-		currentEditOrder: {
-			amount: '',
-			percentPrepaymentAmount: '',
-			deliveryAddress: '',
-			deliveryDate: '',
-			numberParkDay: '',
-			paymentParkingDay: '',
-			startParkingDate: '',
-			endParkingDate: '',
-		},
 		page: 1,
 		pageSize: 4,
 		portionSize: 5,
@@ -61,26 +48,6 @@ export const useOrdersStore = create<OrdersStore>()(
 						? { ...updateOrder, main_photo_url: order.main_photo_url }
 						: order
 				})
-			}),
-		resetCurrentEditOrder: () =>
-			set(state => {
-				state.currentEditOrder = {
-					amount: '',
-					percentPrepaymentAmount: '',
-					deliveryAddress: '',
-					deliveryDate: '',
-					numberParkDay: '',
-					paymentParkingDay: '',
-					startParkingDate: '',
-					endParkingDate: '',
-				}
-			}),
-		updateCurrentEditOrder: (key, value) =>
-			set(state => {
-				state.currentEditOrder = {
-					...state.currentEditOrder,
-					[key]: value,
-				}
 			}),
 	}))
 )

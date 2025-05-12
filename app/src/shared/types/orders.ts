@@ -51,14 +51,3 @@ export interface IOrder {
 	refund_message?: string
 	refund_date_created_at?: string
 }
-
-export interface ICurrentEditOrder {
-	amount: string
-	percentPrepaymentAmount: string
-	deliveryAddress: string
-	deliveryDate: string
-	numberParkDay: string
-	paymentParkingDay: string
-	startParkingDate: string
-	endParkingDate: string
-}

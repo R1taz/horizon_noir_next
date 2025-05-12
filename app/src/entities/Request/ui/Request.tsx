@@ -27,7 +27,6 @@ interface Props {
 	deliveryDate?: string
 	refundAmount?: number
 	refundStatus?: RefundStatus
-	refund_message?: string
 	children?: React.ReactNode
 }
 
@@ -77,7 +76,6 @@ const Request = (props: Props) => {
 				{props.refundAmount && (
 					<Field title='Сумма возврата платежа' info={formatPrice(+props.refundAmount)} />
 				)}
-				{props.refund_message && <Field title='Причина возврата' info={props.refund_message} />}
 			</section>
 		</article>
 	)
