@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import EditCarTrigger from '@/app/src/features/edit-car/ui/EditCarTrigger'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { easeOut, motion } from 'framer-motion'
+import { useNotification } from '@/app/src/shared/hooks/useNotification'
 
 const variantsCar = {
 	initial: { y: 20, opacity: 0 },
@@ -14,13 +15,11 @@ const variantsCar = {
 	exit: { y: 20, opacity: 0 },
 }
 
-type Props = Omit<ICar, 'model'> & {
-	role: UserRole
-	setIsOpenNotification: Dispatch<SetStateAction<boolean>>
-	setMessageNotification: Dispatch<SetStateAction<string>>
-}
+type Props = Omit<ICar, 'model'> & { role: UserRole }
 
-const Car = ({ car, photos, role, setMessageNotification, setIsOpenNotification }: Props) => {
+const Car = ({ car, photos, role }: Props) => {
+	const { setIsOpenNotification, setMessageNotification } = useNotification()
+
 	const [isHovered, setIsHovered] = useState(false)
 
 	const setAuthData = useAuthStore(state => state.setAuthData)

@@ -15,8 +15,8 @@ interface Props {
 	reservationsForMonth: IReservation[]
 	methodPayment: PaymentMethod
 	onClose: () => void
-	setIsOpenNotification: React.Dispatch<React.SetStateAction<boolean>>
-	setMessageNotification: React.Dispatch<React.SetStateAction<string>>
+	setIsOpenNotification: (open: boolean) => void
+	setMessageNotification: (message: string) => void
 }
 
 const ChooseTimeReservation = ({
