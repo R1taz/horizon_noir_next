@@ -1,7 +1,6 @@
 'use client'
 
 import { useOrdersStore } from '@/app/src/shared/model/useOrdersStore'
-import Order from '@/app/src/entities/Order/ui/Order'
 import StatusesOrders from './StatusesOrders'
 import TypeOrders from './TypeOrders'
 import { useGetOrders } from '../model/useGetOrders'
@@ -11,6 +10,8 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
 import Loader from '@/app/assets/loader.svg'
+import { AnimatePresence } from 'framer-motion'
+import MotionOrder from '@/app/src/entities/Order/ui/Order'
 
 const Orders = () => {
 	const userId = useUserStore(state => state.id)
@@ -21,12 +22,12 @@ const Orders = () => {
 	const setOrders = useOrdersStore(state => state.setOrders)
 	const statusOrders = useOrdersStore(state => state.statusOrders)
 	const setStatusOrders = useOrdersStore(state => state.setStatusOrders)
-	const setTotalCountOrders = useOrdersStore(state => state.setTotalCountOrders)
 
 	const page = useOrdersStore(state => state.page)
 	const pageSize = useOrdersStore(state => state.pageSize)
 	const portionSize = useOrdersStore(state => state.portionSize)
 	const totalCountOrders = useOrdersStore(state => state.totalCountOrders)
+	const setTotalCountOrders = useOrdersStore(state => state.setTotalCountOrders)
 	const setPage = useOrdersStore(state => state.setPage)
 
 	const router = useRouter()
@@ -68,9 +69,11 @@ const Orders = () => {
 
 			<section className='grid grid-cols-2 gap-8 mt-5'>
 				{isLoading && <Loader />}
-				{orders.map(order => (
-					<Order order={order} key={order.id} />
-				))}
+				<AnimatePresence mode='wait'>
+					{orders.map(order => (
+						<MotionOrder key={order.id} order={order} />
+					))}
+				</AnimatePresence>
 			</section>
 
 			<Paginator
