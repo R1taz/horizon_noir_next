@@ -33,8 +33,6 @@ const FormOrderCar = () => {
 			deliveryAddress: deliveryAddress,
 			socket: socket!,
 		})
-		setIsOpenNotification(true)
-		setMessageNotification('Заказ успешно создан и добавлен в ваш профиль')
 	}
 
 	return (
