@@ -105,20 +105,24 @@ const EditCarModal = ({ car, carPhotos, onClose }: Props) => {
 
 	return (
 		<Modal title='Редактирование автомобиля' options={modalOptions}>
-			<Select
-				edit={false}
-				title={car.brand}
-				bg='700'
-				value={car.brand}
-				options={[{ label: car.brand, value: car.brand, action: () => null }]}
-			/>
-			<Select
-				edit={false}
-				title={car.model}
-				bg='700'
-				value={car.model}
-				options={[{ label: car.model, value: car.model, action: () => null }]}
-			/>
+			<article className='my-2'>
+				<Select
+					edit={false}
+					title={car.brand}
+					bg='700'
+					value={car.brand}
+					options={[{ label: car.brand, value: car.brand, action: () => null }]}
+				/>
+			</article>
+			<article className='my-2'>
+				<Select
+					edit={false}
+					title={car.model}
+					bg='700'
+					value={car.model}
+					options={[{ label: car.model, value: car.model, action: () => null }]}
+				/>
+			</article>
 			<RadioGroup
 				title='Выберите статус автомобиля'
 				options={radioOptions}

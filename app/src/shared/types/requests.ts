@@ -20,6 +20,7 @@ export enum PaymentStatus {
 }
 
 export type RequestsTabFilter = 'active' | 'completed' | 'rejected'
+export type RequestsTypeFilter = 'orders' | 'reservations'
 
 export enum RequestStatus {
 	PENDING = 'pending',
