@@ -156,31 +156,26 @@ const AddCarModal = ({ onClose }: Props) => {
 	return (
 		<>
 			<Modal title='Добавление автомобиля' options={modalOptions}>
-				<Select
-					edit={true}
-					title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
-					bg='700'
-					value={currentBrand.id!}
-					options={brandOptions}
-				/>
-				{isLoading && (
-					<Select
-						edit={false}
-						title='Выберите модель'
-						bg='700'
-						value={currentModel.id!}
-						options={modelsOptions!}
-					/>
-				)}
-				{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
-				{currentBrand.id !== null && !isLoading && !error && (
+				<article className='my-2'>
 					<Select
 						edit={true}
-						title={!currentModel.id ? 'Выберите модель' : currentModel.label}
+						title={!currentBrand.id ? 'Выберите бренд' : currentBrand.label}
 						bg='700'
-						value={currentModel.id!}
-						options={modelsOptions!}
+						value={currentBrand.id!}
+						options={brandOptions}
 					/>
+				</article>
+				{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
+				{currentBrand.id !== null && !isLoading && !error && (
+					<article className='my-2'>
+						<Select
+							edit={true}
+							title={!currentModel.id ? 'Выберите модель' : currentModel.label}
+							bg='700'
+							value={currentModel.id!}
+							options={modelsOptions!}
+						/>
+					</article>
 				)}
 				<RadioGroup
 					title='Выберите статус автомобиля'

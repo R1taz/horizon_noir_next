@@ -1,7 +1,5 @@
 'use client'
 
-import StatusesOrders from '../../ProfileOrders/ui/StatusesOrders'
-import TypeOrders from '../../ProfileOrders/ui/TypeOrders'
 import { useReservations } from '../model/useReservations'
 import { useAuthStore } from '../../cars'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
@@ -11,8 +9,9 @@ import { Paginator } from '@/app/src/shared/ui/Paginator'
 import { useReservationStore } from '@/app/src/shared/model/useReservationStore'
 import Reservation from '@/app/src/entities/Reservation/ui/Reservation'
 import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence, easeInOut } from 'framer-motion'
 import { motion } from 'framer-motion'
+import { useRequestsStore } from '@/app/src/shared/model/useRequestsStore'
 
 const Reservations = () => {
 	const userId = useUserStore(state => state.id)
@@ -21,9 +20,8 @@ const Reservations = () => {
 
 	const reservations = useReservationStore(state => state.reservations) || []
 	const setReservations = useReservationStore(state => state.setReservations)
-	const statusReservations = useReservationStore(state => state.statusReservations)
-	const setStatusReservations = useReservationStore(state => state.setStatusReservations)
 	const setTotalCountReservations = useReservationStore(state => state.setTotalCountReservations)
+	const statusRequests = useRequestsStore(state => state.statusRequests)
 
 	const page = useReservationStore(state => state.page)
 	const pageSize = useReservationStore(state => state.pageSize)
@@ -38,7 +36,7 @@ const Reservations = () => {
 		isLoading,
 		error,
 	} = useReservations({
-		status: statusReservations,
+		status: statusRequests,
 		role: role!,
 		page,
 		pageSize,
@@ -60,21 +58,12 @@ const Reservations = () => {
 	}, [dataReservations, error])
 
 	return (
-		<article className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'>
-			<header className='py-1 relative'>
-				<h2 className='text-2xl font-bold text-400'>Мои заявки</h2>
-			</header>
-
-			<div className='my-2 relative'>
-				<div className='w-full h-[2px] bg-600'></div>
-			</div>
-
-			<section className='flex justify-between mt-5'>
-				<TypeOrders />
-				<StatusesOrders statusOrders={statusReservations} setStatusOrders={setStatusReservations} />
-			</section>
-
-			<section className='grid grid-cols-2 gap-8 mt-5'>
+		<>
+			<motion.section
+				animate={{ height: reservations.length === 0 ? 300 : 650 }}
+				transition={{ duration: 0.6, ease: easeInOut }}
+				className='grid grid-cols-2 gap-8 mt-5 min-h-[300px]'
+			>
 				{isLoading && (
 					<section className='row-start-1 row-end-2 col-start-1 col-end-3'>
 						<Skeleton width={1000} height={500} count={2} flow='horizontal' />
@@ -93,7 +82,7 @@ const Reservations = () => {
 							</motion.article>
 						))}
 				</AnimatePresence>
-			</section>
+			</motion.section>
 
 			<Paginator
 				page={page}
@@ -101,7 +90,7 @@ const Reservations = () => {
 				portionSize={portionSize}
 				changePage={setPage}
 			/>
-		</article>
+		</>
 	)
 }
 

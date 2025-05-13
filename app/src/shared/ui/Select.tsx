@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 
 interface Props<T> {
 	edit: boolean
@@ -12,12 +12,10 @@ function Select<T>({ edit, title, value, bg = '800', options }: Props<T>) {
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<article className='my-3'>
+		<article className='text-accent text-xl'>
 			<div
 				onClick={edit ? () => setIsOpen(prev => !prev) : undefined}
-				className={`${
-					value ? 'bg-accent text-800 font-bold' : `bg-${bg} text-500`
-				} text-lg text-center ${
+				className={`${value ? 'text-accent font-bold' : `text-500`} text-lg text-center bg-${bg} ${
 					isOpen ? 'rounded-t-[8px]' : 'rounded-[8px]'
 				} px-3 py-1 select-none`}
 			>
