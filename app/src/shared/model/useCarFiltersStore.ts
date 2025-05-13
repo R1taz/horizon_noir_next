@@ -13,8 +13,8 @@ interface CarFiltersStore {
 export const useCarFiltersStore = create<CarFiltersStore>()(
 	immer(set => ({
 		filters: {
-			brands: [],
-			models: [],
+			brand: null,
+			model: null,
 			price: [0, Infinity],
 			years: [],
 			colors: [],
@@ -27,7 +27,7 @@ export const useCarFiltersStore = create<CarFiltersStore>()(
 				const currentArray = state.filters[key]
 				state.filters = {
 					...state.filters,
-					[key]: [...currentArray, item],
+					[key]: Array.isArray(currentArray) ? [...currentArray, item] : item,
 				}
 			}),
 		changeItemsFilters: (key, items) =>
@@ -42,14 +42,14 @@ export const useCarFiltersStore = create<CarFiltersStore>()(
 				const currentArray = state.filters[key]
 				state.filters = {
 					...state.filters,
-					[key]: currentArray.filter(value => value !== item),
+					[key]: Array.isArray(currentArray) ? currentArray.filter(value => value !== item) : null,
 				}
 			}),
 		resetFilters: () =>
 			set(state => {
 				state.filters = {
-					brands: [],
-					models: [],
+					brand: null,
+					model: null,
 					price: [0, Infinity],
 					years: [],
 					colors: [],

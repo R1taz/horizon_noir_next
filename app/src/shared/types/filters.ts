@@ -1,12 +1,11 @@
-import { CarBrand } from '@/app/interfaces/carsInterface'
 import { CarYears } from './years'
 import { CarColors } from './colors'
 import { BodyTypes } from './bodyTypes'
 import { FuelTypes } from './fuelTypes'
 
 export interface IFilters {
-	brands: CarBrand[]
-	models: string[]
+	brand: number | null
+	model: number | null
 	price: [number, number]
 	years: CarYears[]
 	colors: CarColors[]

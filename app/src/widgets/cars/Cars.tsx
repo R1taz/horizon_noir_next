@@ -7,6 +7,14 @@ import { useCarsQuery } from './model/useCarsQuery'
 import { useCarFiltersStore } from '../../shared/model/useCarFiltersStore'
 import Loader from '@/app/assets/loader.svg'
 import Skeleton from '../../shared/ui/Skeleton/Skeleton'
+import { AnimatePresence, easeOut } from 'framer-motion'
+import { motion } from 'framer-motion'
+
+const variantsCar = {
+	initial: { y: 20, opacity: 0 },
+	animate: { y: 0, opacity: 1 },
+	exit: { y: 20, opacity: 0 },
+}
 
 const Cars = () => {
 	const role = useAuthStore(state => state.role)
@@ -57,10 +65,22 @@ const Cars = () => {
 			{isLoading && (
 				<Loader className='row-start-3 row-end-4 col-start-2 col-end-3  w-[250px] h-[250px] left-[50px]' />
 			)}
-			{!isLoading &&
-				allCars.map(car => {
-					return <Car car={car.car} photos={car.photos} role={role!} key={car.car.id} />
-				})}
+			<AnimatePresence mode='wait'>
+				{!isLoading &&
+					allCars.map(car => (
+						<motion.article
+							layout
+							variants={variantsCar}
+							initial='initial'
+							animate='animate'
+							exit='exit'
+							key={car.car.id}
+							transition={{ duration: 0.3, ease: easeOut }}
+						>
+							<Car car={car.car} photos={car.photos} role={role!} key={car.car.id} />
+						</motion.article>
+					))}
+			</AnimatePresence>
 
 			{isFetchingNextPage && <Loader />}
 			<article ref={observerRef} />
