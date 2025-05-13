@@ -108,6 +108,18 @@ const ProfileInfo = () => {
 						{roleTypeToRu[userRole!]}
 					</motion.span>
 				</div>
+
+				<div className='py-4 border-b border-b-[2px] border-b-600 flex items-center'>
+					<motion.span
+						variants={spanVariants}
+						initial='initial'
+						animate='animate'
+						transition={{ duration: 0.5, ease: easeOut, delay: 0.6 }}
+						className='text-400 text-xl'
+					>
+						Количество предупреждений: {user.numberOfWarn}
+					</motion.span>
+				</div>
 			</section>
 
 			<div className='flex flex-col gap-5 px-5 my-7'>
