@@ -6,13 +6,18 @@ export const getCars = async (page: number, limit: number, filters: IFilters): P
 	let queryPath = ''
 
 	for (let key in filters) {
-		if (filters[key].length !== 0) {
-			queryPath += '&'
+		const typedKey = key as keyof IFilters
+		if (!Array.isArray(filters[typedKey])) {
+			queryPath += `&${key}=${filters[typedKey]}`
+		} else {
+			if (filters[typedKey].length !== 0) {
+				queryPath += '&'
 
-			filters[key].forEach((el, idx) => {
-				if (idx === 0) queryPath += `${key}=${el}`
-				else queryPath += `,${el}`
-			})
+				filters[typedKey].forEach((el, idx) => {
+					if (idx === 0) queryPath += `${key}=${el}`
+					else queryPath += `,${el}`
+				})
+			}
 		}
 	}
 
