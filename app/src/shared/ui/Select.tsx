@@ -4,7 +4,7 @@ interface Props<T> {
 	edit: boolean
 	title: string
 	bg?: string
-	value: T
+	value: T | null
 	options: { label: string; value: T; action: (value: T) => void }[]
 }
 

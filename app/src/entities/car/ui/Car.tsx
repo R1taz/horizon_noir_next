@@ -5,15 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/app/src/widgets/cars'
 import { useQueryClient } from '@tanstack/react-query'
 import EditCarTrigger from '@/app/src/features/edit-car/ui/EditCarTrigger'
-import { Dispatch, SetStateAction, useState } from 'react'
-import { easeOut, motion } from 'framer-motion'
+import { useState } from 'react'
 import { useNotification } from '@/app/src/shared/hooks/useNotification'
-
-const variantsCar = {
-	initial: { y: 20, opacity: 0 },
-	animate: { y: 0, opacity: 1 },
-	exit: { y: 20, opacity: 0 },
-}
 
 type Props = Omit<ICar, 'model'> & { role: UserRole }
 
@@ -50,13 +43,7 @@ const Car = ({ car, photos, role }: Props) => {
 	if (!mainPhoto) return <h3>Ошибка: Отсутствует фотография автомобиля</h3>
 
 	return (
-		<motion.article
-			variants={variantsCar}
-			initial='initial'
-			animate='animate'
-			transition={{ duration: 0.3, ease: easeOut }}
-			className='flex flex-col'
-		>
+		<article className='flex flex-col'>
 			<article
 				className='relative w-full h-[250px] bg-600 rounded-[9px]'
 				onMouseEnter={() => setIsHovered(true)}
@@ -96,7 +83,7 @@ const Car = ({ car, photos, role }: Props) => {
 			>
 				Подробнее
 			</Link>
-		</motion.article>
+		</article>
 	)
 }
 

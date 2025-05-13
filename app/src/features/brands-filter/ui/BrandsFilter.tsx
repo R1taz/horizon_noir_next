@@ -31,15 +31,14 @@ const BrandsFilter = () => {
 					{!isLoading &&
 						brands &&
 						brands.map(brand => {
-							const activeBrand = filters.brands.find(
-								activeBrand => activeBrand === brand.brand_name
-							)
+							const activeBrand = filters.brand === brand.id
 							return (
 								<BrandFilter
 									isActive={activeBrand}
-									setActiveBrands={addItemFilters}
-									removeActiveBrand={removeItemFilters}
+									setActive={addItemFilters}
+									removeActive={removeItemFilters}
 									brandName={brand.brand_name}
+									brandId={brand.id}
 									key={brand.id}
 								/>
 							)
