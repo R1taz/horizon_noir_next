@@ -1,23 +1,17 @@
 'use client'
 
 import { useOrdersStore } from '@/app/src/shared/model/useOrdersStore'
-import StatusesOrders from './StatusesOrders'
-import TypeOrders from './TypeOrders'
 import { useGetOrders } from '../model/useGetOrders'
 import { useAuthStore } from '../../cars'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
-import { AnimatePresence, easeInOut, easeOut } from 'framer-motion'
+import { AnimatePresence, easeInOut } from 'framer-motion'
 import { motion } from 'framer-motion'
 import Order from '@/app/src/entities/Order/ui/Order'
 import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
-
-const ordersVariants = {
-	initial: { opacity: 0, y: 40 },
-	animate: { opacity: 1, y: 0 },
-}
+import { useRequestsStore } from '@/app/src/shared/model/useRequestsStore'
 
 const Orders = () => {
 	const userId = useUserStore(state => state.id)
@@ -26,8 +20,7 @@ const Orders = () => {
 
 	const orders = useOrdersStore(state => state.orders) || []
 	const setOrders = useOrdersStore(state => state.setOrders)
-	const statusOrders = useOrdersStore(state => state.statusOrders)
-	const setStatusOrders = useOrdersStore(state => state.setStatusOrders)
+	const statusRequests = useRequestsStore(state => state.statusRequests)
 
 	const page = useOrdersStore(state => state.page)
 	const pageSize = useOrdersStore(state => state.pageSize)
@@ -42,7 +35,7 @@ const Orders = () => {
 		data: dataOrders,
 		isLoading,
 		error,
-	} = useGetOrders(statusOrders, role!, page, pageSize, role === 'user' ? userId! : undefined)
+	} = useGetOrders(statusRequests, role!, page, pageSize, role === 'user' ? userId! : undefined)
 
 	useEffect(() => {
 		if (error) {
@@ -59,26 +52,7 @@ const Orders = () => {
 	}, [dataOrders, error])
 
 	return (
-		<motion.article
-			variants={ordersVariants}
-			initial='initial'
-			animate='animate'
-			transition={{ duration: 0.5, ease: easeOut }}
-			className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'
-		>
-			<header className='py-1 relative'>
-				<h2 className='text-2xl font-bold text-400'>Мои заявки</h2>
-			</header>
-
-			<div className='my-2 relative'>
-				<div className='w-full h-[2px] bg-600'></div>
-			</div>
-
-			<section className='flex justify-between mt-5'>
-				<TypeOrders />
-				<StatusesOrders statusOrders={statusOrders} setStatusOrders={setStatusOrders} />
-			</section>
-
+		<>
 			<motion.section
 				animate={{ height: orders.length === 0 ? 300 : 650 }}
 				transition={{ duration: 0.6, ease: easeInOut }}
@@ -109,7 +83,7 @@ const Orders = () => {
 				portionSize={portionSize}
 				changePage={setPage}
 			/>
-		</motion.article>
+		</>
 	)
 }
 
