@@ -11,6 +11,8 @@ import { Paginator } from '@/app/src/shared/ui/Paginator'
 import { useReservationStore } from '@/app/src/shared/model/useReservationStore'
 import Reservation from '@/app/src/entities/Reservation/ui/Reservation'
 import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
+import { AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const Reservations = () => {
 	const userId = useUserStore(state => state.id)
@@ -73,16 +75,24 @@ const Reservations = () => {
 			</section>
 
 			<section className='grid grid-cols-2 gap-8 mt-5'>
-				{/* {isLoading && <Loader className='width-[250px] height-[250px]' />} */}
 				{isLoading && (
 					<section className='row-start-1 row-end-2 col-start-1 col-end-3'>
 						<Skeleton width={1000} height={500} count={2} flow='horizontal' />
 					</section>
 				)}
-				{!isLoading &&
-					reservations.map(reservation => (
-						<Reservation reservation={reservation} key={reservation.id} />
-					))}
+				<AnimatePresence mode='popLayout'>
+					{!isLoading &&
+						reservations.map(reservation => (
+							<motion.article
+								layout
+								key={reservation.id}
+								exit={{ opacity: 0, y: 30 }}
+								transition={{ duration: 0.3 }}
+							>
+								<Reservation reservation={reservation} key={reservation.id} />
+							</motion.article>
+						))}
+				</AnimatePresence>
 			</section>
 
 			<Paginator

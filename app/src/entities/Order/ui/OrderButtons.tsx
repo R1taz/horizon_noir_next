@@ -114,13 +114,8 @@ const OrderButtons = ({ isEdit, setEdit, order }: Props) => {
 										orderId: order.id,
 										paymentStatus: PaymentStatus.PREPAYMENT_DONE,
 									})
-
-									setIsOpenNotification(true)
-									setMessageNotification('Предоплата успешно внесена')
 								} else {
 									handleCompletePayment({ socket: socket!, orderId: order.id })
-									setIsOpenNotification(true)
-									setMessageNotification('Заказ оплачен. Поздравляем с покупкой!')
 								}
 							}}
 						/>
@@ -130,11 +125,7 @@ const OrderButtons = ({ isEdit, setEdit, order }: Props) => {
 					<RequestButton
 						title='Отменить заказ'
 						type='500'
-						action={() => {
-							handleFailOrder({ socket: socket!, orderId: order.id })
-							setIsOpenNotification(true)
-							setMessageNotification('Заказ успешно отменён')
-						}}
+						action={() => handleFailOrder({ socket: socket!, orderId: order.id })}
 					/>
 				)}
 
@@ -145,11 +136,7 @@ const OrderButtons = ({ isEdit, setEdit, order }: Props) => {
 						<RequestButton
 							title='Отменить заказ'
 							type='500'
-							action={() => {
-								handleCancelOrder({ socket: socket!, orderId: order.id })
-								setIsOpenNotification(true)
-								setMessageNotification('Заявка на возврат успешно отправлена')
-							}}
+							action={() => handleCancelOrder({ socket: socket!, orderId: order.id })}
 						/>
 					)}
 

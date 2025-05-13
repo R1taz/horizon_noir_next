@@ -38,12 +38,20 @@ const ChooseTimeReservation = ({
 	const setHours = useCalendarStore(state => state.setHours)
 
 	const handleSubmit = () => {
+		setIsOpenNotification(false)
+		setMessageNotification('')
+
 		if (!year || !month || !day || !calendarHours) {
 			setIsOpenNotification(true)
 			setMessageNotification(
 				`Вы не выбрали ${!year ? 'год' : !month ? 'месяц' : !day ? 'день' : 'время'} бронирования`
 			)
 			return
+		}
+
+		if (new Date() > new Date(year, month, day, calendarHours)) {
+			setIsOpenNotification(true)
+			setMessageNotification('Дата бронирования не может быть назначена в прошедший день')
 		}
 
 		createReservation({
@@ -55,8 +63,6 @@ const ChooseTimeReservation = ({
 		})
 		setHours(null)
 		onClose()
-		setIsOpenNotification(true)
-		setMessageNotification('Заявка на бронирование успешно создана')
 	}
 
 	const modalOptions = [
