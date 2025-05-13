@@ -9,10 +9,10 @@ import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { Paginator } from '@/app/src/shared/ui/Paginator'
-import Loader from '@/app/assets/loader.svg'
 import { AnimatePresence, easeInOut, easeOut } from 'framer-motion'
 import { motion } from 'framer-motion'
 import Order from '@/app/src/entities/Order/ui/Order'
+import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
 
 const ordersVariants = {
 	initial: { opacity: 0, y: 40 },
@@ -84,7 +84,11 @@ const Orders = () => {
 				transition={{ duration: 0.6, ease: easeInOut }}
 				className='grid grid-cols-2 gap-8 mt-5 min-h-[300px]'
 			>
-				{isLoading && <Loader />}
+				{isLoading && (
+					<section className='row-start-1 row-end-2 col-start-1 col-end-3'>
+						<Skeleton width={1000} height={500} count={2} flow='horizontal' />
+					</section>
+				)}
 				<AnimatePresence mode='popLayout'>
 					{orders.map(order => (
 						<motion.article

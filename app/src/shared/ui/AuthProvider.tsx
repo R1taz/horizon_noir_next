@@ -19,7 +19,7 @@ const AuthProvider = ({ children }: Props) => {
 
 	const router = useRouter()
 
-	const { data: user, error } = useAuthMe(isInitialized)
+	const { data: user, error } = useAuthMe()
 
 	useEffect(() => {
 		if (error && (error as any)?.response?.status === 401) {

@@ -29,6 +29,8 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 	const queryClient = useQueryClient()
 
 	useEffect(() => {
+		if (!role) return
+
 		const socket = new WebSocket('ws://localhost:5000')
 		socketRef.current = socket
 
@@ -44,20 +46,44 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
 				switch (data.type) {
 					case OrderEvent.CREATE:
+						if (role === UserRole.USER) {
+							setOpen(false)
+							setMessage('')
+
+							setOpen(true)
+							setMessage('Заказ успешно создан и добавлен в ваш профиль')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
 					case OrderEvent.APPROVE:
 						updateOrder(data.payload)
+
 						setOpen(true)
 						setMessage('Заказ одобрен')
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
 					case OrderEvent.REJECT:
 						updateOrder(data.payload)
+
 						setOpen(true)
 						setMessage('Заказ отклонён')
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
@@ -66,11 +92,20 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						if (data.payload.isWarn) {
 							increaseNumberOfWarn()
 
+							setOpen(true)
+							setMessage('Заказ аннулирован. Выдано предупреждение')
+
 							setTimeout(() => {
-								setOpen(true)
-								setMessage(
-									'Заказ аннулирован в связи с нарушением условий оплаты в установленный срок. Вам выдано предупреждение Автомобиль возвращён на склад.'
-								)
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заказ успешно отменён')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
 							}, 2000)
 						}
 
@@ -82,12 +117,48 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						if (data.payload.payment_status === PaymentStatus.AWAITING_FINAL) {
 							setOpen(true)
 							setMessage('Заказ доставлен')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (
+							data.payload.payment_status === PaymentStatus.PREPAYMENT_DONE &&
+							role === UserRole.USER
+						) {
+							setOpen(true)
+							setMessage('Предоплата успешно внесена')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заказ успешно оплачен. Поздравляем с покупкой!')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
 						}
+
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
 					case OrderEvent.CREATE_CANCEL:
 						updateOrder(data.payload)
+
+						if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заявка на возврат успешно отправлена')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
@@ -95,18 +166,30 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						updateOrder(data.payload.order)
 						if (data.payload.isWarn) increaseNumberOfWarn()
 						const messageApprove = data.payload.isWarn
-							? 'Заявка на возврат одобренаЗаявка на возврат одобрена. Вам выдано предупреждение'
+							? 'Заявка на возврат одобрена. Выдано предупреждение'
 							: 'Заявка на возврат одобрена'
 
 						setOpen(true)
 						setMessage(messageApprove)
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
+
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
 					case OrderEvent.REJECT_CANCEL:
 						updateOrder(data.payload)
+
 						setOpen(true)
 						setMessage('Заявка на возврат отклонена')
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
@@ -116,17 +199,36 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						if (role === UserRole.USER) {
 							setOpen(true)
 							setMessage('Вам пришла задолженность')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
 						}
 
 						if (role === UserRole.ADMIN || role === UserRole.MANAGER) {
 							setOpen(true)
 							setMessage('Задолженность успешно создана')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
 						}
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
 					case OrderEvent.COMPLETE_PAYMENT:
 						updateOrder(data.payload)
+						if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Оплата успешно внесена. Поздравляем с покупкой!')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
@@ -134,6 +236,11 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						updateOrder(data.payload)
 						setOpen(true)
 						setMessage('Средства успешно возвращены')
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
 						queryClient.invalidateQueries({ queryKey: ['orders'] })
 						break
 
@@ -143,32 +250,143 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 						break
 				}
 
-				/* if (
+				switch (data.type) {
+					case ReservationEvent.CREATE:
+						setOpen(false)
+						setMessage('')
 
-					data.type === OrderEvent.COMPLETE_PAYMENT ||
-					data.type === OrderEvent.COMPLETE_REFUND ||
-					data.type === OrderEvent.ADD_DAY_FEE
-				 */
+						if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заявка на бронирование успешно создана и добавлена в ваш профиль')
 
-				if (data.type === ReservationEvent.CREATE) {
-					queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
-				}
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
 
-				if (
-					data.type === ReservationEvent.FAIL ||
-					data.type === ReservationEvent.PAYMENT ||
-					data.type === ReservationEvent.CREATE_CANCEL ||
-					data.type === ReservationEvent.COMPLETE_PAYMENT ||
-					data.type === ReservationEvent.COMPLETE_REFUND
-				) {
-					if (data.type === ReservationEvent.FAIL || data.type === ReservationEvent.CREATE_CANCEL) {
+					case ReservationEvent.FAIL:
 						updateReservation(data.payload.reservation)
-						if (data.payload.isWarn) increaseNumberOfWarn()
-					} else {
+
+						if (data.payload.isWarn && role === UserRole.USER) {
+							increaseNumberOfWarn()
+
+							setOpen(true)
+							setMessage('Заказ успешно отменён. Выдано предупреждение')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заказ успешно отменён')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+
+						queryClient.invalidateQueries({ queryKey: ['reservations'] })
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
+
+					case ReservationEvent.PAYMENT:
 						updateReservation(data.payload)
-					}
-					queryClient.invalidateQueries({ queryKey: ['reservations'] })
-					queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+
+						if (data.payload.payment_status === PaymentStatus.AWAITING_FINAL) {
+							setOpen(true)
+							setMessage('Заказ доставлен')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (
+							data.payload.payment_status === PaymentStatus.PREPAYMENT_DONE &&
+							role === UserRole.USER
+						) {
+							setOpen(true)
+							setMessage('Предоплата успешно внесена')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заявка на бронирование успешно оплачена. Поздравляем с покупкой!')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+
+						queryClient.invalidateQueries({ queryKey: ['reservations'] })
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
+
+					case ReservationEvent.CREATE_CANCEL:
+						updateReservation(data.payload.reservation)
+
+						if (data.payload.isWarn && role === UserRole.USER) {
+							increaseNumberOfWarn()
+
+							setOpen(true)
+							setMessage('Заявка на возврат успешно создана. Выдано предупреждение')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						} else if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заявка на возврат успешно создана')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+
+						queryClient.invalidateQueries({ queryKey: ['reservations'] })
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
+
+					case ReservationEvent.COMPLETE_PAYMENT:
+						updateReservation(data.payload)
+
+						if (role === UserRole.USER) {
+							setOpen(true)
+							setMessage('Заказ успешно оплачен. Поздравляем с покупкой!')
+
+							setTimeout(() => {
+								setOpen(false)
+								setMessage('')
+							}, 2000)
+						}
+
+						queryClient.invalidateQueries({ queryKey: ['reservations'] })
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
+
+					case ReservationEvent.COMPLETE_REFUND:
+						updateReservation(data.payload)
+						setOpen(true)
+						setMessage('Средства успешно возвращены')
+
+						setTimeout(() => {
+							setOpen(false)
+							setMessage('')
+						}, 2000)
+
+						queryClient.invalidateQueries({ queryKey: ['reservations'] })
+						queryClient.invalidateQueries({ queryKey: ['reservations-for-month'] })
+						break
 				}
 			} catch (err) {
 				console.error('Ошибка парсинга', err)
@@ -179,7 +397,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 		socket.onclose = () => console.log('WebSocket закрыт')
 
 		return () => socket.close()
-	}, [])
+	}, [role])
 
 	return <WebSocketContext.Provider value={socketRef.current}>{children}</WebSocketContext.Provider>
 }
