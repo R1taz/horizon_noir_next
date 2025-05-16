@@ -46,17 +46,25 @@ const Car = ({ car, photos, role }: Props) => {
 		<article className='flex flex-col'>
 			<article
 				className='relative w-full h-[250px] bg-600 rounded-[9px]'
-				onMouseEnter={() => setIsHovered(true)}
-				onMouseLeave={() => setIsHovered(false)}
+				onMouseEnter={() => {
+					if (role === UserRole.USER) return
+					setIsHovered(true)
+				}}
+				onMouseLeave={() => {
+					if (role === UserRole.USER) return
+					setIsHovered(false)
+				}}
 			>
-				<Image
-					src={removeCarImg}
-					alt='Удалить автомобиль'
-					className={`z-10 absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer transition-opacity duration-200 ${
-						isHovered ? 'opacity-100' : 'opacity-0'
-					}`}
-					onClick={handleRemoveCar}
-				/>
+				{role !== UserRole.USER && (
+					<Image
+						src={removeCarImg}
+						alt='Удалить автомобиль'
+						className={`z-10 absolute right-3 top-3 w-[20px] h-[20px] cursor-pointer transition-opacity duration-200 ${
+							isHovered ? 'opacity-100' : 'opacity-0'
+						}`}
+						onClick={handleRemoveCar}
+					/>
+				)}
 
 				<Image
 					src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}

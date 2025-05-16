@@ -67,3 +67,9 @@ export interface ICarPhoto {
 	url: string
 	main_photo: boolean
 }
+
+export interface IColor {
+	id: number
+	hex_code: string
+	color_name: string
+}

@@ -15,12 +15,14 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/app/src/widgets/cars'
 import { useRouter } from 'next/navigation'
 import { useNotification } from '@/app/src/shared/hooks/useNotification'
+import DeliveryDateNewCar from './DeliveryDateNewCar'
+import { AnimatePresence, easeOut, motion } from 'framer-motion'
+import CarColors from './CarColors'
+import { IOption } from '@/app/src/shared/types/options'
 
 interface Props {
 	onClose: () => void
 }
-
-type IOption = { label: string; id: number | null }
 
 const AddCarModal = ({ onClose }: Props) => {
 	const carDealerships = useCarDealerships(state => state.carDealerships)
@@ -40,8 +42,13 @@ const AddCarModal = ({ onClose }: Props) => {
 		label: '',
 		id: null,
 	})
+	const [currentColor, setCurrentColor] = useState<IOption>({
+		label: '',
+		id: null,
+	})
 	const [currentStatusCar, setCurrentStatusCar] = useState<CarStatus>(CarStatus.STOCK)
 	const [dealershipId, setDealershipId] = useState<number>(carDealerships[0].id)
+	const [dateDelivery, setDateDelivery] = useState('')
 	const [photos, setPhotos] = useState<File[]>([])
 
 	const [mainPhotoId, setMainPhotoId] = useState()
@@ -89,25 +96,57 @@ const AddCarModal = ({ onClose }: Props) => {
 			label: 'Добавить автомобиль',
 			action: async () => {
 				try {
-					if (!currentModel.id || !vin || !price || !year || photos.length < 3) {
+					if (!currentModel.id) {
 						setIsOpenNotification(true)
-						if (!currentModel.id) {
-							setMessageNotification('Вы не выбрали модель автомобиля')
-						} else if (photos.length < 3) {
-							setMessageNotification('Количество фотографий не должно быть менее трёх')
-						} else {
-							setMessageNotification(
-								`Вы не ввели ${!vin ? 'VIN-номер' : !price ? 'цену' : 'год'} автомобиля`
-							)
-						}
+						setMessageNotification('Вы не выбрали модель автомобиля')
+						return
 					}
-					if (+year < 2016 || +year > 2025) {
+
+					if (!vin || !price || !year) {
+						const notFoundParams = !vin ? 'VIN-номер' : !price ? 'цену' : 'год'
+						setIsOpenNotification(true)
+						setMessageNotification(`Вы не ввели ${notFoundParams} автомобиля`)
+						return
+					}
+
+					if (photos.length < 3) {
+						setIsOpenNotification(true)
+						setMessageNotification('Вы выбрали менее 3 фотографий')
+						return
+					}
+
+					if (!dateDelivery && currentStatusCar === CarStatus.TRANSIT) {
+						setIsOpenNotification(true)
+						setMessageNotification('Вы не ввели дату доставки')
+						return
+					}
+
+					if (
+						currentStatusCar === CarStatus.TRANSIT &&
+						dateDelivery &&
+						new Date(dateDelivery) < new Date()
+					) {
+						setIsOpenNotification(true)
+						setMessageNotification('Вы не можете установить дату доставки в прошедший день')
+						return
+					}
+
+					if ((+year < 2016 || +year > 2025) && year) {
 						setIsOpenNotification(true)
 						setMessageNotification('Вы ввели некорректный год автомобиля')
+						return
 					}
+
 					if (+price < 0 || +price > 99999999999) {
 						setIsOpenNotification(true)
 						setMessageNotification('Вы ввели некорректную цену автомобиля')
+						return
+					}
+
+					if (!currentColor.id) {
+						setIsOpenNotification(true)
+						setMessageNotification(`Вы не выбрали цвет автомобиля`)
+						return
 					}
 
 					const formData = new FormData()
@@ -117,10 +156,14 @@ const AddCarModal = ({ onClose }: Props) => {
 					formData.append('model_id', `${currentModel.id}`)
 					formData.append('status', `${currentStatusCar}`)
 					formData.append('available', `${currentStatusCar === CarStatus.STOCK ? true : false}`)
-					formData.append('dealershipId', `${dealershipId}`)
+					formData.append('dealership_id', `${dealershipId}`)
 					formData.append('vin', `${vin}`)
 					formData.append('price', `${+price}`)
 					formData.append('manufacturer_date', `${+year}`)
+					if (dateDelivery) {
+						formData.append('date_delivery', `${dateDelivery}`)
+					}
+					formData.append('colorId', `${currentColor.id}`)
 					formData.append('mainPhotoId', `${0}`)
 					const newCar = await mutateAsync(formData)
 					addCar(newCar)
@@ -165,18 +208,31 @@ const AddCarModal = ({ onClose }: Props) => {
 						options={brandOptions}
 					/>
 				</article>
+
 				{error && <div className='text-red-500'>Ошибка загрузки моделей</div>}
-				{currentBrand.id !== null && !isLoading && !error && (
-					<article className='my-2'>
-						<Select
-							edit={true}
-							title={!currentModel.id ? 'Выберите модель' : currentModel.label}
-							bg='700'
-							value={currentModel.id!}
-							options={modelsOptions!}
-						/>
-					</article>
-				)}
+
+				<AnimatePresence mode='wait'>
+					{currentBrand.id !== null && !isLoading && !error && (
+						<motion.article
+							initial={{ y: -20, opacity: 0, height: 0 }}
+							animate={{ y: 0, opacity: 1000, height: '100%' }}
+							exit={{ y: -20, opacity: 0, height: 0 }}
+							transition={{
+								duration: 0.3,
+								ease: 'easeOut',
+							}}
+						>
+							<Select
+								edit={true}
+								title={!currentModel.id ? 'Выберите модель' : currentModel.label}
+								bg='700'
+								value={currentModel.id!}
+								options={modelsOptions!}
+							/>
+						</motion.article>
+					)}
+				</AnimatePresence>
+
 				<RadioGroup
 					title='Выберите статус автомобиля'
 					options={radioOptions}
@@ -184,8 +240,29 @@ const AddCarModal = ({ onClose }: Props) => {
 					onChange={status => setCurrentStatusCar(status)}
 				/>
 
+				<AnimatePresence mode='wait'>
+					{currentStatusCar === CarStatus.TRANSIT && (
+						<motion.article
+							initial={{ y: -30, opacity: 0, height: 0 }}
+							animate={{ y: 0, opacity: 100, height: 50 }}
+							exit={{ y: -30, opacity: 0, height: 0 }}
+							transition={{ duration: 0.3, ease: easeOut }}
+							key={currentStatusCar}
+						>
+							<DeliveryDateNewCar dateDelivery={dateDelivery} setDateDelivery={setDateDelivery} />
+						</motion.article>
+					)}
+				</AnimatePresence>
+
 				<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
 				<CarInfo options={carInfoOptions} />
+				{currentModel.id && (
+					<CarColors
+						modelId={currentModel.id}
+						currentColor={currentColor}
+						setCurrentColor={setCurrentColor}
+					/>
+				)}
 				<CarPhotos
 					photos={photos}
 					addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}
