@@ -7,7 +7,7 @@ interface Props<T> {
 
 function RadioGroup<T>({ title, options, value, onChange }: Props<T>) {
 	return (
-		<article className='w-[50%] mx-auto mt-12 mb-6'>
+		<article className='w-[50%] mx-auto mt-6 mb-6'>
 			<h2 className='text-300 text-xl text-center font-bold'>{title}</h2>
 			<section className='flex justify-between my-3'>
 				{options.map((option, idx) => (

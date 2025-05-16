@@ -11,7 +11,11 @@ import { IReservation } from '@/app/src/shared/types/reservations'
 import { AnimatePresence } from 'framer-motion'
 import { useNotification } from '@/app/src/shared/hooks/useNotification'
 
-const FormReservationCar = () => {
+interface Props {
+	dateDelivery: string | null
+}
+
+const FormReservationCar = ({ dateDelivery }: Props) => {
 	const [reservationsForMonth, setReservationsForMonth] = useState<IReservation[]>([])
 	const [isOpen, setIsOpen] = useState(false)
 	const [methodPayment, setMethodPayment] = useState<PaymentMethod>(PaymentMethod.CARD)
@@ -46,6 +50,7 @@ const FormReservationCar = () => {
 						reservationsForMonth={reservationsForMonth}
 						methodPayment={methodPayment}
 						onClose={() => setIsOpen(false)}
+						dateDelivery={dateDelivery}
 					/>
 				)}
 			</AnimatePresence>

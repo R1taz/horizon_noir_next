@@ -32,7 +32,7 @@ const page = () => {
 			<BreadCrumbs />
 			<CarInfo car={car} />
 			<CarPhotos photos={car.photos} />
-			<FormReservationCar />
+			<FormReservationCar dateDelivery={car.car.date_delivery} />
 			<FormOrderCar />
 			<Footer />
 		</AuthProvider>

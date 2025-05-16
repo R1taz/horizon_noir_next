@@ -29,7 +29,7 @@ const ModelsFilter = () => {
 				<Select
 					edit={!modelsOptions || modelsOptions.length === 0 ? false : true}
 					title={currentModel ? currentModel.model_name : 'Выберите модель'}
-					bg='700'
+					bg='800'
 					value={currentModel ? currentModel.id : null}
 					options={modelsOptions || []}
 				/>

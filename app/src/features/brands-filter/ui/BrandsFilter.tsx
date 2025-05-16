@@ -8,15 +8,17 @@ import Skeleton from '@/app/src/shared/ui/Skeleton/Skeleton'
 import { AnimatePresence } from 'framer-motion'
 
 const BrandsFilter = () => {
-	const { data: brands, isLoading, error } = useBrands()
+	const brands = useBrandsStore(state => state.brands)
 	const setBrands = useBrandsStore(state => state.setBrands)
 	const filters = useCarFiltersStore(state => state.filters)
 	const addItemFilters = useCarFiltersStore(state => state.addItemFilters)
 	const removeItemFilters = useCarFiltersStore(state => state.removeItemFilters)
 
+	const { data, isLoading, error } = useBrands()
+
 	useEffect(() => {
-		if (brands) setBrands(brands)
-	}, [brands])
+		if (data && brands.length === 0) setBrands(data)
+	}, [data, isLoading])
 
 	if (error) return <h1>Ошибка загрузки брендов</h1>
 

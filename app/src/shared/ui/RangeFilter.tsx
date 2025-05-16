@@ -39,6 +39,7 @@ function RangeFilter<K extends keyof IFilters>({
 					>
 						<input
 							className='bg-800 w-full  placeholder:select-none'
+							type='text'
 							onChange={e => handleChange(e.currentTarget.value, idx)}
 							placeholder={`${option}`}
 						/>
