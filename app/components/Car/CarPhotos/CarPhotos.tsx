@@ -12,10 +12,10 @@ const CarPhotos = ({ photos }: Props) => {
 			<section className='grid grid-cols-2 gap-9'>
 				{photos.slice(1).map((photo, idx) => (
 					<MotionCarPhoto
-						initial={{ opacity: 0, y: 50 }}
+						initial={{ opacity: 0, y: 30 }}
 						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6 }}
-						viewport={{ once: false, amount: 0.2 }}
+						transition={{ duration: 0.6, ease: 'easeOut' }}
+						viewport={{ once: true, amount: 0.15 }}
 						key={idx}
 						photo={photo}
 					/>

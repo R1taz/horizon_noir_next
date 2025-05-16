@@ -14,6 +14,7 @@ import { findBusyHour } from '../model/findBusyHour'
 interface Props {
 	reservationsForMonth: IReservation[]
 	methodPayment: PaymentMethod
+	dateDelivery: string | null
 	onClose: () => void
 	setIsOpenNotification: (open: boolean) => void
 	setMessageNotification: (message: string) => void
@@ -22,6 +23,7 @@ interface Props {
 const ChooseTimeReservation = ({
 	reservationsForMonth,
 	methodPayment,
+	dateDelivery,
 	onClose,
 	setIsOpenNotification,
 	setMessageNotification,
@@ -52,6 +54,13 @@ const ChooseTimeReservation = ({
 		if (new Date() > new Date(year, month, day, calendarHours)) {
 			setIsOpenNotification(true)
 			setMessageNotification('Дата бронирования не может быть назначена в прошедший день')
+		}
+
+		if (dateDelivery && new Date(year, month, day, calendarHours) < new Date(dateDelivery)) {
+			setIsOpenNotification(true)
+			setMessageNotification(
+				'Дата бронирования не может быть назначена раньше даты доставки автомобиля'
+			)
 		}
 
 		createReservation({

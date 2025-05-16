@@ -1,5 +1,4 @@
 import { CarYears } from './years'
-import { CarColors } from './colors'
 import { BodyTypes } from './bodyTypes'
 import { FuelTypes } from './fuelTypes'
 
@@ -8,7 +7,7 @@ export interface IFilters {
 	model: number | null
 	price: [number, number]
 	years: CarYears[]
-	colors: CarColors[]
+	colors: number[]
 	bodyTypes: BodyTypes[]
 	fuelTypes: FuelTypes[]
 	engineVolume: [number, number]
