@@ -8,7 +8,7 @@ const Header = () => {
 	const isAuth = useAuthStore(state => state.isAuth)
 
 	return (
-		<header className='mt-[54px]'>
+		<header className='mt-[54px] w-full'>
 			<nav className='flex items-center justify-between'>
 				<Link className='text-300' href='/'>
 					Главная
