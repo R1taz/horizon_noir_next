@@ -19,6 +19,8 @@ import DeliveryDateNewCar from './DeliveryDateNewCar'
 import { AnimatePresence, easeOut, motion } from 'framer-motion'
 import CarColors from './CarColors'
 import { IOption } from '@/app/src/shared/types/options'
+import { formatPrice } from '@/app/src/shared/lib/format/formatPrice'
+import { normalizeFormattedPrice } from '@/app/src/shared/lib/format/normalizeFormattedPrice'
 
 interface Props {
 	onClose: () => void
@@ -85,7 +87,11 @@ const AddCarModal = ({ onClose }: Props) => {
 	const carInfoOptions = [
 		{ label: 'Введите год', value: year, action: (year: string) => setYear(year) },
 		{ label: 'Введите VIN-номер', value: vin, action: (vin: string) => setVin(vin) },
-		{ label: 'Введите цену', value: price, action: (price: string) => setPrice(price) },
+		{
+			label: 'Введите цену',
+			value: formatPrice(+price),
+			action: (price: string) => setPrice(normalizeFormattedPrice(price)),
+		},
 	]
 	const radioOptions = [
 		{ label: 'В автосалоне', value: CarStatus.STOCK },
@@ -255,7 +261,9 @@ const AddCarModal = ({ onClose }: Props) => {
 				</AnimatePresence>
 
 				<CarDealershipList {...{ carDealerships, dealershipId, setDealershipId }} />
+
 				<CarInfo options={carInfoOptions} />
+
 				{currentModel.id && (
 					<CarColors
 						modelId={currentModel.id}
@@ -263,6 +271,7 @@ const AddCarModal = ({ onClose }: Props) => {
 						setCurrentColor={setCurrentColor}
 					/>
 				)}
+
 				<CarPhotos
 					photos={photos}
 					addPhotos={photos => setPhotos(prev => [...prev, ...Array.from(photos)])}

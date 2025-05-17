@@ -8,7 +8,9 @@ interface Props<K extends keyof IFilters> {
 	unit: string
 	typeFilter: K
 	filters: [number, number]
-	changeItemsFilters: RangeFnType
+	inputValues?: [string, string]
+	changeItemsFilters?: RangeFnType
+	onInputChange?: (val: string, idx: number) => void
 }
 
 function RangeFilter<K extends keyof IFilters>({
@@ -18,13 +20,15 @@ function RangeFilter<K extends keyof IFilters>({
 	typeFilter,
 	filters,
 	changeItemsFilters,
+	onInputChange,
+	inputValues,
 }: Props<K>) {
 	const handleChange = (item: any, idx: number) => {
 		if (idx === 0) {
-			changeItemsFilters(typeFilter, [+item, filters[1]])
+			changeItemsFilters!(typeFilter, [+item, filters[1]])
 		} else {
-			if (item === '') changeItemsFilters(typeFilter, [filters[0], Infinity])
-			else changeItemsFilters(typeFilter, [filters[0], +item])
+			if (item === '') changeItemsFilters!(typeFilter, [filters[0], Infinity])
+			else changeItemsFilters!(typeFilter, [filters[0], +item])
 		}
 	}
 
@@ -40,7 +44,18 @@ function RangeFilter<K extends keyof IFilters>({
 						<input
 							className='bg-800 w-full  placeholder:select-none'
 							type='text'
-							onChange={e => handleChange(e.currentTarget.value, idx)}
+							value={
+								inputValues
+									? inputValues[idx]
+									: filters[idx] === Infinity || filters[idx] === 0
+									? ''
+									: filters[idx].toString()
+							}
+							onChange={e =>
+								onInputChange
+									? onInputChange(e.currentTarget.value, idx)
+									: handleChange(e.currentTarget.value, idx)
+							}
 							placeholder={`${option}`}
 						/>
 						<span className='select-none'>{unit}</span>
