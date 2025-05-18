@@ -7,7 +7,7 @@ interface AuthStore {
 	isInitialized: boolean
 	role: UserRole | null
 	setInitialized: (initialized: boolean) => void
-	setAuthData: (isAuth: boolean | null, role: UserRole | 'no role' | null) => void
+	setAuthData: (isAuth: boolean | null, role: UserRole | null) => void
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthStore>()(
 		setAuthData: (isAuth, role) =>
 			set(state => {
 				state.isAuth = isAuth !== null ? isAuth : state.isAuth
-				state.role = role !== 'no role' ? role : null
+				state.role = role ? role : null
 			}),
 	}))
 )
