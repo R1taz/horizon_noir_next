@@ -17,13 +17,13 @@ const ButtonDeleteAccount = ({ userId }: { userId: number }) => {
 	const handleDelete = async () => {
 		try {
 			await mutateAsync(userId)
-			setAuthData(false, 'no role')
+			setAuthData(false, null)
 			setUser(null)
 			setInitialized(false)
 			router.replace('/')
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
-				setAuthData(false, 'no role')
+				setAuthData(false, null)
 				router.replace('/login')
 			}
 		}

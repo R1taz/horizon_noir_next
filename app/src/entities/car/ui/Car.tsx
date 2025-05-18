@@ -33,7 +33,7 @@ const Car = ({ car, photos, role }: Props) => {
 			removeCar(car.id)
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
-				setAuthData(false, 'no role')
+				setAuthData(false, null)
 				router.push('/login')
 			}
 		}

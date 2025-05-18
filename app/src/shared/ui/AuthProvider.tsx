@@ -3,37 +3,21 @@
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '../model/useAuthStore'
 import { ReactNode, useEffect } from 'react'
-import { useAuthMe } from '../hooks/useAuthMe'
-import { useUserStore } from '../model/useUserStore'
 
 interface Props {
 	children: ReactNode
 }
 
 const AuthProvider = ({ children }: Props) => {
-	const isInitialized = useAuthStore(state => state.isInitialized)
-	const setInitialized = useAuthStore(state => state.setInitialized)
-
-	const setAuthData = useAuthStore(state => state.setAuthData)
-	const setUser = useUserStore(state => state.setUser)
+	const isAuth = useAuthStore(state => state.isAuth)
 
 	const router = useRouter()
 
-	const { data: user, error } = useAuthMe()
-
 	useEffect(() => {
-		if (error && (error as any)?.response?.status === 401) {
-			router.replace('/login')
-			setAuthData(false, 'no role')
-			return
-		}
+		if (!isAuth) router.replace('/login')
+	}, [])
 
-		if (user && !isInitialized) {
-			setInitialized(true)
-			setAuthData(true, user.role)
-			setUser(user)
-		}
-	}, [user, error])
+	if (!isAuth) return
 
 	return children
 }
