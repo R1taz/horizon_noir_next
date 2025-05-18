@@ -187,7 +187,7 @@ const AddCarModal = ({ onClose }: Props) => {
 				} catch (error) {
 					console.log(`Произошла ошибка: ${error}`)
 					if ((error as any)?.response?.status === 401) {
-						setAuthData(false, 'no role')
+						setAuthData(false, null)
 						router.push('/login')
 					}
 				}

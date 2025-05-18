@@ -2,23 +2,38 @@ import { NextRequest, NextResponse } from 'next/server'
 import { COOKIE } from './app/src/shared/constants/auth'
 import { axiosInstance } from './app/src/shared/api/axiosInstance'
 
-export async function middleware(req: NextRequest) {
-	if (req.url.includes('/api')) return NextResponse.next()
+export async function middleware(request: NextRequest) {
+	if (request.url.includes('/api')) return NextResponse.next()
 
-	const accessToken = req.cookies.get(COOKIE.ACCESS_TOKEN)?.value
+	const accessToken = request.cookies.get(COOKIE.ACCESS_TOKEN)?.value
 
 	if (!accessToken) {
-		const refreshToken = req.cookies.get(COOKIE.REFRESH_TOKEN)
+		const refreshToken = request.cookies.get(COOKIE.REFRESH_TOKEN)?.value
 
-		if (!refreshToken) return NextResponse.redirect(new URL('/login', req.url))
+		if (!refreshToken) return NextResponse.redirect(new URL('/login', request.url))
 
 		try {
-			const res = await axiosInstance.post('/api/refresh')
-			if (res.status !== 200) return NextResponse.redirect(new URL('/login', req.url))
-			return NextResponse.next()
-		} catch (error) {
-			console.log(error)
-			return NextResponse.redirect(new URL('/login', req.url))
+			const res = await axiosInstance.post(
+				'/api/refresh',
+				{},
+				{
+					headers: { Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}` },
+				}
+			)
+			if (res.status !== 200) return NextResponse.redirect(new URL('/login', request.url))
+
+			const next = NextResponse.next()
+			const setCookies = res.headers['set-cookie']
+			if (setCookies) {
+				;(Array.isArray(setCookies) ? setCookies : [setCookies]).forEach(c =>
+					next.headers.append('set-cookie', c)
+				)
+			}
+
+			return next
+		} catch (error: any) {
+			console.log(error.response.status)
+			return NextResponse.redirect(new URL('/login', request.url))
 		}
 	}
 

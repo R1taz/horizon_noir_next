@@ -40,7 +40,7 @@ const Orders = () => {
 	useEffect(() => {
 		if (error) {
 			if ((error as any).response?.status === 401) {
-				setAuthData(false, 'no role')
+				setAuthData(false, null)
 				router.replace('/login')
 			}
 		}

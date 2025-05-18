@@ -16,11 +16,11 @@ const ButtonLogout = ({ setUser }: { setUser: (user: null) => void }) => {
 		try {
 			await mutateAsync()
 			router.replace('/login')
-			setAuthData(false, 'no role')
+			setAuthData(false, null)
 			setUser(null)
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
-				setAuthData(false, 'no role')
+				setAuthData(false, null)
 			}
 		}
 	}

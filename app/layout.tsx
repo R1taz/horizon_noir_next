@@ -4,6 +4,7 @@ import Header from './src/shared/ui/Header'
 import ReactQueryProvider from './providers/ReactQueryProvider'
 import { WebSocketProvider } from './src/shared/contexts/WebSocketContext'
 import AnimateNotification from './src/shared/ui/AnimateNotification'
+import ClientAuthInit from './providers/ClientAuthInit'
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -20,8 +21,10 @@ export default function RootLayout({
 			<body className='font-wix bg-900 px-20'>
 				<ReactQueryProvider>
 					<WebSocketProvider>
-						<Header />
-						{children}
+						<ClientAuthInit>
+							<Header />
+							{children}
+						</ClientAuthInit>
 						<AnimateNotification />
 					</WebSocketProvider>
 				</ReactQueryProvider>
