@@ -39,7 +39,7 @@ const Modal = ({ title, options, children }: Props) => {
 			}}
 			className='fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center backdrop-blur-[2px] rounded-[8px]'
 		>
-			<article className='p-5 z-50 max-h-[95vh] w-[50%] overflow-y-auto overflow-x-hidden backdrop-blur-lg bg-600/20 border border-accent/20 rounded-[8px] shadow-lg'>
+			<article className='p-5 z-50 max-h-[95vh] w-[75%] lg:w-[50%] overflow-y-auto overflow-x-hidden backdrop-blur-lg bg-600/20 border border-accent/20 rounded-[8px] shadow-lg'>
 				<h1 className='text-accent text-2xl font-bold mt-1 mb-5'>{title}</h1>
 
 				{children}
@@ -48,9 +48,11 @@ const Modal = ({ title, options, children }: Props) => {
 					{options.map((option, idx) => (
 						<button
 							key={option.label}
-							className={`w-[50%] py-1 mx-auto text-xl font-bold ${idx === 0 ? 'bg-accent' : ''} ${
-								idx === 1 ? 'border-2 border-accent' : ''
-							} ${idx === 1 ? 'text-accent' : 'text-[800]'} rounded-[7px]`}
+							className={`w-full lg:w-[50%] py-1 mx-auto text-xl font-bold ${
+								idx === 0 ? 'bg-accent' : ''
+							} ${idx === 1 ? 'border-2 border-accent' : ''} ${
+								idx === 1 ? 'text-accent' : 'text-[800]'
+							} rounded-[7px]`}
 							onClick={option.action}
 						>
 							{option.label}

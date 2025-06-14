@@ -29,9 +29,9 @@ const ProfileSettings = () => {
 			initial='initial'
 			animate='animate'
 			transition={{ duration: 0.5, ease: easeOut }}
-			className='bg-800 rounded-[8px] px-5 py-3 col-start-2 col-end-3 row-start-1 row-end-2'
+			className='bg-800 rounded-[8px] px-5 py-3 col-start-1 col-end-2 lg:col-start-2 lg:col-end-3 row-start-2 row-end-3 lg:row-start-1 lg:row-end-2'
 		>
-			<header className='py-1 flex justify-between relative'>
+			<header className='py-1 flex gap-2 lg:gap-0 justify-between relative'>
 				<motion.h2
 					variants={leftVariants}
 					initial='initial'
@@ -46,7 +46,7 @@ const ProfileSettings = () => {
 					initial='initial'
 					animate='animate'
 					transition={{ duration: 0.5, ease: easeOut, delay: 0.3 }}
-					className='text-xl'
+					className='text-md lg:text-xl'
 				>
 					Переключатель темы
 				</motion.span>

@@ -21,7 +21,7 @@ const ProfileSecurity = () => {
 			initial='initial'
 			animate='animate'
 			transition={{ duration: 0.5, ease: easeOut }}
-			className='bg-800 rounded-[8px] px-5 py-3 col-start-3 col-end-4 row-start-1 row-end-2'
+			className='bg-800 rounded-[8px] px-5 py-3 col-start-1 col-end-2 lg:col-start-3 lg:col-end-4 row-start-3 row-end-4 lg:row-start-1 lg:row-end-2'
 		>
 			<header className='py-1 relative'>
 				<motion.h2

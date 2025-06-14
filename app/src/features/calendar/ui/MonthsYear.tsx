@@ -11,7 +11,7 @@ const MonthsYear = ({ activeMonth, setActiveMonth }: Props) => {
 	}
 
 	return (
-		<section className='flex justify-between gap-3 mt-2'>
+		<section className='overflow-x-scroll py-2 flex justify-between gap-3 mt-2'>
 			{[...new Array(12)].map((_, idx) => (
 				<span key={idx} className={styles(idx)} onClick={() => setActiveMonth(idx)}>
 					{formatMonth(idx)}

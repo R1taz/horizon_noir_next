@@ -37,7 +37,7 @@ const CarInfo = ({ car }: Props) => {
 
 	return (
 		<article>
-			<div className='flex gap-8 h-[425px]'>
+			<div className='flex flex-col items-center md:flex-row gap-8 md:h-[425px]'>
 				{!mainPhoto && <h1 className='flex-1'>Отсутствует фотография</h1>}
 				{mainPhoto && (
 					<motion.img
@@ -45,12 +45,12 @@ const CarInfo = ({ car }: Props) => {
 						initial='initial'
 						animate='animate'
 						transition={{ duration: 0.5, ease: easeOut }}
-						className=' rounded-[8px] object-cover w-[50%] h-full z-10'
+						className=' rounded-[8px] object-cover md:w-[45%] lg:w-[50%] h-full z-10'
 						src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
 						alt='Главное фото автомобиля'
 					/>
 				)}
-				<article className='flex flex-col gap-4'>
+				<article className='flex flex-col gap-y-4'>
 					<motion.h1
 						variants={titleVariants}
 						initial='initial'
@@ -82,6 +82,7 @@ const CarInfo = ({ car }: Props) => {
 					</motion.section>
 				</article>
 			</div>
+
 			<motion.article
 				variants={priceVariants}
 				initial='initial'
@@ -92,16 +93,16 @@ const CarInfo = ({ car }: Props) => {
 				{formatPrice(+car.car.price)}
 			</motion.article>
 
-			<motion.section className='flex gap-10 items-center justify-evenly my-20'>
-				<article className='bg-600 rounded-[8px] px-20 py-6 backdrop-blur-lg bg-white/10 shadow-lg'>
-					<motion.h1 className='text-300 text-center text-4xl font-bold mb-9'>
+			<motion.section className='flex flex-col md:flex-row gap-10 md:items-center justify-evenly my-20'>
+				<article className='bg-600 rounded-[8px] md:px-10 lg:px-20 py-6 backdrop-blur-lg bg-white/10 shadow-lg'>
+					<motion.h1 className='text-300 text-center text-2xl lg:text-4xl font-bold mb-9'>
 						Адрес автосалона
 					</motion.h1>
 					<p className='text-center text-400 text-2xl'>123</p>
 				</article>
 
-				<article className='bg-600 rounded-[8px] px-20 py-6 backdrop-blur-lg bg-white/10 shadow-lg'>
-					<motion.h1 className='text-300 text-center text-4xl font-bold mb-9'>
+				<article className='bg-600 rounded-[8px] md:px-10 lg:px-20 py-6 backdrop-blur-lg bg-white/10 shadow-lg'>
+					<motion.h1 className='text-300 text-center text-2xl lg:text-4xl font-bold mb-9'>
 						Статус доставки автомобиля
 					</motion.h1>
 					<p className='text-center text-400 text-2xl'>

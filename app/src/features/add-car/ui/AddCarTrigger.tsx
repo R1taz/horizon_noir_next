@@ -11,7 +11,7 @@ const AddCarTrigger = () => {
 		<>
 			<button
 				onClick={() => setIsOpen(true)}
-				className='row-start-1 row-end-2 col-start-1 col-end-4 rounded-[8px] border-2 border-accent text-accent text-center text-2xl py-4 font-bold cursor-pointer'
+				className='row-start-1 row-end-2 col-start-1 lg:col-end-4 sm:col-end-3 col-end-2 rounded-[8px] border-2 border-accent text-accent text-center text-2xl py-4 font-bold cursor-pointer'
 			>
 				<Image src={addCarImg} alt='' width={20} height={20} className='inline-block mr-3' />
 				<span>Добавить новый автомобиль</span>

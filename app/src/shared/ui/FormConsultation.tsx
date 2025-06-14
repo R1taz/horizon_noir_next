@@ -22,7 +22,7 @@ const FormConsultation = ({ title, description, titleAction, action, children }:
 				transition={{ duration: 0.4, ease: easeOut }}
 				viewport={{ once: true, amount: 0.3 }}
 				whileInView='animate'
-				className='my-24 w-[50%] mx-auto rounded-[8px] border-4 border-accent py-14'
+				className='my-24 md:w-[95%] lg:w-[50%] mx-auto rounded-[8px] border-4 border-accent py-14'
 			>
 				<h1 className='text-300 text-4xl font-bold text-center'>{title}</h1>
 				<p className='text-400 my-8 text-xl text-center'>{description}</p>

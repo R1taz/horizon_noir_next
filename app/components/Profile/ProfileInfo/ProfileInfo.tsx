@@ -37,7 +37,7 @@ const ProfileInfo = () => {
 			initial='initial'
 			animate='animate'
 			transition={{ duration: 0.5, ease: easeOut }}
-			className='mr-5 p-4 pb-0 bg-800 rounded-[8px] col-start-1 col-end-2 row-start-1 row-end-3'
+			className='mr-5 p-4 pb-0 bg-800 rounded-[8px] col-start-1 col-end-2 row-start-1 row-end-2 lg:row-end-3'
 		>
 			<Image src={logo} alt='Фотография пользователя' className='rounded-t-[5px]' />
 			<div className='h-[2px] bg-600'></div>
@@ -64,7 +64,7 @@ const ProfileInfo = () => {
 					</motion.p>
 				</div>
 
-				<div className='flex justify-between py-4 border-b-[2px] border-b-600'>
+				<div className='flex flex-col lg:flex-row justify-between py-4 border-b-[2px] border-b-600'>
 					<motion.span
 						variants={spanVariants}
 						initial='initial'

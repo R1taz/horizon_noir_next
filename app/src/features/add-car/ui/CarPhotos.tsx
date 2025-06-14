@@ -41,7 +41,7 @@ const CarPhotos = ({ photos, addPhotos, removePhoto }: Props) => {
 				/>
 			</button>
 
-			<section className='grid grid-cols-2 gap-5 my-6'>
+			<section className='grid grid-cols-1 lg:grid-cols-2 gap-5 my-6'>
 				{photos.map((photo, idx) => {
 					return <CarPhoto key={idx} photo={photo} handleChange={() => removePhoto(photo)} />
 				})}
