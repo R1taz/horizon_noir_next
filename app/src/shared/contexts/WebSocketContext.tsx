@@ -51,7 +51,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 							setMessage('')
 
 							setOpen(true)
-							setMessage('Заказ успешно создан и добавлен в ваш профиль')
+							setMessage('Заказ успешно создан')
 
 							setTimeout(() => {
 								setOpen(false)
@@ -257,7 +257,7 @@ export const WebSocketProvider = ({ children }: { children: React.ReactNode }) =
 
 						if (role === UserRole.USER) {
 							setOpen(true)
-							setMessage('Заявка на бронирование успешно создана и добавлена в ваш профиль')
+							setMessage('Заявка на бронирование успешно создана')
 
 							setTimeout(() => {
 								setOpen(false)

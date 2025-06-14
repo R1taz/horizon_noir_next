@@ -5,26 +5,29 @@ import { useDeleteAccount } from '../model/useDeleteAccount'
 import { useRouter } from 'next/navigation'
 import { useUserStore } from '@/app/src/shared/model/useUserStore'
 import { easeOut, motion } from 'framer-motion'
+import { useQueryClient } from '@tanstack/react-query'
 
 const ButtonDeleteAccount = ({ userId }: { userId: number }) => {
 	const { mutateAsync } = useDeleteAccount()
 	const setUser = useUserStore(state => state.setUser)
 	const setAuthData = useAuthStore(state => state.setAuthData)
-	const setInitialized = useAuthStore(state => state.setInitialized)
 
 	const router = useRouter()
+
+	const queryClient = useQueryClient()
 
 	const handleDelete = async () => {
 		try {
 			await mutateAsync(userId)
 			setAuthData(false, null)
 			setUser(null)
-			setInitialized(false)
-			router.replace('/')
+			router.replace('/login')
+			queryClient.invalidateQueries({ queryKey: ['authMe'] })
 		} catch (error) {
 			if ((error as any)?.response?.status === 401) {
 				setAuthData(false, null)
 				router.replace('/login')
+				queryClient.invalidateQueries({ queryKey: ['authMe'] })
 			}
 		}
 	}

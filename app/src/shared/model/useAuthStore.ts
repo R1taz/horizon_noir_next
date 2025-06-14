@@ -3,21 +3,21 @@ import { immer } from 'zustand/middleware/immer'
 import { UserRole } from '@/app/interfaces/userInterface'
 
 interface AuthStore {
-	isAuth: boolean
 	isInitialized: boolean
+	isAuth: boolean
 	role: UserRole | null
-	setInitialized: (initialized: boolean) => void
+	setInitialized: (isInit: boolean) => void
 	setAuthData: (isAuth: boolean | null, role: UserRole | null) => void
 }
 
 export const useAuthStore = create<AuthStore>()(
 	immer(set => ({
-		isAuth: false,
 		isInitialized: false,
+		isAuth: false,
 		role: null,
-		setInitialized: initialized =>
+		setInitialized: isInit =>
 			set(state => {
-				state.isInitialized = initialized
+				state.isInitialized = isInit
 			}),
 		setAuthData: (isAuth, role) =>
 			set(state => {

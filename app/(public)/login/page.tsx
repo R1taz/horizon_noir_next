@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 const page = () => {
-	const setInitialized = useAuthStore(state => state.setInitialized)
 	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setUser = useUserStore(state => state.setUser)
 
@@ -21,7 +20,6 @@ const page = () => {
 		try {
 			const user = await mutateAsync({ email, password })
 			router.replace('/catalog')
-			setInitialized(true)
 			setAuthData(true, user.role)
 			setUser(user)
 		} catch (error) {
