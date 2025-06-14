@@ -25,7 +25,7 @@ const page = () => {
 
 	return (
 		<AuthProvider>
-			<main className='mt-14 grid grid-cols-[430px,520px,auto] gap-6'>
+			<main className='mt-14 grid grid-cols-1 lg:grid-cols-[430px,520px,auto] gap-6'>
 				<ProfileInfo />
 				<ProfileSettings />
 				<ProfileSecurity />
@@ -34,7 +34,7 @@ const page = () => {
 					initial='initial'
 					animate='animate'
 					transition={{ duration: 0.5, ease: easeOut }}
-					className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-2 col-end-4 row-start-2 row-end-5'
+					className='bg-800 rounded-[8px] mb-5 px-7 py-3 col-start-1 col-end-2 lg:col-start-2 lg:col-end-4 row-start-4 row-end-5 lg:row-start-2 lg:row-end-5'
 				>
 					<header className='py-1 relative'>
 						<h2 className='text-2xl font-bold text-400'>Мои заявки</h2>
@@ -44,7 +44,7 @@ const page = () => {
 						<div className='w-full h-[2px] bg-600'></div>
 					</div>
 
-					<section className='flex justify-between mt-5'>
+					<section className='flex flex-col lg:flex-row justify-between mt-5'>
 						<TypeOrders />
 						<StatusesOrders statusOrders={statusRequests} setStatusOrders={setStatusRequests} />
 					</section>

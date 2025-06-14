@@ -14,7 +14,7 @@ const leftVariants = {
 
 const ChangeSecurity = () => {
 	return (
-		<section className='flex justify-between mt-4'>
+		<section className='flex flex-col gap-2 lg:gap-0 lg:flex-row justify-between mt-4'>
 			<motion.button
 				variants={leftVariants}
 				initial='initial'

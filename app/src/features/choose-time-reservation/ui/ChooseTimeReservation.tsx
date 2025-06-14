@@ -155,7 +155,7 @@ const ChooseTimeReservation = ({
 
 	return (
 		<Modal title='Выбрать время бронирования' options={modalOptions}>
-			<section className='my-10 grid grid-flow-col gap-x-16 grid-rows-[100px_100px_100px_100px] justify-center items-center'>
+			<section className='my-10 grid grid-cols-1 lg:grid-flow-col gap-x-16 lg:grid-rows-[100px_100px_100px_100px] justify-center items-center'>
 				{filterOptions.map((option, idx) => {
 					const busyReservation = findBusyHour(reservationsForMonth, day!, option.value)
 

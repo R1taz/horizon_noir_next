@@ -15,7 +15,7 @@ function CarInfo({ options }: Props) {
 				Введите информацию об автомобиле
 			</h1>
 
-			<section className='flex justify-center text-lg gap-7'>
+			<section className='flex flex-col lg:flex-row justify-center text-lg gap-7'>
 				{options.map(option => (
 					<section key={option.label} className='flex flex-col items-center'>
 						<label className='py-1 rounded-[7px] text-500' htmlFor={option.label}>

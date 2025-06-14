@@ -54,9 +54,9 @@ const Orders = () => {
 	return (
 		<>
 			<motion.section
-				animate={{ height: orders.length === 0 ? 300 : 1250 }}
+				animate={{ height: orders.length === 0 ? 300 : 'auto' }}
 				transition={{ duration: 0.6, ease: easeInOut }}
-				className='grid grid-cols-2 gap-5 mt-5 min-h-[300px]'
+				className='grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5 min-h-[300px]'
 			>
 				{isLoading && (
 					<section className='row-start-1 row-end-2 col-start-1 col-end-3'>
