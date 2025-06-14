@@ -58,12 +58,12 @@ const Cars = () => {
 	if (error) return <h1>Произошла ошибка</h1>
 
 	return (
-		<section className='grid grid-cols-3 gap-x-14 gap-y-10 items-start self-start'>
+		<section className='grid sm:grid-cols-2 gap-x-7 gap-y-7 lg:grid-cols-3 lg:gap-x-11 lg:gap-y-9 xl:gap-x-14 xl:gap-y-10 items-start self-start'>
 			{isLoading && <Skeleton width={1050} height={70} />}
 			{!isLoading && role !== UserRole.USER && <AddCarTrigger />}
 
 			{isLoading && (
-				<Loader className='row-start-3 row-end-4 col-start-2 col-end-3  w-[250px] h-[250px] left-[50px]' />
+				<Loader className='row-start-3 row-end-4 col-start-2 col-end-3 w-[250px] h-[250px] left-[50px]' />
 			)}
 			<AnimatePresence mode='wait'>
 				{!isLoading &&

@@ -25,7 +25,7 @@ const StatusesOrders = ({ statusOrders, setStatusOrders }: Props) => {
 	]
 
 	return (
-		<section className='flex gap-7'>
+		<section className='flex flex-col items-center lg:items-start lg:flex-row gap-7 mt-12 lg:mt-0'>
 			{statuses.map(status => (
 				<article key={status.label}>
 					<motion.article

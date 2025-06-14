@@ -39,7 +39,7 @@ const TypeOrders = () => {
 				initial='initial'
 				animate='animate'
 				transition={{ duration: 0.7, ease: easeInOut }}
-				className='relative flex items-center gap-2 rounded-[8px] h-[36px] w-[40%] pl-2 bg-700'
+				className='relative flex items-center gap-2 rounded-[8px] h-[36px] w-full lg:w-[40%] pl-2 bg-700'
 			>
 				<motion.span
 					variants={topVariants}
@@ -50,7 +50,7 @@ const TypeOrders = () => {
 				>
 					Тип заявки
 				</motion.span>
-				<article className='absolute top-0 left-[105px] w-[240px] z-10'>
+				<article className='absolute top-8 left-0 lg:top-0 lg:left-[105px] w-full lg:w-[240px] z-10'>
 					<Select
 						bg='700'
 						edit={true}

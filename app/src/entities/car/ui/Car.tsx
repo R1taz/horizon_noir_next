@@ -69,7 +69,7 @@ const Car = ({ car, photos, role }: Props) => {
 				<Image
 					src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
 					alt='Фото автомобиля'
-					className={`rounded-[8px] object-cover w-[350px] h-[250px] transition-filter duration-200 ${
+					className={`rounded-[8px] object-cover w-full h-[250px] transition-filter duration-200 ${
 						isHovered ? '[filter:brightness(65%)]' : 'brightness-100'
 					}`}
 					width={350}

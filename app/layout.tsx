@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className='font-wix bg-900 px-20'>
+			<body className='font-wix bg-900 xl:px-20 md:px-8 px-10'>
 				<ReactQueryProvider>
 					<WebSocketProvider>
 						<ClientAuthInit>

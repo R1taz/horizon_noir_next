@@ -34,7 +34,7 @@ const page = () => {
 			<CarPhotos photos={car.photos} />
 			<FormReservationCar dateDelivery={car.car.date_delivery} />
 			<FormOrderCar />
-			<Footer />
+			{/* <Footer /> */}
 		</AuthProvider>
 	)
 }
