@@ -5,14 +5,15 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 
 interface Params {
 	pageSize: number
-	filters: IFilters
+	filters?: IFilters
+	sort?: boolean
 }
 
-export const useCarsQuery = ({ pageSize, filters }: Params) => {
+export const useCarsQuery = ({ pageSize, filters, sort }: Params) => {
 	return useInfiniteQuery<ICar[], Error>({
 		queryKey: ['cars', filters],
 		initialPageParam: 1,
-		queryFn: ({ pageParam = 1 }) => getCars(pageParam as number, pageSize, filters),
+		queryFn: ({ pageParam = 1 }) => getCars(pageParam as number, pageSize, filters, sort),
 		getNextPageParam: (lastPage, allPages) => {
 			const hasMore = lastPage.length === pageSize
 			return hasMore ? allPages.length + 1 : undefined

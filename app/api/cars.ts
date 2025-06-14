@@ -2,24 +2,33 @@ import { ICar } from '../interfaces/carsInterface'
 import { axiosInstance } from '../src/shared/api/axiosInstance'
 import { IFilters } from '../src/shared/types/filters'
 
-export const getCars = async (page: number, limit: number, filters: IFilters): Promise<ICar[]> => {
+export const getCars = async (
+	page: number,
+	limit: number,
+	filters?: IFilters,
+	sort?: boolean
+): Promise<ICar[]> => {
 	let queryPath = ''
 
-	for (let key in filters) {
-		const typedKey = key as keyof IFilters
-		if (!Array.isArray(filters[typedKey])) {
-			queryPath += `&${key}=${filters[typedKey]}`
-		} else {
-			if (filters[typedKey].length !== 0) {
-				queryPath += '&'
+	if (filters) {
+		for (let key in filters) {
+			const typedKey = key as keyof IFilters
+			if (!Array.isArray(filters[typedKey])) {
+				queryPath += `&${key}=${filters[typedKey]}`
+			} else {
+				if (filters[typedKey].length !== 0) {
+					queryPath += '&'
 
-				filters[typedKey].forEach((el, idx) => {
-					if (idx === 0) queryPath += `${key}=${el}`
-					else queryPath += `,${el}`
-				})
+					filters[typedKey].forEach((el, idx) => {
+						if (idx === 0) queryPath += `${key}=${el}`
+						else queryPath += `,${el}`
+					})
+				}
 			}
 		}
 	}
+
+	if (sort) queryPath += `&sort=${sort}`
 
 	try {
 		const res = await axiosInstance.get(`/api/cars?page=${page}&limit=${limit}${queryPath}`)

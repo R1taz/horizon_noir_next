@@ -5,6 +5,5 @@ export const useAuthMe = () => {
 	return useQuery({
 		queryKey: ['authMe'],
 		queryFn: authMe,
-		/* enabled: !isInitialized, */
 	})
 }

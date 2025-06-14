@@ -5,6 +5,7 @@ import { useUserStore } from '../src/shared/model/useUserStore'
 import { useAuthStore } from '../src/widgets/cars'
 import { axiosInstance } from '../src/shared/api/axiosInstance'
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 interface Props {
 	children: React.ReactNode
@@ -12,9 +13,11 @@ interface Props {
 
 export default function ClientAuthInit({ children }: Props) {
 	const isInitialized = useAuthStore(state => state.isInitialized)
-	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setInitialized = useAuthStore(state => state.setInitialized)
+	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setUser = useUserStore(state => state.setUser)
+
+	const router = useRouter()
 
 	const { data, isLoading, error } = useQuery({
 		queryKey: ['authMe'],
@@ -25,19 +28,20 @@ export default function ClientAuthInit({ children }: Props) {
 
 	useEffect(() => {
 		if (data) {
-			console.log(data)
 			setUser(data)
 			setAuthData(true, data.role)
-			setInitialized(true)
 		} else if (error) {
 			console.log(error)
 			setAuthData(false, null)
-			setInitialized(true)
+			router.replace('/login')
+		} else if (!isLoading && !data) {
+			router.replace('/login')
 		}
-	}, [data, error, setUser, setAuthData, setInitialized])
 
-	console.log(isInitialized)
-	if (isLoading || !isInitialized) return <h1>Загрузка...</h1>
+		if (!isLoading) setInitialized(true)
+	}, [data, error, isLoading, setUser, setAuthData])
+
+	if (!isInitialized) return <h1 className='text-accent'>Загрузка...</h1>
 
 	return children
 }
