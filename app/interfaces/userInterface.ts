@@ -5,6 +5,7 @@ export interface IUserData {
 	phone_number: string
 	number_of_warn: number
 	created_at: string
+	photo_url?: string | null
 }
 
 export enum UserRole {

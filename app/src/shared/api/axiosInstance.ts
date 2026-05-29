@@ -5,12 +5,18 @@ export const axiosInstance = axios.create({
 	withCredentials: true,
 })
 
+const AUTH_FREE_PATHS = ['/api/refresh', '/api/login', '/api/registration']
+
 axiosInstance.interceptors.response.use(
 	response => response,
 	async error => {
 		const originalRequest = error.config
 
-		if (originalRequest.url.includes('/refresh')) {
+		if (!error.response) {
+			return Promise.reject(error)
+		}
+
+		if (AUTH_FREE_PATHS.some(p => originalRequest.url?.includes(p))) {
 			return Promise.reject(error)
 		}
 
@@ -20,6 +26,9 @@ axiosInstance.interceptors.response.use(
 				await axiosInstance.post('/api/refresh')
 				return axiosInstance(originalRequest)
 			} catch (refreshError) {
+				if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
+					window.location.href = '/login'
+				}
 				return Promise.reject(refreshError)
 			}
 		}

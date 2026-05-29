@@ -13,6 +13,7 @@ interface UserStore {
 	increaseNumberOfWarn: () => void
 	setUserId: (id: number) => void
 	setUser: (userData: IUserData | null) => void
+	setPhotoUrl: (photoUrl: string | null) => void
 }
 
 export const useUserStore = create<UserStore>()(
@@ -40,6 +41,11 @@ export const useUserStore = create<UserStore>()(
 				state.phoneNumber = userData ? userData.phone_number : ''
 				state.numberOfWarn = userData ? userData.number_of_warn : 0
 				state.created_at = userData ? userData.created_at : null
+				state.photo_url = userData ? userData.photo_url ?? null : null
+			}),
+		setPhotoUrl: (photoUrl: string | null) =>
+			set(state => {
+				state.photo_url = photoUrl
 			}),
 	}))
 )

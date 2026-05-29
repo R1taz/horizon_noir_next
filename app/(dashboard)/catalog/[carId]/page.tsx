@@ -1,42 +1,58 @@
-'use client'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import CarDetailClient from './CarDetailClient'
+import type { ICar } from '@/app/interfaces/carsInterface'
 
-import { getCar } from '@/app/api/cars'
-import CarInfo from '@/app/components/Car/CarInfo'
-import CarPhotos from '@/app/components/Car/CarPhotos/CarPhotos'
-import FormOrderCar from '@/app/src/widgets/FormOrderCar/ui/FormOrderCar'
-import FormReservationCar from '@/app/src/widgets/FormReservationCar/ui/FormReservationCar'
-import BreadCrumbs from '@/app/src/shared/ui/BreadCrumbs'
-import Footer from '@/app/src/shared/ui/Footer'
-import { ICar } from '@/app/interfaces/carsInterface'
-import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'next/navigation'
-import React from 'react'
-import AuthProvider from '@/app/src/shared/ui/AuthProvider'
+export const revalidate = 60
 
-const page = () => {
-	const { carId } = useParams()
-	const {
-		data: car,
-		isLoading,
-		error,
-	} = useQuery<ICar>({
-		queryKey: ['car'],
-		queryFn: () => getCar(+carId),
-	})
+const API = process.env.NEXT_PUBLIC_BASE_BACKEND_URL || 'http://localhost:5000'
 
-	if (!car || isLoading) return <h1>Loading...</h1>
-	if (error) return <h1>Error</h1>
-
-	return (
-		<AuthProvider>
-			<BreadCrumbs />
-			<CarInfo car={car} />
-			<CarPhotos photos={car.photos} />
-			<FormReservationCar dateDelivery={car.car.date_delivery} />
-			<FormOrderCar />
-			{/* <Footer /> */}
-		</AuthProvider>
-	)
+async function getCar(carId: string): Promise<ICar | null> {
+	try {
+		const res = await fetch(`${API}/api/cars/${carId}`, {
+			next: { revalidate: 60 },
+		})
+		if (!res.ok) return null
+		const data = await res.json()
+		if (!data?.car) return null
+		return data as ICar
+	} catch {
+		return null
+	}
 }
 
-export default page
+interface PageProps {
+	params: { carId: string }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+	const car = await getCar(params.carId)
+	if (!car) return { title: 'Автомобиль не найден' }
+
+	const title = `${car.car.brand} ${car.car.model} ${car.car.manufacturer_date} года`
+	const price = Number(car.car.price).toLocaleString('ru-RU')
+	const volume = car.model.engine_volume ? `${car.model.engine_volume} л / ` : ''
+	const description = `Купить ${car.car.brand} ${car.car.model} ${car.car.manufacturer_date} года в Horizon Noir. Двигатель ${car.model.engine_type}, ${volume}${car.model.power} л.с. Цена ${price} ₽. Покупка с доставкой или резервирование в дилерстве.`
+
+	const mainPhoto = car.photos.find(p => p.main_photo)
+	const ogImage = mainPhoto ? `${API}/${mainPhoto.url.replace(/\\/g, '/')}` : undefined
+
+	return {
+		title,
+		description,
+		alternates: { canonical: `/catalog/${params.carId}` },
+		openGraph: {
+			title: `${title} | Horizon Noir`,
+			description,
+			type: 'website',
+			images: ogImage ? [{ url: ogImage, width: 800, height: 600, alt: title }] : undefined,
+		},
+	}
+}
+
+export default async function CarDetailPage({ params }: PageProps) {
+	const car = await getCar(params.carId)
+	if (!car) notFound()
+
+	return <CarDetailClient car={car} />
+}

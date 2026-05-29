@@ -10,20 +10,26 @@ const page = () => {
 	const setAuthData = useAuthStore(state => state.setAuthData)
 	const setUser = useUserStore(state => state.setUser)
 
-	const { mutateAsync } = useLogin()
+	const { mutateAsync, isPending } = useLogin()
 	const router = useRouter()
 
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [error, setError] = useState<string | null>(null)
 
 	const handleClick = async () => {
+		setError(null)
+		if (!email || !password) {
+			setError('Введите email и пароль')
+			return
+		}
 		try {
 			const user = await mutateAsync({ email, password })
-			router.replace('/catalog')
 			setAuthData(true, user.role)
 			setUser(user)
-		} catch (error) {
-			console.log(error)
+			router.replace('/catalog')
+		} catch (err: any) {
+			setError(err?.response?.data?.message || 'Не удалось войти. Попробуйте ещё раз.')
 		}
 	}
 
@@ -71,11 +77,16 @@ const page = () => {
 					</Link>
 				</p>
 
+				<div className='mt-5 min-h-[28px]'>
+					{error && <p className='text-red-400 text-lg font-medium'>{error}</p>}
+				</div>
+
 				<button
 					onClick={handleClick}
-					className='my-8 rounded-[8px] bg-accent font-bold text-xl text-700 py-2 w-[320px]'
+					disabled={isPending}
+					className='my-8 rounded-[8px] bg-accent font-bold text-xl text-700 py-2 w-[320px] disabled:opacity-50 disabled:cursor-not-allowed'
 				>
-					Войти
+					{isPending ? 'Вход...' : 'Войти'}
 				</button>
 
 				<p className='my-4 text-600 text-lg'>

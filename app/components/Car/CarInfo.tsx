@@ -3,6 +3,7 @@ import { bodyTypeToRu } from '@/app/src/shared/lib/format/bodyTypeToRu'
 import { driveTypeToRu } from '@/app/src/shared/lib/format/driveTypeToRu'
 import { formatPrice } from '@/app/src/shared/lib/format/formatPrice'
 import { easeOut, motion } from 'framer-motion'
+import Image from 'next/image'
 import CarCharacteristic from './CarCharacteristic'
 import { formateDate } from '@/app/src/shared/lib/format/formatDate'
 
@@ -40,15 +41,22 @@ const CarInfo = ({ car }: Props) => {
 			<div className='flex flex-col items-center md:flex-row gap-8 md:h-[425px]'>
 				{!mainPhoto && <h1 className='flex-1'>Отсутствует фотография</h1>}
 				{mainPhoto && (
-					<motion.img
+					<motion.div
 						variants={mainImageVariants}
 						initial='initial'
 						animate='animate'
 						transition={{ duration: 0.5, ease: easeOut }}
-						className=' rounded-[8px] object-cover md:w-[45%] lg:w-[50%] h-full z-10'
-						src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
-						alt='Главное фото автомобиля'
-					/>
+						className='relative rounded-[8px] overflow-hidden md:w-[45%] lg:w-[50%] h-full min-h-[300px] z-10'
+					>
+						<Image
+							src={process.env.NEXT_PUBLIC_BASE_BACKEND_URL + '/' + mainPhoto.url.replace(/\\/g, '/')}
+							alt={`${car.car.brand} ${car.car.model} ${car.car.manufacturer_date} — главное фото`}
+							fill
+							className='object-cover'
+							sizes='(max-width: 768px) 100vw, 50vw'
+							priority
+						/>
+					</motion.div>
 				)}
 				<article className='flex flex-col gap-y-4'>
 					<motion.h1
